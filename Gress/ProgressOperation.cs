@@ -8,7 +8,7 @@ namespace Gress
     /// <summary>
     /// Default implementation of <see cref="IProgressOperation"/>.
     /// </summary>
-    public class ProgressOperation : PropertyChangedBase, IProgressOperation, IProgress<double>
+    public class ProgressOperation : PropertyChangedBase, IProgressOperation
     {
         /// <inheritdoc />
         public double Weight { get; }
@@ -27,7 +27,7 @@ namespace Gress
             Weight = weight.GuardNotNegative(nameof(weight));
         }
 
-        /// <inheritdoc cref="IProgressOperation"/>
+        /// <inheritdoc />
         public void Report(double progress)
         {
             progress.GuardRange(0, 1, nameof(progress));

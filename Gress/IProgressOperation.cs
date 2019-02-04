@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Gress
 {
     /// <summary>
     /// Represents an operation that can report progress.
     /// </summary>
-    public interface IProgressOperation : IDisposable
+    public interface IProgressOperation : IProgress<double>, INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Weight of this operation.
@@ -21,10 +22,5 @@ namespace Gress
         /// Whether this operation has completed.
         /// </summary>
         bool IsCompleted { get; }
-
-        /// <summary>
-        /// Reports new progress.
-        /// </summary>
-        void Report(double progress);
     }
 }

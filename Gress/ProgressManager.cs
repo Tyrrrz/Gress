@@ -22,7 +22,7 @@ namespace Gress
         /// <summary>
         /// Refreshes the current state of this progress manager based on the aggregated state of its individual operations.
         /// </summary>
-        protected void Refresh()
+        private void Refresh()
         {
             // If there are no operations or all operations have completed - clear the list and reset progress
             if (_operations.All(o => o.IsCompleted))

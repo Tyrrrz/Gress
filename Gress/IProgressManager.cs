@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Gress
 {
     /// <summary>
     /// Manages and keeps track of <see cref="IProgressOperation"/>s.
     /// </summary>
-    public interface IProgressManager
+    public interface IProgressManager : INotifyPropertyChanged
     {
         /// <summary>
         /// Current progress aggregated from all operations, with weight taken into account.
