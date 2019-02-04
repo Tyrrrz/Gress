@@ -37,14 +37,14 @@ using (var operation = manager.CreateOperation())
     for (var i = 0; i < 100; i++)
     {
         await Task.Delay(200); // simulate time-consuming task
-        operation.Report(i/100); // report progress
+        operation.Report((i+1)/100); // report progress
     }
 }
 ```
 
 ##### Using weight
 
-Operation may have custom weight which defines how much the progress of an individual operation affects the total progress.
+Operations may have custom weight which defines how much its own progress affects the total progress, compared to other operations.
 This is useful, for example, when you know that one of the operations takes less time to complete and want to make total progress look a bit more linear.
 
 ```c#
@@ -131,7 +131,7 @@ public class MainViewModel
             for (var i = 0; i < 100; i++)
             {
                 await Task.Delay(200); // simulate time-consuming task
-                operation.Report(i/100); // report progress
+                operation.Report((i+1)/100); // report progress
             }
         }
     }
