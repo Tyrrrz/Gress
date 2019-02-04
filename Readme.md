@@ -18,7 +18,7 @@ Gress is a library that makes progress reporting and aggregation easier.
 - Supports weighted operations
 - Implements `INotifyPropertyChanged`
 - Implements `IProgress<double>`
-- Targets .NET Framework 4.5+ and .NET Standard 2.0+
+- Targets .NET Framework 4.5+ and .NET Standard 1.0+
 - No external dependencies
 
 ## Usage
