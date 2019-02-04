@@ -1,11 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
+    <Version>1.0</Version>
+    <Company>Tyrrrz</Company>
+    <Authors>$(Company)</Authors>
+    <Copyright>Copyright (C) 2019 Alexey Golub</Copyright>
+    <Description>Progress manager and aggregator</Description>
+    <PackageTags>progress manager aggregator net standard core</PackageTags>
+    <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/Changelog.md</PackageReleaseNotes>
+    <PackageLicenseUrl>https://github.com/Tyrrrz/Gress/blob/master/License.txt</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/Tyrrrz/Gress/master/favicon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/Tyrrrz/Gress</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>

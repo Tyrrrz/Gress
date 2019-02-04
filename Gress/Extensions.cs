@@ -9,6 +9,9 @@ namespace Gress
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Creates multiple new operations.
+        /// </summary>
         public static IEnumerable<IProgressOperation> CreateOperations(this IProgressManager progressManager, int count,
             Func<int, double> weightSelector = null)
         {
