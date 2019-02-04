@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;net45</TargetFrameworks>
-    <Version>1.0</Version>
+    <Version>1.0.1</Version>
     <Company>Tyrrrz</Company>
     <Authors>$(Company)</Authors>
     <Copyright>Copyright (C) 2019 Alexey Golub</Copyright>
