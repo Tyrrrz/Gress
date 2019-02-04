@@ -24,6 +24,19 @@ namespace Gress.Tests
         }
 
         [Test]
+        public void ProgressOperation_Report_Disposed_Test()
+        {
+            // Create operation
+            var operation = new ProgressOperation();
+
+            // Report completion
+            operation.Dispose();
+
+            // It shouldn't be possible to report progress anymore
+            Assert.Throws<InvalidOperationException>(() => operation.Report(0.5));
+        }
+
+        [Test]
         public void ProgressOperation_Dispose_Test()
         {
             // Create operation
@@ -37,19 +50,6 @@ namespace Gress.Tests
 
             // Assert final state
             Assert.That(operation.IsCompleted, Is.True);
-        }
-
-        [Test]
-        public void ProgressOperation_Report_Disposed_Test()
-        {
-            // Create operation
-            var operation = new ProgressOperation();
-
-            // Report completion
-            operation.Dispose();
-
-            // It shouldn't be possible to report progress anymore
-            Assert.Throws<InvalidOperationException>(() => operation.Report(0.5));
         }
 
         [Test]
