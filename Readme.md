@@ -23,7 +23,7 @@ Gress is a library that makes progress reporting and aggregation easier.
 
 ## Usage
 
-##### Basic example
+### Basic example
 
 Progress is reported using the `Report()` method.
 When a `ProgressOperation` is disposed, it's marked as completed and cannot report progress anymore.
@@ -42,7 +42,7 @@ using (var operation = manager.CreateOperation())
 }
 ```
 
-##### Using weight
+### Using weight
 
 Operations may have custom weight which defines how much its own progress affects the total progress, compared to other operations.
 This is useful, for example, when you know that one of the operations takes less time to complete and want to make total progress look a bit more linear.
@@ -64,7 +64,7 @@ operationHeavy.Report(0.4); // 40%
 Console.WriteLine(manager.Progress); // 0.46667 (~47%)
 ```
 
-##### Pre-creating operations
+### Pre-creating operations
 
 Often you may need to pre-create operations in cases where the number of operations is known ahead of time and you want `ProgressManager` to account for them when calculating aggregated progress.
 
@@ -83,7 +83,7 @@ using (var operation = operations[1])
     ExecuteOtherLongRunningProcess(operation);
 ```
 
-##### Integrating with other code
+### Integrating with other code
 
 The standard guideline for reporting progress in .NET is to use an instance of `System.IProgress<T>`.
 
@@ -107,7 +107,7 @@ using (var operation = progressManager.CreateOperation())
 }
 ```
 
-##### Integrating with XAML
+### Integrating with XAML
 
 Both `ProgressManager` and `ProgressOperation` implement `INotifyPropertyChanged` so corresponding bound properties will be automatically refreshed every time progress changes.
 
