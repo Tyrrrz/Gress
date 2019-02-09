@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Gress.Tests
 {
@@ -57,12 +56,12 @@ namespace Gress.Tests
             var manager = new ProgressManager();
 
             // Create operations
-            var operations = manager.CreateOperations(3).ToArray();
+            var operations = manager.CreateOperations(3);
 
             // Assert initial state after creating operations
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Length));
+            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
 
             // Report new progress
             const double newProgress = 0.5;
@@ -72,7 +71,7 @@ namespace Gress.Tests
             // Assert intermediate state
             Assert.That(manager.Progress, Is.EqualTo(newProgress));
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Length));
+            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
 
             // Report completion
             foreach (var operation in operations)
@@ -91,12 +90,12 @@ namespace Gress.Tests
             var manager = new ProgressManager();
 
             // Create operations
-            var operations = manager.CreateOperations(3, i => i + 1).ToArray();
+            var operations = manager.CreateOperations(3, i => i + 1);
 
             // Assert initial state after creating operations
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Length));
+            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
 
             // Report new progress
             const double newProgress = 0.5;
@@ -106,7 +105,7 @@ namespace Gress.Tests
             // Assert intermediate state
             Assert.That(manager.Progress, Is.EqualTo(newProgress));
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Length));
+            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
 
             // Report completion
             foreach (var operation in operations)
@@ -125,20 +124,20 @@ namespace Gress.Tests
             var manager = new ProgressManager();
 
             // Create operations
-            var operations = manager.CreateOperations(3).ToArray();
+            var operations = manager.CreateOperations(3);
 
             // Assert initial state after creating operations
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Length));
+            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
 
             // Loop through each operation and report progress
-            for (var i = 0; i < operations.Length; i++)
+            for (var i = 0; i < operations.Count; i++)
             {
                 // Assert intermediate state
-                Assert.That(manager.Progress, Is.EqualTo(1.0 * i / operations.Length));
+                Assert.That(manager.Progress, Is.EqualTo(1.0 * i / operations.Count));
                 Assert.That(manager.IsActive, Is.True);
-                Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Length));
+                Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
 
                 using (var operation = operations[i])
                 {

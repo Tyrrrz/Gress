@@ -72,7 +72,7 @@ Often you may need to pre-create operations in cases where the number of operati
 var manager = new ProgressManager();
 
 // Create 2 operations
-var operations = manager.CreateOperations(2).ToArray();
+var operations = manager.CreateOperations(2);
 
 // Perform first operation (from 0% to 50%)
 using (var operation = operations[0])
