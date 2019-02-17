@@ -5,7 +5,7 @@
     <Version>1.0.2</Version>
     <Company>Tyrrrz</Company>
     <Authors>$(Company)</Authors>
-    <Copyright>Copyright (C) 2019 Alexey Golub</Copyright>
+    <Copyright>Copyright (C) Alexey Golub</Copyright>
     <Description>Progress manager and aggregator</Description>
     <PackageTags>progress manager aggregator net standard core</PackageTags>
     <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
