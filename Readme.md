@@ -5,7 +5,7 @@
 [![NuGet](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
 [![NuGet](https://img.shields.io/nuget/dt/Gress.svg)](https://nuget.org/packages/Gress)
 
-Gress is a library that makes progress reporting and aggregation easier.
+Gress is a library that makes progress reporting and aggregation easier. It exposes a well-known interface for individual operations to report progress, routing it to an aggregator. Applications can display the aggregated progress to inform users about overall completion of an arbitrary set of operations.
 
 ## Download
 
