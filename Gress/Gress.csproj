@@ -10,8 +10,8 @@
     <PackageTags>progress manager aggregator net standard core</PackageTags>
     <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/Changelog.md</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/Tyrrrz/Gress/blob/master/License.txt</PackageLicenseUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/Tyrrrz/Gress/master/favicon.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Tyrrrz/Gress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
