@@ -9,7 +9,7 @@ Gress is a library that makes progress reporting and aggregation easier. It expo
 
 ## Download
 
-- [NuGet](https://nuget.org/packages/Gress): `Install-Package Gress`
+- [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
 - [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/Gress)
 
 ## Features

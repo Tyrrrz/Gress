@@ -20,7 +20,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="All" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="all" />
+    <PackageReference Include="Fody" Version="4.2.1" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
