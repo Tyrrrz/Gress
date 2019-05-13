@@ -1,3 +1,7 @@
+### v1.1 (13-May-2019)
+
+- Replaced `IProgressManager.GetOperations()` with `IProgressManager.Operations`.
+
 ### v1.0.2 (09-Feb-2019)
 
 - Changed `CreateOperations()` extension so that it returns an instance of `IReadOnlyList<IProgressOperation>` now.
