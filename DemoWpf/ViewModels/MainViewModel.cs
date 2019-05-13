@@ -38,7 +38,7 @@ namespace DemoWpf.ViewModels
                         await Task.Delay(TimeSpan.FromSeconds(0.1));
 
                         // Report new progress
-                        operation.Report(i / 100.0);
+                        operation.Report((i + 1) / 100.0);
                     }
                 }
             });
