@@ -7,6 +7,7 @@
     Height="400"
     Background="{DynamicResource MaterialDesignPaper}"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
+    Icon="/DemoWpf;component/favicon.ico"
     Style="{DynamicResource MaterialDesignRoot}"
     WindowStartupLocation="CenterScreen">
     <Grid>

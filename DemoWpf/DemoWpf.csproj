@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -89,6 +92,9 @@
       <Project>{855f5c2d-8552-49cd-b243-d4067698c66e}</Project>
       <Name>Gress</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="..\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes">
