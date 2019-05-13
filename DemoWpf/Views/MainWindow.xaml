@@ -13,95 +13,114 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!--  Manager overview  -->
-        <TextBlock
+        <!--  Progress manager  -->
+        <GroupBox
             Grid.Row="0"
-            Margin="8,24,8,8"
-            HorizontalAlignment="Center">
-            <Run Text="Operation count:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Operations.Count, Mode=OneWay}" />
-            <Run />
-            <Run Text="Active:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.IsActive, Mode=OneWay}" />
-            <Run />
-            <Run Text="Total progress:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
-        </TextBlock>
+            Margin="8"
+            Header="Progress manager">
+            <StackPanel Orientation="Vertical">
+                <!--  Overview  -->
+                <TextBlock>
+                    <Run Text="Operations:" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Operations.Count, Mode=OneWay}" />
+                    <Run />
+                    <Run Text="Active:" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.IsActive, Mode=OneWay}" />
+                    <Run />
+                    <Run Text="Progress:" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
+                </TextBlock>
 
-        <!--  Manager progress  -->
-        <ProgressBar
+                <!--  Progress  -->
+                <ProgressBar
+                    Height="4"
+                    Margin="0,16,0,0"
+                    Value="{Binding ProgressManager.Progress, Mode=OneWay}" />
+            </StackPanel>
+        </GroupBox>
+
+        <!--  Progress operations  -->
+        <GroupBox
             Grid.Row="1"
-            Height="10"
             Margin="8"
-            Value="{Binding ProgressManager.Progress, Mode=OneWay}" />
+            Header="Progress operations">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding ProgressManager.Operations}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
 
-        <!--  Operations  -->
-        <ScrollViewer
-            Grid.Row="2"
-            Margin="8"
-            HorizontalScrollBarVisibility="Disabled"
-            VerticalScrollBarVisibility="Auto">
-            <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding ProgressManager.Operations}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Margin="8" Orientation="Horizontal">
-                            <!--  Operation progress  -->
-                            <ProgressBar
-                                Background="#0F000000"
-                                Foreground="{DynamicResource SecondaryAccentBrush}"
-                                Maximum="1"
-                                Minimum="0"
-                                Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                Value="{Binding Progress, Mode=OneWay}" />
+                                <!--  Overview  -->
+                                <TextBlock
+                                    Grid.Column="0"
+                                    Margin="0,2,0,0"
+                                    Foreground="{DynamicResource SecondaryTextBrush}">
+                                    <Run Text="Weight:" />
+                                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Weight, Mode=OneWay}" />
+                                    <Run />
+                                    <Run Text="Progress:" />
+                                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
+                                </TextBlock>
 
-                            <!--  Operation overview  -->
-                            <TextBlock Margin="6,2,0,0" Foreground="{DynamicResource SecondaryTextBrush}">
-                                <Run Text="Operation" />
-                                <Run />
-                                <Run Text="Weight:" />
-                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Weight, Mode=OneWay}" />
-                                <Run />
-                                <Run Text="Progress:" />
-                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
-                            </TextBlock>
-                        </StackPanel>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                                <!--  Progress  -->
+                                <ProgressBar
+                                    Grid.Column="2"
+                                    Background="#0F000000"
+                                    Foreground="{DynamicResource SecondaryAccentBrush}"
+                                    Maximum="1"
+                                    Minimum="0"
+                                    Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                    Value="{Binding Progress, Mode=OneWay}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </GroupBox>
 
-        <!--  New operation weight  -->
-        <TextBlock
-            Grid.Row="3"
-            Margin="8"
-            HorizontalAlignment="Center">
-            <Run Text="Operation weight:" />
-            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=WeightSlider, Mode=OneWay}" />
-        </TextBlock>
-        <Slider
-            x:Name="WeightSlider"
-            Grid.Row="4"
-            Margin="8"
-            IsSnapToTickEnabled="True"
-            Maximum="10"
-            Minimum="1"
-            TickFrequency="1"
-            TickPlacement="TopLeft"
-            Value="1" />
+        <!--  New operation  -->
+        <Grid Grid.Row="2" Margin="8,16,8,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-        <!--  Start new operation  -->
-        <Button
-            Grid.Row="5"
-            Margin="8"
-            Command="{Binding StartOperationCommand}"
-            CommandParameter="{Binding Value, ElementName=WeightSlider}"
-            Content="START OPERATION" />
+            <!--  New operation weight  -->
+            <StackPanel
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock FontSize="15">
+                    <Run Text="Weight:" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=WeightSlider, Mode=OneWay}" />
+                </TextBlock>
+                <Slider
+                    x:Name="WeightSlider"
+                    Width="200"
+                    Margin="16,0,0,0"
+                    HorizontalAlignment="Left"
+                    IsSnapToTickEnabled="True"
+                    Maximum="10"
+                    Minimum="1"
+                    TickFrequency="1" />
+            </StackPanel>
+
+            <!--  New operation button  -->
+            <Button
+                Grid.Column="2"
+                Command="{Binding StartOperationCommand}"
+                CommandParameter="{Binding Value, ElementName=WeightSlider}"
+                Content="START OPERATION" />
+        </Grid>
     </Grid>
 </Window>
