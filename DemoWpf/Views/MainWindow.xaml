@@ -1,0 +1,106 @@
+﻿<Window
+    x:Class="DemoWpf.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Gress Demo"
+    Width="500"
+    Height="400"
+    Background="{DynamicResource MaterialDesignPaper}"
+    DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
+    Style="{DynamicResource MaterialDesignRoot}"
+    WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  Manager overview  -->
+        <TextBlock
+            Grid.Row="0"
+            Margin="8,24,8,8"
+            HorizontalAlignment="Center">
+            <Run Text="Operation count:" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Operations.Count, Mode=OneWay}" />
+            <Run />
+            <Run Text="Active:" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.IsActive, Mode=OneWay}" />
+            <Run />
+            <Run Text="Total progress:" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
+        </TextBlock>
+
+        <!--  Manager progress  -->
+        <ProgressBar
+            Grid.Row="1"
+            Height="10"
+            Margin="8"
+            Value="{Binding ProgressManager.Progress, Mode=OneWay}" />
+
+        <!--  Operations  -->
+        <ScrollViewer
+            Grid.Row="2"
+            Margin="8"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding ProgressManager.Operations}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="8" Orientation="Horizontal">
+                            <!--  Operation progress  -->
+                            <ProgressBar
+                                Background="#0F000000"
+                                Foreground="{DynamicResource SecondaryAccentBrush}"
+                                Maximum="1"
+                                Minimum="0"
+                                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                Value="{Binding Progress, Mode=OneWay}" />
+
+                            <!--  Operation overview  -->
+                            <TextBlock Margin="6,2,0,0" Foreground="{DynamicResource SecondaryTextBrush}">
+                                <Run Text="Operation" />
+                                <Run />
+                                <Run Text="Weight:" />
+                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Weight, Mode=OneWay}" />
+                                <Run />
+                                <Run Text="Progress:" />
+                                <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!--  New operation weight  -->
+        <TextBlock
+            Grid.Row="3"
+            Margin="8"
+            HorizontalAlignment="Center">
+            <Run Text="Operation weight:" />
+            <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Value, ElementName=WeightSlider, Mode=OneWay}" />
+        </TextBlock>
+        <Slider
+            x:Name="WeightSlider"
+            Grid.Row="4"
+            Margin="8"
+            IsSnapToTickEnabled="True"
+            Maximum="10"
+            Minimum="1"
+            TickFrequency="1"
+            TickPlacement="TopLeft"
+            Value="1" />
+
+        <!--  Start new operation  -->
+        <Button
+            Grid.Row="5"
+            Margin="8"
+            Command="{Binding StartOperationCommand}"
+            CommandParameter="{Binding Value, ElementName=WeightSlider}"
+            Content="START OPERATION" />
+    </Grid>
+</Window>
