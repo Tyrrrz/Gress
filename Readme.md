@@ -23,6 +23,10 @@ Gress is a library that makes progress reporting and aggregation easier. It expo
 - Targets .NET Framework 4.5+ and .NET Standard 1.0+
 - No external dependencies
 
+## Screenshots
+
+![](http://www.tyrrrz.me/Projects/Gress/Images/1.png)
+
 ## Usage
 
 ### Basic example
