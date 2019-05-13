@@ -14,7 +14,7 @@ namespace Gress.Tests
             // Assert state
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.False);
-            Assert.That(manager.GetOperations().Count, Is.Zero);
+            Assert.That(manager.Operations.Count, Is.Zero);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Gress.Tests
             // Assert initial state after creating operation
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(1));
+            Assert.That(manager.Operations.Count, Is.EqualTo(1));
 
             // Report new progress
             const double newProgress = 0.5;
@@ -38,7 +38,7 @@ namespace Gress.Tests
             // Assert intermediate state
             Assert.That(manager.Progress, Is.EqualTo(newProgress));
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(1));
+            Assert.That(manager.Operations.Count, Is.EqualTo(1));
 
             // Report completion
             operation.Dispose();
@@ -46,7 +46,7 @@ namespace Gress.Tests
             // Assert final state
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.False);
-            Assert.That(manager.GetOperations().Count, Is.Zero);
+            Assert.That(manager.Operations.Count, Is.Zero);
         }
 
         [Test]
@@ -61,7 +61,7 @@ namespace Gress.Tests
             // Assert initial state after creating operations
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
+            Assert.That(manager.Operations.Count, Is.EqualTo(operations.Count));
 
             // Report new progress
             const double newProgress = 0.5;
@@ -71,7 +71,7 @@ namespace Gress.Tests
             // Assert intermediate state
             Assert.That(manager.Progress, Is.EqualTo(newProgress));
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
+            Assert.That(manager.Operations.Count, Is.EqualTo(operations.Count));
 
             // Report completion
             foreach (var operation in operations)
@@ -80,7 +80,7 @@ namespace Gress.Tests
             // Assert final state
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.False);
-            Assert.That(manager.GetOperations().Count, Is.Zero);
+            Assert.That(manager.Operations.Count, Is.Zero);
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace Gress.Tests
             // Assert initial state after creating operations
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
+            Assert.That(manager.Operations.Count, Is.EqualTo(operations.Count));
 
             // Report new progress
             const double newProgress = 0.5;
@@ -105,7 +105,7 @@ namespace Gress.Tests
             // Assert intermediate state
             Assert.That(manager.Progress, Is.EqualTo(newProgress));
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
+            Assert.That(manager.Operations.Count, Is.EqualTo(operations.Count));
 
             // Report completion
             foreach (var operation in operations)
@@ -114,7 +114,7 @@ namespace Gress.Tests
             // Assert final state
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.False);
-            Assert.That(manager.GetOperations().Count, Is.Zero);
+            Assert.That(manager.Operations.Count, Is.Zero);
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace Gress.Tests
             // Assert initial state after creating operations
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.True);
-            Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
+            Assert.That(manager.Operations.Count, Is.EqualTo(operations.Count));
 
             // Loop through each operation and report progress
             for (var i = 0; i < operations.Count; i++)
@@ -137,7 +137,7 @@ namespace Gress.Tests
                 // Assert intermediate state
                 Assert.That(manager.Progress, Is.EqualTo(1.0 * i / operations.Count));
                 Assert.That(manager.IsActive, Is.True);
-                Assert.That(manager.GetOperations().Count, Is.EqualTo(operations.Count));
+                Assert.That(manager.Operations.Count, Is.EqualTo(operations.Count));
 
                 using (var operation = operations[i])
                 {
@@ -150,7 +150,7 @@ namespace Gress.Tests
             // Assert final state
             Assert.That(manager.Progress, Is.Zero);
             Assert.That(manager.IsActive, Is.False);
-            Assert.That(manager.GetOperations().Count, Is.Zero);
+            Assert.That(manager.Operations.Count, Is.Zero);
         }
 
         [Test]

@@ -20,7 +20,7 @@ namespace Gress
         public bool IsCompleted { get; private set; }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="ProgressOperation"/>.
+        /// Initializes an instance of <see cref="ProgressOperation"/>.
         /// </summary>
         public ProgressOperation(double weight = 1)
         {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Gress
@@ -9,19 +9,19 @@ namespace Gress
     public interface IProgressManager : INotifyPropertyChanged
     {
         /// <summary>
-        /// Current progress aggregated from all operations, with weight taken into account.
+        /// The list of all active (uncompleted) operations.
         /// </summary>
-        double Progress { get; }
+        ReadOnlyObservableCollection<IProgressOperation> Operations { get; }
 
         /// <summary>
-        /// Whether there are any active (not completed) operations.
+        /// Whether there are any active (uncompleted) operations.
         /// </summary>
         bool IsActive { get; }
 
         /// <summary>
-        /// Gets the list of all active (not completed) operations.
+        /// Current progress aggregated from all operations, with weight taken into account.
         /// </summary>
-        IReadOnlyList<IProgressOperation> GetOperations();
+        double Progress { get; }
 
         /// <summary>
         /// Creates a new operation.

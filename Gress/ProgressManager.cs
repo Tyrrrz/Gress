@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using Gress.Internal;
 
@@ -11,13 +11,24 @@ namespace Gress
     /// </summary>
     public class ProgressManager : PropertyChangedBase, IProgressManager
     {
-        private readonly List<ProgressOperation> _operations = new List<ProgressOperation>();
+        private readonly ObservableCollection<IProgressOperation> _operations = new ObservableCollection<IProgressOperation>();
+
+        /// <inheritdoc />
+        public ReadOnlyObservableCollection<IProgressOperation> Operations { get; }
+
+        /// <inheritdoc />
+        public bool IsActive { get; private set; }
 
         /// <inheritdoc />
         public double Progress { get; private set; }
 
-        /// <inheritdoc />
-        public bool IsActive { get; private set; }
+        /// <summary>
+        /// Initializes an instance of <see cref="ProgressManager"/>.
+        /// </summary>
+        public ProgressManager()
+        {
+            Operations = new ReadOnlyObservableCollection<IProgressOperation>(_operations);
+        }
 
         /// <summary>
         /// Refreshes the current state of this progress manager based on the aggregated state of its individual operations.
@@ -51,9 +62,6 @@ namespace Gress
                 IsActive = true;
             }
         }
-
-        /// <inheritdoc />
-        public IReadOnlyList<IProgressOperation> GetOperations() => _operations.ToArray();
 
         /// <inheritdoc />
         public IProgressOperation CreateOperation(double weight = 1)
