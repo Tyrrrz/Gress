@@ -164,6 +164,8 @@ public class MainViewModel
 ## Libraries used
 
 - [PropertyChanged.Fody](https://github.com/Fody/PropertyChanged)
+- [GalaSoft.MVVMLight](http://www.mvvmlight.net)
+- [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
 - [NUnit](https://github.com/nunit/nunit)
 
 ## Donate
