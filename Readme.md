@@ -7,7 +7,7 @@
 [![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/tyrrrz)
 [![Donate](https://img.shields.io/badge/buymeacoffee-donate-yellow.svg)](https://buymeacoffee.com/tyrrrz)
 
-Gress is a library that makes progress reporting and aggregation easier. It exposes a well-known interface for individual operations to report progress, routing it to an aggregator. Applications can display the aggregated progress to inform users about overall completion of an arbitrary set of operations.
+Gress is a library that makes progress reporting and aggregation easier. It exposes a well-known interface for individual operations to report progress, routing it to an aggregator. Applications can display the aggregated progress to inform users about overall completion of a set of operations.
 
 ## Download
 
@@ -32,7 +32,7 @@ Gress is a library that makes progress reporting and aggregation easier. It expo
 ### Basic example
 
 Progress is reported using the `Report()` method.
-When a `ProgressOperation` is disposed, it's marked as completed and cannot report progress anymore.
+When an instance of `ProgressOperation` is disposed, it's marked as completed and cannot report progress anymore.
 
 ```c#
 var manager = new ProgressManager();
