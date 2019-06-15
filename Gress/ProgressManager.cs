@@ -11,6 +11,7 @@ namespace Gress
     /// </summary>
     public class ProgressManager : PropertyChangedBase, IProgressManager
     {
+        private readonly object _lock = new object();
         private readonly ObservableCollection<IProgressOperation> _operations = new ObservableCollection<IProgressOperation>();
 
         /// <inheritdoc />
@@ -35,52 +36,58 @@ namespace Gress
         /// </summary>
         private void Refresh()
         {
-            // If there are no operations or all operations have completed - clear the list and reset progress
-            if (_operations.All(o => o.IsCompleted))
+            lock (_lock)
             {
-                // Clear list
-                _operations.Clear();
-
-                // Update properties
-                Progress = 0;
-                IsActive = false;
-            }
-            // Otherwise - calculate aggregated progress
-            else
-            {
-                // Calculate current and maximum weighted progress sum
-                var weightedProgressSum = 0.0;
-                var weightedProgressMax = 0.0;
-                foreach (var operation in _operations)
+                // If there are no operations or all operations have completed - clear the list and reset progress
+                if (_operations.All(o => o.IsCompleted))
                 {
-                    weightedProgressSum += operation.Progress * operation.Weight;
-                    weightedProgressMax += 1.0 * operation.Weight;
-                }
+                    // Clear list
+                    _operations.Clear();
 
-                // Update properties
-                Progress = weightedProgressSum / weightedProgressMax;
-                IsActive = true;
+                    // Update properties
+                    Progress = 0;
+                    IsActive = false;
+                }
+                // Otherwise - calculate aggregated progress
+                else
+                {
+                    // Calculate current and maximum weighted progress sum
+                    var weightedProgressSum = 0.0;
+                    var weightedProgressMax = 0.0;
+                    foreach (var operation in _operations)
+                    {
+                        weightedProgressSum += operation.Progress * operation.Weight;
+                        weightedProgressMax += 1.0 * operation.Weight;
+                    }
+
+                    // Update properties
+                    Progress = weightedProgressSum / weightedProgressMax;
+                    IsActive = true;
+                }
             }
         }
 
         /// <inheritdoc />
         public IProgressOperation CreateOperation(double weight = 1)
         {
-            weight.GuardNotNegative(nameof(weight));
+            lock (_lock)
+            {
+                weight.GuardNotNegative(nameof(weight));
 
-            // Create operation
-            var operation = new ProgressOperation(weight);
+                // Create operation
+                var operation = new ProgressOperation(weight);
 
-            // Wire property changed event to refresh
-            operation.PropertyChanged += (sender, args) => Refresh();
+                // Wire property changed event to refresh
+                operation.PropertyChanged += (sender, args) => Refresh();
 
-            // Add operation to the list
-            _operations.Add(operation);
+                // Add operation to the list
+                _operations.Add(operation);
 
-            // Perform refresh
-            Refresh();
+                // Perform refresh
+                Refresh();
 
-            return operation;
+                return operation;
+            }
         }
     }
 }
