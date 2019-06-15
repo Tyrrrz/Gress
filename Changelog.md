@@ -1,3 +1,7 @@
+### v1.1.1 (15-Jun-2019)
+
+- Added locking to `ProgressManager`.
+
 ### v1.1 (13-May-2019)
 
 - Replaced `IProgressManager.GetOperations()` with `IProgressManager.Operations`.
