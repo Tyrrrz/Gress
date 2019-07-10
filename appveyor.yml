@@ -9,8 +9,11 @@ before_build:
 build:
   verbosity: minimal
 
+after_test:
+- choco install codecov && codecov -f "Gress.Tests/bin/%CONFIGURATION%/Coverage.xml" --required
+
 artifacts:
-- path: Gress\bin\$(configuration)\Gress*.nupkg
+- path: Gress/bin/$(configuration)/Gress*.nupkg
   name: Gress.nupkg
 
 deploy:

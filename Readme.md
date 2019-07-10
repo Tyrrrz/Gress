@@ -1,7 +1,8 @@
 # Gress
 
-[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/Gress/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Gress)
-[![Tests](https://img.shields.io/appveyor/tests/Tyrrrz/Gress/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Gress)
+[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/Gress/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Gress/branch/master)
+[![Tests](https://img.shields.io/appveyor/tests/Tyrrrz/Gress/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Gress/branch/master/tests)
+[![Coverage](https://img.shields.io/codecov/c/gh/Tyrrrz/Gress/master.svg)](https://codecov.io/gh/Tyrrrz/Gress)
 [![NuGet](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
 [![NuGet](https://img.shields.io/nuget/dt/Gress.svg)](https://nuget.org/packages/Gress)
 [![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/tyrrrz)
