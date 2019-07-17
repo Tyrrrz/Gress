@@ -168,6 +168,7 @@ public class MainViewModel
 - [GalaSoft.MVVMLight](http://www.mvvmlight.net)
 - [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
 - [NUnit](https://github.com/nunit/nunit)
+- [Coverlet](https://github.com/tonerdo/coverlet)
 
 ## Donate
 
