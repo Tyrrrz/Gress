@@ -26,7 +26,7 @@ Gress is a library that makes progress reporting and aggregation easier. It expo
 
 ## Screenshots
 
-![](http://www.tyrrrz.me/Projects/Gress/Images/1.png)
+![demo](.screenshots/demo.png)
 
 ## Usage
 
