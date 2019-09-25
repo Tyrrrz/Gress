@@ -1,8 +1,8 @@
 ﻿using CommonServiceLocator;
-using DemoWpf.ViewModels;
 using GalaSoft.MvvmLight.Ioc;
+using Gress.DemoWpf.ViewModels;
 
-namespace DemoWpf
+namespace Gress.DemoWpf
 {
     public class Locator
     {

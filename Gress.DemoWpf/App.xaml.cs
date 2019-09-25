@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 
-namespace DemoWpf
+namespace Gress.DemoWpf
 {
     public partial class App
     {

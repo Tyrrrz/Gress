@@ -1,8 +1,8 @@
 ﻿<Application
-    x:Class="DemoWpf.App"
+    x:Class="Gress.DemoWpf.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:demoWpf="clr-namespace:DemoWpf"
+    xmlns:demoWpf="clr-namespace:Gress.DemoWpf"
     Startup="App_OnStartup"
     StartupUri="Views/MainWindow.xaml">
     <Application.Resources>

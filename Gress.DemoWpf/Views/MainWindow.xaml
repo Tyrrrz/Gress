@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="DemoWpf.Views.MainWindow"
+    x:Class="Gress.DemoWpf.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     Title="Gress Demo"
@@ -7,7 +7,7 @@
     Height="400"
     Background="{DynamicResource MaterialDesignPaper}"
     DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
-    Icon="/DemoWpf;component/favicon.ico"
+    Icon="/Gress.DemoWpf;component/favicon.ico"
     Style="{DynamicResource MaterialDesignRoot}"
     WindowStartupLocation="CenterScreen">
     <Grid>

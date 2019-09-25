@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using Gress;
 
-namespace DemoWpf.ViewModels
+namespace Gress.DemoWpf.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
