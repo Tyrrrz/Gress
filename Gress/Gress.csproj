@@ -10,7 +10,7 @@
     <PackageTags>progress manager aggregator net standard core</PackageTags>
     <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/Changelog.md</PackageReleaseNotes>
-    <PackageIconUrl>https://raw.githubusercontent.com/Tyrrrz/Gress/master/favicon.png</PackageIconUrl>
+    <PackageIcon>favicon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Tyrrrz/Gress</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -21,6 +21,10 @@
 
   <ItemGroup>
     <PackageReference Include="PropertyChanged.Fody" Version="2.6.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../favicon.png" Pack="True" PackagePath="" />
   </ItemGroup>
 
 </Project>
