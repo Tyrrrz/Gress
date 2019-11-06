@@ -1,10 +1,9 @@
 # Gress
 
-[![Build](https://img.shields.io/appveyor/ci/Tyrrrz/Gress/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Gress/branch/master)
-[![Tests](https://img.shields.io/appveyor/tests/Tyrrrz/Gress/master.svg)](https://ci.appveyor.com/project/Tyrrrz/Gress/branch/master/tests)
-[![Coverage](https://img.shields.io/codecov/c/gh/Tyrrrz/Gress/master.svg)](https://codecov.io/gh/Tyrrrz/Gress)
-[![NuGet](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
-[![NuGet](https://img.shields.io/nuget/dt/Gress.svg)](https://nuget.org/packages/Gress)
+[![Build](https://github.com/Tyrrrz/Gress/workflows/CI/badge.svg?branch=master)](https://github.com/Tyrrrz/Gress/actions)
+[![Coverage](https://codecov.io/gh/Tyrrrz/Gress/branch/master/graph/badge.svg)](https://codecov.io/gh/Tyrrrz/Gress)
+[![Version](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
+[![Downloads](https://img.shields.io/nuget/dt/Gress.svg)](https://nuget.org/packages/Gress)
 [![Donate](https://img.shields.io/badge/patreon-donate-yellow.svg)](https://patreon.com/tyrrrz)
 [![Donate](https://img.shields.io/badge/buymeacoffee-donate-yellow.svg)](https://buymeacoffee.com/tyrrrz)
 
@@ -13,7 +12,6 @@ Gress is a library that makes progress reporting and aggregation easier. It expo
 ## Download
 
 - [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
-- [Continuous integration](https://ci.appveyor.com/project/Tyrrrz/Gress)
 
 ## Features
 
