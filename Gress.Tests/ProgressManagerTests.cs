@@ -139,12 +139,11 @@ namespace Gress.Tests
                 Assert.That(manager.IsActive, Is.True);
                 Assert.That(manager.Operations.Count, Is.EqualTo(operations.Count));
 
-                using (var operation = operations[i])
-                {
-                    operation.Report(0.2);
-                    operation.Report(0.5);
-                    operation.Report(0.9);
-                }
+                using var operation = operations[i];
+
+                operation.Report(0.2);
+                operation.Report(0.5);
+                operation.Report(0.9);
             }
 
             // Assert final state

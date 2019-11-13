@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
-using Gress.Internal;
 
 namespace Gress
 {
@@ -72,8 +71,6 @@ namespace Gress
         {
             lock (_lock)
             {
-                weight.GuardNotNegative(nameof(weight));
-
                 // Create operation
                 var operation = new ProgressOperation(weight);
 

@@ -29,16 +29,15 @@ namespace Gress.DemoWpf.ViewModels
             // Start a task that simulates some work and reports progress
             Task.Run(async () =>
             {
-                using (var operation = ProgressManager.CreateOperation(weight))
-                {
-                    for (var i = 0; i < 100; i++)
-                    {
-                        // Delay execution to simulate activity
-                        await Task.Delay(TimeSpan.FromSeconds(0.1));
+                using var operation = ProgressManager.CreateOperation(weight);
 
-                        // Report new progress
-                        operation.Report((i + 1) / 100.0);
-                    }
+                for (var i = 0; i < 100; i++)
+                {
+                    // Delay execution to simulate activity
+                    await Task.Delay(TimeSpan.FromSeconds(0.1));
+
+                    // Report new progress
+                    operation.Report((i + 1) / 100.0);
                 }
             });
         }

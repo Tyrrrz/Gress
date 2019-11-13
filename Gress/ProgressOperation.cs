@@ -1,5 +1,4 @@
 ﻿using System;
-using Gress.Internal;
 
 namespace Gress
 {
@@ -24,13 +23,14 @@ namespace Gress
         /// </summary>
         public ProgressOperation(double weight = 1)
         {
-            Weight = weight.GuardNotNegative(nameof(weight));
+            Weight = weight > 0 ? weight : throw new ArgumentException("Weight must not be negative.", nameof(weight));
         }
 
         /// <inheritdoc />
         public void Report(double progress)
         {
-            progress.GuardRange(0, 1, nameof(progress));
+            if (progress < 0 || progress > 1)
+                throw new ArgumentException("Progress must be between 0 and 1.", nameof(progress));
 
             // If completed - throw
             if (IsCompleted)
