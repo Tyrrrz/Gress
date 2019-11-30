@@ -158,11 +158,3 @@ public class MainViewModel
     </StackPanel>
 </Window>
 ```
-
-## Libraries used
-
-- [PropertyChanged.Fody](https://github.com/Fody/PropertyChanged)
-- [GalaSoft.MVVMLight](http://www.mvvmlight.net)
-- [MaterialDesignInXamlToolkit](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit)
-- [NUnit](https://github.com/nunit/nunit)
-- [Coverlet](https://github.com/tonerdo/coverlet)
