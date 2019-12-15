@@ -22,4 +22,4 @@ jobs:
       run: dotnet pack Gress --configuration Release
 
     - name: Deploy
-      run: dotnet nuget push Gress/bin/Release/*.nupkg -s nuget.org -k ${{secrets.NUGET_TOKEN}}
+      run: dotnet nuget push Gress\bin\Release\*.nupkg -s nuget.org -k ${{secrets.NUGET_TOKEN}}
