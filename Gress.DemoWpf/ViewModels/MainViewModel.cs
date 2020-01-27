@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Data;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
+using Gress.DemoWpf.ViewModels.Framework;
 
 namespace Gress.DemoWpf.ViewModels
 {
