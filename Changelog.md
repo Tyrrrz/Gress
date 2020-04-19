@@ -1,3 +1,7 @@
+### v1.2 (19-Apr-2020)
+
+- Added `IProgress<double>.Wrap()` extension method that wraps any existing progress as `ProgressManager`.
+
 ### v1.1.1 (15-Jun-2019)
 
 - Added locking to `ProgressManager`.
