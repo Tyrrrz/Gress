@@ -1,4 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using NUnit.Framework;
 
 namespace Gress.Tests
 {
@@ -172,6 +175,26 @@ namespace Gress.Tests
 
             // Assert that the event was triggered accordingly
             Assert.That(eventTriggerCount, Is.GreaterThanOrEqualTo(3));
+        }
+
+        [Test]
+        public void ProgressManager_Wrap_Test()
+        {
+            var reportedProgressValues = new ConcurrentBag<double>();
+            var progress = new Progress<double>(reportedProgressValues.Add);
+
+            var manager = progress.Wrap();
+            var operation = manager.CreateOperation();
+
+            operation.Report(0.1);
+            operation.Report(0.3);
+            operation.Dispose();
+
+            Assert.That(reportedProgressValues, Is.SupersetOf(new[]
+            {
+                0.1,
+                0.3
+            }));
         }
     }
 }

@@ -10,6 +10,18 @@ namespace Gress
     public static class Extensions
     {
         /// <summary>
+        /// Wraps the specified progress abstraction in a progress manager.
+        /// </summary>
+        public static IProgressManager Wrap(this IProgress<double> progress)
+        {
+            var progressManager = new ProgressManager();
+
+            progressManager.PropertyChanged += (sender, args) => progress.Report(progressManager.Progress);
+
+            return progressManager;
+        }
+
+        /// <summary>
         /// Creates multiple new operations.
         /// </summary>
         public static IReadOnlyList<IProgressOperation> CreateOperations(this IProgressManager progressManager,
