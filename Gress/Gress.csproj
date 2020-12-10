@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="../Gress.props" />
 
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard1.0;netstandard2.0</TargetFrameworks>
@@ -10,12 +9,11 @@
     <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/Changelog.md</PackageReleaseNotes>
     <PackageIcon>favicon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
-    <PublishRepositoryUrl>True</PublishRepositoryUrl>
-    <EmbedUntrackedSources>True</EmbedUntrackedSources>
-    <IncludeSymbols>True</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
