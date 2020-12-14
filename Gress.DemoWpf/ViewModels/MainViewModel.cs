@@ -7,7 +7,7 @@ namespace Gress.DemoWpf.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
 
         public IProgressManager ProgressManager { get; } = new ProgressManager();
 

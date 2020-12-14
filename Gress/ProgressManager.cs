@@ -10,8 +10,8 @@ namespace Gress
     /// </summary>
     public class ProgressManager : PropertyChangedBase, IProgressManager
     {
-        private readonly object _lock = new object();
-        private readonly ObservableCollection<IProgressOperation> _operations = new ObservableCollection<IProgressOperation>();
+        private readonly object _lock = new();
+        private readonly ObservableCollection<IProgressOperation> _operations = new();
 
         /// <inheritdoc />
         public ReadOnlyObservableCollection<IProgressOperation> Operations { get; }
@@ -75,7 +75,7 @@ namespace Gress
                 var operation = new ProgressOperation(weight);
 
                 // Wire property changed event to refresh
-                operation.PropertyChanged += (sender, args) => Refresh();
+                operation.PropertyChanged += (_, _) => Refresh();
 
                 // Add operation to the list
                 _operations.Add(operation);
