@@ -8,7 +8,7 @@
 
 ⚠️ **Project status: maintenance mode** (bug fixes only).
 
-Gress is a library that makes progress reporting and aggregation easier. It exposes a well-known interface for individual operations to report progress, routing it to an aggregator. Applications can display the aggregated progress to inform users about overall completion of a set of operations.
+Gress is a library that helps aggregate and report progress from sets of concurrent operations.
 
 ## Download
 
@@ -16,10 +16,9 @@ Gress is a library that makes progress reporting and aggregation easier. It expo
 
 ## Features
 
-- Manages and aggregates progress from multiple operations
-- Supports weighted operations
-- Implements `INotifyPropertyChanged`
-- Implements `IProgress<double>`
+- Allows adding operations on the fly
+- Supports operations with custom weight
+- Implements known interfaces like `INotifyPropertyChanged` and `IProgress<T>`
 - Targets .NET Framework 4.5+ and .NET Standard 1.0+
 - No external dependencies
 
@@ -31,48 +30,69 @@ Gress is a library that makes progress reporting and aggregation easier. It expo
 
 ### Basic example
 
-Progress is reported using the `Report()` method.
-When an instance of `ProgressOperation` is disposed, it's marked as completed and cannot report progress anymore.
+In order to aggregate progress from multiple operations, you need to initialize an instance of `ProgressManager`.
+This object represents a container that persists and tracks individual operations along with their progress.
+
+To create a new operation bound to a specific manager, call `ProgressManager.CreateOperation()`.
+This returns a `ProgressOperation` which has a `Report(...)` method that can be used to report progress for that particular operation:
 
 ```c#
-var manager = new ProgressManager();
+var progressManager = new ProgressManager();
 
-// Create an operation and execute a long-running process
-using (var operation = manager.CreateOperation())
-{
-    for (var i = 0; i < 100; i++)
+await Task.WhenAll(
+    // Start 5 parallel tasks
+    Enumerable.Range(0, 5).Select(async _ =>
     {
-        await Task.Delay(200); // simulate time-consuming task
-        operation.Report((i+1)/100); // report progress
+        // Create an operation for each task
+        using (var operation = progressManager.CreateOperation())
+        {
+            for (var i = 0; i < 100; i++)
+            {
+                // Do some work
+                await Task.Delay(200);
+                
+                // Report progress for each individual operation
+                operation.Report((i + 1) / 100);
+                
+                // Print total progress
+                Console.WriteLine($"Total progress: {progressManager.Progress:P2}");
+            }
+        }
     }
-}
+);
 ```
+
+The code above creates 5 parallel operations and reports progress on each of them separately.
+Total progress is aggregated automatically and can be evaluated at any point by accessing `progressManager.Progress`.
+
+Note that `ProgressOperation` implements `IDisposable` so you will want to encapsulate it in a `using` statement.
+Disposing an operation marks it as complete and prevents it from reporting progress in the future.
 
 ### Using weight
 
-Operations may have custom weight which defines how much its own progress affects the total progress, compared to other operations.
-This is useful, for example, when you know that one of the operations takes less time to complete and want to make total progress look a bit more linear.
+An operation may have custom weight associated with it, which defines how much its own progress affects the total progress, relative to other operations.
+This is useful, for example, if you expect that one of the operations will take less time to complete and want to make the progression appear smoother.
 
 ```c#
-var manager = new ProgressManager();
+var progressManager = new ProgressManager();
 
 // Create a light operation
-var operationLight = manager.CreateOperation(1);
+var operationLight = progressManager.CreateOperation(1);
 
 // Create a heavy operation
-var operationHeavy = manager.CreateOperation(5);
+var operationHeavy = progressManager.CreateOperation(5);
 
 // Report progress on both
 operationLight.Report(0.8); // 80%
 operationHeavy.Report(0.4); // 40%
 
 // Print total progress
-Console.WriteLine(manager.Progress); // 0.46667 (~47%)
+Console.WriteLine($"{progressManager.Progress:P2}"); // 46.67%
 ```
 
 ### Pre-creating operations
 
-Often you may need to pre-create operations in cases where the number of operations is known ahead of time and you want `ProgressManager` to account for them when calculating aggregated progress.
+Often you may need to pre-create operations in cases where their number is known ahead of time and you want `ProgressManager` to account for them when calculating aggregated progress.
 
 ```c#
 var manager = new ProgressManager();
@@ -91,33 +111,36 @@ using (var operation = operations[1])
 
 ### Integrating with other code
 
-The standard guideline for reporting progress in .NET is to use an instance of `System.IProgress<T>`.
+The standard guideline for reporting progress in .NET is to use an instance of [`System.IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1).
 
 Since Gress represents progress as `double`, the `ProgressOperation` class also implements `IProgress<double>`.
-If you have existing code or 3rd-party libraries that report progress using `IProgress<double>` then you can simply use `ProgressOperation` as the corresponding parameter.
+If you have existing code or 3rd-party libraries that accept an instance of `IProgress<double>` then you can simply pass `ProgressOperation` directly.
 
-Here's an example that uses [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) and Gress to download a YouTube video and report progress.
+Here's an example that uses [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) and Gress to download a YouTube video while reporting progress.
 
 ```c#
-var youtubeClient = new YoutubeClient();
+var youtube = new YoutubeClient();
 var progressManager = new ProgressManager();
 
 using (var operation = progressManager.CreateOperation())
 {
-    // Get stream info
-    var streamInfoSet = await youtubeClient.GetVideoMediaStreamInfosAsync("9bZkp7q19f0")
-    var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
+    var streamManifest = await youtube.Videos.Streams.GetManifestAsync("u_yIGGhubZs");
+    var streamInfo = streamManifest.GetMuxed().WithHighestVideoQuality();
 
-    // Download stream (operation here is passed as IProgress<double>)
-    await youtubeClient.DownloadMediaStreamAsync(streamInfo, "ouput.bin", operation);
+    await youtube.Videos.Streams.DownloadAsync(
+        streamInfo,
+        $"video.{streamInfo.Container}",
+        // This method expects IProgress<double> so we just pass ProgressOperation directly
+        operation
+    );
 }
 ```
 
 ### Integrating with XAML
 
-Both `ProgressManager` and `ProgressOperation` implement `INotifyPropertyChanged` so corresponding bound properties will be automatically refreshed every time progress changes.
+Both `ProgressManager` and `ProgressOperation` implement `INotifyPropertyChanged` so corresponding bound properties will be automatically refreshed every time the progress changes.
 
-The following is a rough example of how `ProgressManager` can be used in WPF.
+As an example, here's how you can use `ProgressManager` in a WPF application:
 
 ```c#
 public class MainViewModel
@@ -136,8 +159,8 @@ public class MainViewModel
         {
             for (var i = 0; i < 100; i++)
             {
-                await Task.Delay(200); // simulate time-consuming task
-                operation.Report((i+1)/100); // report progress
+                await Task.Delay(200);
+                operation.Report((i + 1) / 100);
             }
         }
     }
@@ -153,10 +176,20 @@ public class MainViewModel
     d:DataContext="{d:DesignInstance Type=MainViewModel}">
     <StackPanel>
         <!-- Button that starts a new operation -->
-        <Button Margin="32" Content="Execute" Command="{Binding ExecuteOperationCommand}" />
+        <Button
+            Margin="32" 
+            Content="Execute"
+            Command="{Binding ExecuteOperationCommand}" />
 
         <!-- Progress bar that shows total progress -->
-        <ProgressBar Margin="32" Height="10" Minimum="0" Maximum="1" Value="{Binding ProgressManager.Progress, Mode=OneWay}" />
+        <ProgressBar
+            Margin="32"
+            Height="10"
+            Minimum="0"
+            Maximum="1"
+            Value="{Binding ProgressManager.Progress, Mode=OneWay}" />
     </StackPanel>
 </Window>
 ```
+
+You can also check out `Gress.DemoWpf` project for a slightly more involved sample.
