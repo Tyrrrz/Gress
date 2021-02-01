@@ -192,4 +192,4 @@ public class MainViewModel
 </Window>
 ```
 
-You can also check out `Gress.DemoWpf` project for a slightly more involved sample.
+You can also check out `Gress.DemoWpf` project for a slightly more involved example.
