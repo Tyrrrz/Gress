@@ -14,14 +14,6 @@ Gress is a library that helps aggregate and report progress from sets of concurr
 
 - [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
 
-## Features
-
-- Allows adding operations on the fly
-- Supports operations with custom weight
-- Implements known interfaces like `INotifyPropertyChanged` and `IProgress<T>`
-- Targets .NET Framework 4.5+ and .NET Standard 1.0+
-- No external dependencies
-
 ## Screenshots
 
 ![demo](.screenshots/demo.png)
