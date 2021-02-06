@@ -84,7 +84,7 @@ Console.WriteLine($"{progressManager.Progress:P2}"); // 46.67%
 
 ### Pre-creating operations
 
-Often you may need to pre-create operations in cases where their number is known ahead of time and you want `ProgressManager` to account for them when calculating aggregated progress.
+Often you may need to pre-create multiple operations in cases where their number is known ahead of time and you want `ProgressManager` to account for them when calculating aggregated progress. You can do that by calling the `CreateOperations(...)` method:
 
 ```c#
 var manager = new ProgressManager();
@@ -104,10 +104,9 @@ using (var operation = operations[1])
 ### Integrating with other code
 
 The standard guideline for reporting progress in .NET is to use an instance of [`System.IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1).
+Since Gress represents progress as `double`, the `ProgressOperation` class also implements `IProgress<double>` to make integration easier.
 
-Since Gress represents progress as `double`, the `ProgressOperation` class also implements `IProgress<double>`.
 If you have existing code or 3rd-party libraries that accept an instance of `IProgress<double>` then you can simply pass `ProgressOperation` directly.
-
 Here's an example that uses [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) and Gress to download a YouTube video while reporting progress.
 
 ```c#
