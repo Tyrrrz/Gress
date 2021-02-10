@@ -12,7 +12,7 @@ Gress is a library that helps aggregate and report progress from sets of concurr
 
 ## Download
 
-- [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
+📦 [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
 
 ## Screenshots
 
