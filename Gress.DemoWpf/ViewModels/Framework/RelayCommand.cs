@@ -21,9 +21,9 @@ namespace Gress.DemoWpf.ViewModels.Framework
         {
         }
 
-        public bool CanExecute(object? parameter) => _canExecute(parameter != null ? (T) parameter : default!);
+        public bool CanExecute(object? parameter) => _canExecute(parameter is not null ? (T) parameter : default!);
 
-        public void Execute(object? parameter) => _execute(parameter != null ? (T) parameter : default!);
+        public void Execute(object? parameter) => _execute(parameter is not null ? (T) parameter : default!);
 
         public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
