@@ -23,10 +23,9 @@ Gress is a library that helps aggregate and report progress from sets of concurr
 ### Basic example
 
 In order to aggregate progress from multiple operations, you need to initialize an instance of `ProgressManager`.
-This object represents a container that persists and tracks individual operations along with their progress.
+This object represents a container that persists individual operations along with their state.
 
-To create a new operation bound to a specific manager, call `ProgressManager.CreateOperation()`.
-This returns a `ProgressOperation` which has a `Report(...)` method that can be used to report progress for that particular operation:
+After that, you can track an operation by calling `progressManager.CreateOperation()` and using the `operation.Report(...)` method to report progress:
 
 ```c#
 var progressManager = new ProgressManager();
@@ -62,8 +61,7 @@ Disposing an operation marks it as complete and prevents it from reporting progr
 
 ### Using weight
 
-An operation may have custom weight associated with it, which defines how much its own progress affects the total progress, relative to other operations.
-This is useful, for example, if you expect that one of the operations will take less time to complete and want to make the progression appear smoother.
+An operation may be created with custom weight, which specifies how much its own progress affects the total progress relative to other operations:
 
 ```c#
 var progressManager = new ProgressManager();
@@ -84,7 +82,8 @@ Console.WriteLine($"{progressManager.Progress:P2}"); // 46.67%
 
 ### Pre-creating operations
 
-Often you may need to pre-create multiple operations in cases where their number is known ahead of time and you want `ProgressManager` to account for them when calculating aggregated progress. You can do that by calling the `CreateOperations(...)` method:
+You can create multiple operations at once by calling the `CreateOperations(...)` method.
+This can be useful if you have a set of operations that are executed in sequence and you want `ProgressManager` to properly account for them when calculating aggregated progress.
 
 ```c#
 var manager = new ProgressManager();
@@ -116,7 +115,7 @@ var progressManager = new ProgressManager();
 using (var operation = progressManager.CreateOperation())
 {
     var streamManifest = await youtube.Videos.Streams.GetManifestAsync("u_yIGGhubZs");
-    var streamInfo = streamManifest.GetMuxed().WithHighestVideoQuality();
+    var streamInfo = streamManifest.GetMuxed().GetWithHighestVideoQuality();
 
     await youtube.Videos.Streams.DownloadAsync(
         streamInfo,
