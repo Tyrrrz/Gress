@@ -7,6 +7,7 @@
     <PackageTags>progress manager aggregator net standard core</PackageTags>
     <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/Changelog.md</PackageReleaseNotes>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
     <PackageIcon>favicon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -17,13 +18,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PropertyChanged.Fody" Version="3.3.3" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
-    <PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="all" />
+    <None Include="../Readme.md" Pack="true" PackagePath="" Visible="false" />
+    <None Include="../favicon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="../favicon.png" Pack="True" PackagePath="" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.3.3" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="all" />
+    <PackageReference Include="Nullable" Version="1.3.0" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
