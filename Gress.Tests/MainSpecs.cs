@@ -30,7 +30,7 @@ namespace Gress.Tests
             // Assert
             manager.Progress.Should().Be(0);
             manager.IsActive.Should().BeTrue();
-            manager.Operations.Should().BeEquivalentTo(operation);
+            manager.Operations.Should().BeEquivalentTo(new[] { operation });
 
             // Act
             operation.Report(0.44);
@@ -38,7 +38,7 @@ namespace Gress.Tests
             // Assert
             manager.Progress.Should().BeApproximately(0.44, 10e-5);
             manager.IsActive.Should().BeTrue();
-            manager.Operations.Should().BeEquivalentTo(operation);
+            manager.Operations.Should().BeEquivalentTo(new[] { operation });
 
             // Act
             operation.Dispose();
@@ -60,7 +60,7 @@ namespace Gress.Tests
             // Assert
             manager.Progress.Should().Be(0);
             manager.IsActive.Should().BeTrue();
-            manager.Operations.Should().BeEquivalentTo(operationA, operationB);
+            manager.Operations.Should().BeEquivalentTo(new[] { operationA, operationB });
 
             // Act
             operationA.Report(0.8);
@@ -69,7 +69,7 @@ namespace Gress.Tests
             // Assert
             manager.Progress.Should().BeApproximately(0.6, 10e-5);
             manager.IsActive.Should().BeTrue();
-            manager.Operations.Should().BeEquivalentTo(operationA, operationB);
+            manager.Operations.Should().BeEquivalentTo(new[] { operationA, operationB });
 
             // Act
             operationA.Dispose();
@@ -92,7 +92,7 @@ namespace Gress.Tests
             // Assert
             manager.Progress.Should().Be(0);
             manager.IsActive.Should().BeTrue();
-            manager.Operations.Should().BeEquivalentTo(operationA, operationB);
+            manager.Operations.Should().BeEquivalentTo(new[] { operationA, operationB });
 
             // Act
             operationA.Report(0.8);
@@ -101,7 +101,7 @@ namespace Gress.Tests
             // Assert
             manager.Progress.Should().BeApproximately(0.48, 10e-5);
             manager.IsActive.Should().BeTrue();
-            manager.Operations.Should().BeEquivalentTo(operationA, operationB);
+            manager.Operations.Should().BeEquivalentTo(new[] { operationA, operationB });
 
             // Act
             operationA.Dispose();
