@@ -7,9 +7,9 @@
 [![Discord](https://img.shields.io/discord/869237470565392384?label=discord)](https://discord.gg/2SUWKFnHSm)
 [![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
 
-⚠️ **Project status: maintenance mode** (bug fixes only).
+⚠️ **Project status: maintenance mode**. [What does it mean?](https://github.com/Tyrrrz/shared/blob/master/docs/project-status.md)
 
-Gress is a library that helps aggregate and report progress from sets of concurrent operations.
+**Gress** is a library that helps aggregate and report progress from sets of concurrent operations.
 
 💬 **If you want to chat, join my [Discord server](https://discord.gg/2SUWKFnHSm)**.
 
@@ -106,7 +106,7 @@ using (var operation = operations[1])
 ### Integrating with other code
 
 The standard guideline for reporting progress in .NET is to use an instance of [`System.IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1).
-Since Gress represents progress as `double`, the `ProgressOperation` class also implements `IProgress<double>` to make integration easier.
+Since **Gress** represents progress as `double`, the `ProgressOperation` class also implements `IProgress<double>` to make integration easier.
 
 If you have existing code or 3rd-party libraries that accept an instance of `IProgress<double>` then you can simply pass `ProgressOperation` directly.
 Here's an example that uses [YoutubeExplode](https://github.com/Tyrrrz/YoutubeExplode) and Gress to download a YouTube video while reporting progress.
