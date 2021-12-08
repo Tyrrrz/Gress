@@ -1,50 +1,48 @@
 ﻿using System;
 
-namespace Gress
+namespace Gress;
+// Property changed notifications are implemented by PropertyChanged.Fody
+
+/// <summary>
+/// Default implementation of <see cref="IProgressOperation"/>.
+/// </summary>
+public class ProgressOperation : PropertyChangedBase, IProgressOperation
 {
-    // Property changed notifications are implemented by PropertyChanged.Fody
+    /// <inheritdoc />
+    public double Weight { get; }
+
+    /// <inheritdoc />
+    public double Progress { get; private set; }
+
+    /// <inheritdoc />
+    public bool IsCompleted { get; private set; }
 
     /// <summary>
-    /// Default implementation of <see cref="IProgressOperation"/>.
+    /// Initializes an instance of <see cref="ProgressOperation"/>.
     /// </summary>
-    public class ProgressOperation : PropertyChangedBase, IProgressOperation
+    public ProgressOperation(double weight = 1)
     {
-        /// <inheritdoc />
-        public double Weight { get; }
+        Weight = weight > 0 ? weight : throw new ArgumentException("Weight must not be negative.", nameof(weight));
+    }
 
-        /// <inheritdoc />
-        public double Progress { get; private set; }
+    /// <inheritdoc />
+    public void Report(double progress)
+    {
+        if (progress < 0 || progress > 1)
+            throw new ArgumentException("Progress must be between 0 and 1.", nameof(progress));
 
-        /// <inheritdoc />
-        public bool IsCompleted { get; private set; }
+        // If completed - throw
+        if (IsCompleted)
+            throw new InvalidOperationException("Cannot report progress on an operation marked as completed.");
 
-        /// <summary>
-        /// Initializes an instance of <see cref="ProgressOperation"/>.
-        /// </summary>
-        public ProgressOperation(double weight = 1)
-        {
-            Weight = weight > 0 ? weight : throw new ArgumentException("Weight must not be negative.", nameof(weight));
-        }
+        // Set new progress
+        Progress = progress;
+    }
 
-        /// <inheritdoc />
-        public void Report(double progress)
-        {
-            if (progress < 0 || progress > 1)
-                throw new ArgumentException("Progress must be between 0 and 1.", nameof(progress));
-
-            // If completed - throw
-            if (IsCompleted)
-                throw new InvalidOperationException("Cannot report progress on an operation marked as completed.");
-
-            // Set new progress
-            Progress = progress;
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            IsCompleted = true;
-            Progress = 1;
-        }
+    /// <inheritdoc />
+    public void Dispose()
+    {
+        IsCompleted = true;
+        Progress = 1;
     }
 }

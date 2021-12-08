@@ -1,6 +1,5 @@
-﻿namespace Gress.DemoWpf
+﻿namespace Gress.DemoWpf;
+
+public partial class App
 {
-    public partial class App
-    {
-    }
 }

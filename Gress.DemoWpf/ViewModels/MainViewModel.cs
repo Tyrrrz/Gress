@@ -3,42 +3,41 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using Gress.DemoWpf.ViewModels.Framework;
 
-namespace Gress.DemoWpf.ViewModels
-{
-    public class MainViewModel : ViewModelBase
-    {
-        private readonly object _lock = new();
+namespace Gress.DemoWpf.ViewModels;
 
-        public IProgressManager ProgressManager { get; } = new ProgressManager();
+public class MainViewModel : ViewModelBase
+{
+    private readonly object _lock = new();
+
+    public IProgressManager ProgressManager { get; } = new ProgressManager();
+
+    // Commands
+    public RelayCommand<double> StartOperationCommand { get; }
+
+    public MainViewModel()
+    {
+        // Enable collection synchronization so that UI can be bound to Operations collection which is changed in non-UI thread
+        BindingOperations.EnableCollectionSynchronization(ProgressManager.Operations, _lock);
 
         // Commands
-        public RelayCommand<double> StartOperationCommand { get; }
+        StartOperationCommand = new RelayCommand<double>(StartOperation);
+    }
 
-        public MainViewModel()
+    public void StartOperation(double weight)
+    {
+        // Start a task that simulates some work and reports progress
+        Task.Run(async () =>
         {
-            // Enable collection synchronization so that UI can be bound to Operations collection which is changed in non-UI thread
-            BindingOperations.EnableCollectionSynchronization(ProgressManager.Operations, _lock);
+            using var operation = ProgressManager.CreateOperation(weight);
 
-            // Commands
-            StartOperationCommand = new RelayCommand<double>(StartOperation);
-        }
-
-        public void StartOperation(double weight)
-        {
-            // Start a task that simulates some work and reports progress
-            Task.Run(async () =>
+            for (var i = 0; i < 100; i++)
             {
-                using var operation = ProgressManager.CreateOperation(weight);
+                // Delay execution to simulate activity
+                await Task.Delay(TimeSpan.FromSeconds(0.1));
 
-                for (var i = 0; i < 100; i++)
-                {
-                    // Delay execution to simulate activity
-                    await Task.Delay(TimeSpan.FromSeconds(0.1));
-
-                    // Report new progress
-                    operation.Report((i + 1) / 100.0);
-                }
-            });
-        }
+                // Report new progress
+                operation.Report((i + 1) / 100.0);
+            }
+        });
     }
 }
