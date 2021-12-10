@@ -1,6 +1,6 @@
 # Gress
 
-[![Build](https://github.com/Tyrrrz/Gress/workflows/CI/badge.svg?branch=master)](https://github.com/Tyrrrz/Gress/actions)
+[![Build](https://github.com/Tyrrrz/Gress/workflows/main/badge.svg?branch=master)](https://github.com/Tyrrrz/Gress/actions)
 [![Coverage](https://codecov.io/gh/Tyrrrz/Gress/branch/master/graph/badge.svg)](https://codecov.io/gh/Tyrrrz/Gress)
 [![Version](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
 [![Downloads](https://img.shields.io/nuget/dt/Gress.svg)](https://nuget.org/packages/Gress)
