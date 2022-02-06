@@ -72,6 +72,7 @@ public partial class ProgressMuxer
         lock (_lock)
         {
             _inputs.Clear();
+            _anyInputReported = false;
         }
     }
 }
