@@ -12,6 +12,8 @@ public partial class ProgressMuxer
     private readonly IProgress<Percentage> _target;
     private readonly HashSet<Input> _inputs = new();
 
+    private bool _anyInputReported;
+
     /// <summary>
     /// Initializes an instance of <see cref="ProgressMuxer"/>.
     /// </summary>
@@ -52,7 +54,11 @@ public partial class ProgressMuxer
             var input = new Input(this, weight);
             _inputs.Add(input);
 
-            ReportAggregatedProgress();
+            // Recalculate and report new progress, taking into account the new input.
+            // Don't do it if none of the inputs have reported progress yet, because
+            // we would just be reporting zeroes for each call to this method.
+            if (_anyInputReported)
+                ReportAggregatedProgress();
 
             return input;
         }
@@ -92,7 +98,10 @@ public partial class ProgressMuxer
 
             // Trigger progress update, if this input is still in the muxer
             if (_muxer._inputs.Contains(this))
+            {
                 _muxer.ReportAggregatedProgress();
+                _muxer._anyInputReported = true;
+            }
         }
     }
 }

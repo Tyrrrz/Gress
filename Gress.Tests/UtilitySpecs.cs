@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Gress.Tests;
 
-public class UtilitySpecs : SpecsBase
+public class UtilitySpecs
 {
     [Fact]
     public void Progress_reports_can_be_projected_into_a_different_form()

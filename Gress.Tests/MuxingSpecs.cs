@@ -4,33 +4,37 @@ using Xunit;
 
 namespace Gress.Tests;
 
-public class MuxingSpecs : SpecsBase
+public class MuxingSpecs
 {
     [Fact]
     public void Progress_handler_muxed_from_a_single_handler_reports_progress_as_is()
     {
         // Arrange
-        var progress = Percentage.Zero;
-        var handler = new Progress<Percentage>(p => progress = p);
+        var collector = new ProgressCollector<Percentage>();
+        var muxer = collector.CreateMuxer();
 
-        var muxer = handler.CreateMuxer();
         var subHandler = muxer.CreateInput();
 
         // Act
+        subHandler.Report(Percentage.FromFraction(0.1));
+        subHandler.Report(Percentage.FromFraction(0.3));
         subHandler.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        progress.Should().Be(Percentage.FromFraction(0.5));
+        collector.GetReports().Should().Equal(
+            Percentage.FromFraction(0.1),
+            Percentage.FromFraction(0.3),
+            Percentage.FromFraction(0.5)
+        );
     }
 
     [Fact]
     public void Progress_handler_muxed_from_multiple_handlers_reports_aggregated_progress()
     {
         // Arrange
-        var progress = Percentage.Zero;
-        var handler = new Progress<Percentage>(p => progress = p);
+        var collector = new ProgressCollector<Percentage>();
+        var muxer = collector.CreateMuxer();
 
-        var muxer = handler.CreateMuxer();
         var subHandler1 = muxer.CreateInput();
         var subHandler2 = muxer.CreateInput();
         var subHandler3 = muxer.CreateInput();
@@ -41,17 +45,20 @@ public class MuxingSpecs : SpecsBase
         subHandler3.Report(Percentage.FromFraction(0.09));
 
         // Assert
-        progress.Should().Be(Percentage.FromFraction(0.33));
+        collector.GetReports().Should().Equal(
+            Percentage.FromFraction(0.65 / 3),
+            Percentage.FromFraction((0.65 + 0.25) / 3),
+            Percentage.FromFraction((0.65 + 0.25 + 0.09) / 3)
+        );
     }
 
     [Fact]
     public void Progress_handler_muxed_from_multiple_weighted_handlers_reports_aggregated_progress()
     {
         // Arrange
-        var progress = Percentage.Zero;
-        var handler = new Progress<Percentage>(p => progress = p);
+        var collector = new ProgressCollector<Percentage>();
+        var muxer = collector.CreateMuxer();
 
-        var muxer = handler.CreateMuxer();
         var subHandler1 = muxer.CreateInput();
         var subHandler2 = muxer.CreateInput(2);
         var subHandler3 = muxer.CreateInput(7);
@@ -62,6 +69,10 @@ public class MuxingSpecs : SpecsBase
         subHandler3.Report(Percentage.FromFraction(0.25));
 
         // Assert
-        progress.Should().Be(Percentage.FromFraction(0.375));
+        collector.GetReports().Should().Equal(
+            Percentage.FromFraction(1.0 * 1 / 10),
+            Percentage.FromFraction((1.0 * 1 + 2.0 * 0.5) / 10),
+            Percentage.FromFraction((1.0 * 1 + 2.0 * 0.5 + 7.0 * 0.25) / 10)
+        );
     }
 }
