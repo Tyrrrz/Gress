@@ -1,43 +1,45 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using System.Windows.Data;
 using Gress.DemoWpf.ViewModels.Framework;
 
 namespace Gress.DemoWpf.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private readonly object _lock = new();
+    public ProgressTerminal<Percentage> ProgressTerminal { get; } = new();
 
-    public IProgressManager ProgressManager { get; } = new ProgressManager();
+    public CompletableProgressMuxer ProgressMuxer { get; }
+
+    public ObservableCollection<TaskViewModel> Tasks { get; } = new();
 
     // Commands
-    public RelayCommand<double> StartOperationCommand { get; }
+    public RelayCommand<double> StartTaskCommand { get; }
 
     public MainViewModel()
     {
-        // Enable collection synchronization so that UI can be bound to Operations collection which is changed in non-UI thread
-        BindingOperations.EnableCollectionSynchronization(ProgressManager.Operations, _lock);
+        ProgressMuxer = ProgressTerminal.CreateMuxer().CreateCompletableProgressMuxer();
 
         // Commands
-        StartOperationCommand = new RelayCommand<double>(StartOperation);
+        StartTaskCommand = new RelayCommand<double>(StartTask);
     }
 
-    public void StartOperation(double weight)
+    // Start a task that simulates some work and reports progress
+    public async void StartTask(double weight)
     {
-        // Start a task that simulates some work and reports progress
-        Task.Run(async () =>
+        using var progress = ProgressMuxer.CreateInput(weight);
+
+        var task = new TaskViewModel(weight);
+        var merged = progress.Merge(task.ProgressTerminal);
+
+        Tasks.Add(task);
+
+        for (var i = 1; i <= 100; i++)
         {
-            using var operation = ProgressManager.CreateOperation(weight);
+            await Task.Delay(TimeSpan.FromSeconds(0.1));
+            merged.Report(Percentage.FromValue(i));
+        }
 
-            for (var i = 0; i < 100; i++)
-            {
-                // Delay execution to simulate activity
-                await Task.Delay(TimeSpan.FromSeconds(0.1));
-
-                // Report new progress
-                operation.Report((i + 1) / 100.0);
-            }
-        });
+        Tasks.Remove(task);
     }
 }
