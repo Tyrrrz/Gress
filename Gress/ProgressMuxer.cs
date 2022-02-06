@@ -96,9 +96,13 @@ public partial class ProgressMuxer
         {
             Progress = value;
 
-            // Trigger progress update, if this input is still in the muxer
-            if (_muxer._inputs.Contains(this))
+            lock (_muxer._lock)
             {
+                // This input could have been removed from the muxer.
+                // If that's the case, don't do anything.
+                if (!_muxer._inputs.Contains(this))
+                    return;
+
                 _muxer.ReportAggregatedProgress();
                 _muxer._anyInputReported = true;
             }
