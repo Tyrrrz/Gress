@@ -88,6 +88,12 @@ public static class ProgressExtensions
         });
 
     /// <summary>
+    /// Converts the specified progress handler into a <see cref="Percentage"/>-based progress handler.
+    /// </summary>
+    public static IProgress<Percentage> ToPercentageBased<T>(this IProgress<T> progress, Func<Percentage, T> map) =>
+        progress.WithTransform(map);
+
+    /// <summary>
     /// Converts the specified <see cref="double"/>-based progress handler into a
     /// <see cref="Percentage"/>-based progress handler.
     /// Parameter <paramref name="asFraction"/> specifies whether the percentage-based
@@ -95,15 +101,15 @@ public static class ProgressExtensions
     /// </summary>
     public static IProgress<Percentage> ToPercentageBased(this IProgress<double> progress, bool asFraction = true) =>
         asFraction
-            ? progress.WithTransform((Percentage p) => p.Fraction)
-            : progress.WithTransform((Percentage p) => p.Value);
+            ? progress.ToPercentageBased(p => p.Fraction)
+            : progress.ToPercentageBased(p => p.Value);
 
     /// <summary>
     /// Converts the specified <see cref="int"/>-based progress handler into a
     /// <see cref="Percentage"/>-based progress handler.
     /// </summary>
     public static IProgress<Percentage> ToPercentageBased(this IProgress<int> progress) =>
-        progress.WithTransform((Percentage p) => (int)p.Value);
+        progress.ToPercentageBased(p => (int)p.Value);
 
     /// <summary>
     /// Converts the specified <see cref="Percentage"/>-based progress handler into a
