@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 namespace Gress.Tests;
@@ -7,7 +6,7 @@ namespace Gress.Tests;
 public class MuxingSpecs
 {
     [Fact]
-    public void Progress_handler_muxed_from_a_single_handler_reports_progress_as_is()
+    public void Progress_handler_can_be_muxed_from_a_single_input()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -29,7 +28,7 @@ public class MuxingSpecs
     }
 
     [Fact]
-    public void Progress_handler_muxed_from_multiple_handlers_reports_aggregated_progress()
+    public void Progress_handler_can_be_muxed_from_multiple_inputs()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -53,7 +52,7 @@ public class MuxingSpecs
     }
 
     [Fact]
-    public void Progress_handler_muxed_from_multiple_weighted_handlers_reports_aggregated_progress()
+    public void Progress_handler_can_be_muxed_from_multiple_inputs_with_different_weights()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
