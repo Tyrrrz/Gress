@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Gress.DemoWpf.ViewModels.Framework;
+using Gress.Specialized;
 
 namespace Gress.DemoWpf.ViewModels;
 

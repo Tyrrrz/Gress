@@ -29,11 +29,6 @@ public readonly partial struct Percentage
 public partial struct Percentage
 {
     /// <summary>
-    /// Represents a percentage of zero (0%).
-    /// </summary>
-    public static Percentage Zero { get; } = FromValue(0);
-
-    /// <summary>
     /// Creates a percentage from its value.
     /// </summary>
     public static Percentage FromValue(double value) => new(value);

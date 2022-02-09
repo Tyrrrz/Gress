@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Gress;
 
 /// <summary>
-/// Progress handler that persists all reported progress values in a collection.
+/// Progress handler that stores all reported progress values in a collection.
 /// Useful for testing scenarios.
 /// </summary>
 public class ProgressCollector<T> : IProgress<T>
@@ -13,7 +13,7 @@ public class ProgressCollector<T> : IProgress<T>
     private readonly List<T> _reports = new();
 
     /// <summary>
-    /// Clears the reports.
+    /// Clears the reported values.
     /// </summary>
     public void Clear()
     {

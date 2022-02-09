@@ -1,4 +1,4 @@
-﻿namespace Gress;
+﻿namespace Gress.Specialized;
 
 public class CompletableProgressMuxer
 {

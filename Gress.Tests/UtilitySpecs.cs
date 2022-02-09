@@ -7,13 +7,13 @@ namespace Gress.Tests;
 public class UtilitySpecs
 {
     [Fact]
-    public void Progress_reports_can_be_projected_into_a_different_form()
+    public void Progress_reports_can_be_transformed_into_a_different_type()
     {
         // Arrange
         var collector = new ProgressCollector<int>();
 
         // Act
-        var progress = collector.Select((string p) => p.Length);
+        var progress = collector.WithTransform((string p) => p.Length);
 
         progress.Report("");
         progress.Report("a");
@@ -25,13 +25,30 @@ public class UtilitySpecs
     }
 
     [Fact]
+    public void Progress_reports_can_be_transformed_into_a_different_value()
+    {
+        // Arrange
+        var collector = new ProgressCollector<int>();
+
+        // Act
+        var progress = collector.WithTransform(p => p * 2);
+
+        progress.Report(1);
+        progress.Report(2);
+        progress.Report(3);
+
+        // Assert
+        collector.GetReports().Should().Equal(2, 4, 6);
+    }
+
+    [Fact]
     public void Progress_reports_can_be_filtered_out_based_on_a_predicate()
     {
         // Arrange
         var collector = new ProgressCollector<int>();
 
         // Act
-        var progress = collector.Where(p => p % 2 == 0);
+        var progress = collector.WithFilter(p => p % 2 == 0);
 
         progress.Report(0);
         progress.Report(1);
@@ -51,9 +68,9 @@ public class UtilitySpecs
         var collector = new ProgressCollector<Percentage>();
 
         // Act
-        var progress = collector.Distinct();
+        var progress = collector.WithDeduplication();
 
-        progress.Report(Percentage.Zero);
+        progress.Report(Percentage.FromFraction(0.0));
         progress.Report(Percentage.FromFraction(0.1));
         progress.Report(Percentage.FromFraction(0.3));
         progress.Report(Percentage.FromFraction(0.3));
@@ -64,7 +81,7 @@ public class UtilitySpecs
 
         // Assert
         collector.GetReports().Should().Equal(
-            Percentage.Zero,
+            Percentage.FromFraction(0.0),
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3),
             Percentage.FromFraction(0.5),
@@ -83,19 +100,19 @@ public class UtilitySpecs
         // Act
         var progress = collector1.Merge(collector2);
 
-        progress.Report(Percentage.Zero);
+        progress.Report(Percentage.FromFraction(0.0));
         progress.Report(Percentage.FromFraction(0.1));
         progress.Report(Percentage.FromFraction(0.3));
 
         // Assert
         collector1.GetReports().Should().Equal(
-            Percentage.Zero,
+            Percentage.FromFraction(0.0),
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3)
         );
 
         collector2.GetReports().Should().Equal(
-            Percentage.Zero,
+            Percentage.FromFraction(0.0),
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3)
         );
@@ -113,7 +130,7 @@ public class UtilitySpecs
         // Act
         var progress = collectors.Merge();
 
-        progress.Report(Percentage.Zero);
+        progress.Report(Percentage.FromFraction(0.0));
         progress.Report(Percentage.FromFraction(0.1));
         progress.Report(Percentage.FromFraction(0.3));
 
@@ -121,7 +138,7 @@ public class UtilitySpecs
         foreach (var collector in collectors)
         {
             collector.GetReports().Should().Equal(
-                Percentage.Zero,
+                Percentage.FromFraction(0.0),
                 Percentage.FromFraction(0.1),
                 Percentage.FromFraction(0.3)
             );

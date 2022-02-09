@@ -10,17 +10,23 @@ namespace Gress;
 public static class ProgressExtensions
 {
     /// <summary>
-    /// Projects each progress report into a new form.
+    /// Projects progress reports into a different shape.
     /// </summary>
-    public static IProgress<TResult> Select<TResult, TOriginal>(
+    public static IProgress<TTransformed> WithTransform<TOriginal, TTransformed>(
         this IProgress<TOriginal> progress,
-        Func<TResult, TOriginal> map) =>
-        new DelegateProgress<TResult>(p => progress.Report(map(p)));
+        Func<TTransformed, TOriginal> map) =>
+        new DelegateProgress<TTransformed>(p => progress.Report(map(p)));
+
+    /// <summary>
+    /// Projects progress reports into a different shape.
+    /// </summary>
+    public static IProgress<T> WithTransform<T>(this IProgress<T> progress, Func<T, T> map) =>
+        progress.WithTransform<T, T>(map);
 
     /// <summary>
     /// Filters progress reports based on the specified predicate.
     /// </summary>
-    public static IProgress<T> Where<T>(this IProgress<T> progress, Func<T, bool> shouldReport) =>
+    public static IProgress<T> WithFilter<T>(this IProgress<T> progress, Func<T, bool> shouldReport) =>
         new DelegateProgress<T>(p =>
         {
             if (shouldReport(p))
@@ -28,26 +34,38 @@ public static class ProgressExtensions
         });
 
     /// <summary>
-    /// Filters out progress reports with duplicate values of the specified key.
+    /// Filters out consecutive progress reports with the same value of the specified key.
     /// </summary>
-    public static IProgress<T> DistinctBy<T, TKey>(
+    public static IProgress<T> WithDeduplication<T, TKey>(
         this IProgress<T> progress,
         Func<T, TKey> getKey,
         IEqualityComparer<TKey>? comparer = null)
     {
-        var set = new HashSet<TKey>(comparer ?? EqualityComparer<TKey>.Default);
+        var actualComparer = comparer ?? EqualityComparer<TKey>.Default;
+        var lastValueBox = new Box<TKey>();
+
         return new DelegateProgress<T>(p =>
         {
-            if (set.Add(getKey(p)))
-                progress.Report(p);
+            var value = getKey(p);
+
+            if (lastValueBox.TryOpen(out var lastValue) &&
+                actualComparer.Equals(lastValue, value))
+            {
+                return;
+            }
+
+            progress.Report(p);
+            lastValueBox.Store(value);
         });
     }
 
     /// <summary>
-    /// Filters out duplicate progress reports.
+    /// Filters out consecutive progress reports with the same value.
     /// </summary>
-    public static IProgress<T> Distinct<T>(this IProgress<T> progress, IEqualityComparer<T>? comparer = null) =>
-        progress.DistinctBy(p => p, comparer);
+    public static IProgress<T> WithDeduplication<T>(
+        this IProgress<T> progress,
+        IEqualityComparer<T>? comparer = null) =>
+        progress.WithDeduplication(p => p, comparer);
 
     /// <summary>
     /// Merges two progress handlers into one.
@@ -77,15 +95,15 @@ public static class ProgressExtensions
     /// </summary>
     public static IProgress<Percentage> ToPercentageBased(this IProgress<double> progress, bool asFraction = true) =>
         asFraction
-            ? progress.Select((Percentage p) => p.Fraction)
-            : progress.Select((Percentage p) => p.Value);
+            ? progress.WithTransform((Percentage p) => p.Fraction)
+            : progress.WithTransform((Percentage p) => p.Value);
 
     /// <summary>
     /// Converts the specified <see cref="int"/>-based progress handler into a
     /// <see cref="Percentage"/>-based progress handler.
     /// </summary>
     public static IProgress<Percentage> ToPercentageBased(this IProgress<int> progress) =>
-        progress.Select((Percentage p) => (int)p.Value);
+        progress.WithTransform((Percentage p) => (int)p.Value);
 
     /// <summary>
     /// Converts the specified <see cref="Percentage"/>-based progress handler into a
@@ -95,13 +113,13 @@ public static class ProgressExtensions
     /// </summary>
     public static IProgress<double> ToDoubleBased(this IProgress<Percentage> progress, bool asFraction = true) =>
         asFraction
-            ? progress.Select((double p) => Percentage.FromFraction(p))
-            : progress.Select((double p) => Percentage.FromValue(p));
+            ? progress.WithTransform((double p) => Percentage.FromFraction(p))
+            : progress.WithTransform((double p) => Percentage.FromValue(p));
 
     /// <summary>
     /// Converts the specified <see cref="Percentage"/>-based progress handler into an
     /// <see cref="int"/>-based progress handler.
     /// </summary>
     public static IProgress<int> ToInt32Based(this IProgress<Percentage> progress) =>
-        progress.Select((int p) => Percentage.FromValue(p));
+        progress.WithTransform((int p) => Percentage.FromValue(p));
 }

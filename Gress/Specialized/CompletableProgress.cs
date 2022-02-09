@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gress;
+namespace Gress.Specialized;
 
 public class CompletableProgress<T> : ICompletableProgress<T>
 {

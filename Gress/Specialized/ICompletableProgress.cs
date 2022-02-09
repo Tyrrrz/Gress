@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Gress;
+namespace Gress.Specialized;
 
 /// <summary>
 /// Defines a provider for progress updates that additionally signal completion.
