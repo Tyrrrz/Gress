@@ -1,6 +1,6 @@
 ﻿namespace Gress.Utils;
 
-// Like Nullable<T> but for reference types that can themselves be null
+// Budget Maybe<T> where null values are valid
 internal class Box<T>
 {
     private bool _isValueSet;

@@ -41,21 +41,25 @@ public static class ProgressExtensions
         Func<T, TKey> getKey,
         IEqualityComparer<TKey>? comparer = null)
     {
+        var syncRoot = new object();
         var actualComparer = comparer ?? EqualityComparer<TKey>.Default;
         var lastValueBox = new Box<TKey>();
 
         return new DelegateProgress<T>(p =>
         {
-            var value = getKey(p);
-
-            if (lastValueBox.TryOpen(out var lastValue) &&
-                actualComparer.Equals(lastValue, value))
+            lock (syncRoot)
             {
-                return;
-            }
+                var value = getKey(p);
 
-            progress.Report(p);
-            lastValueBox.Store(value);
+                if (lastValueBox.TryOpen(out var lastValue) &&
+                    actualComparer.Equals(lastValue, value))
+                {
+                    return;
+                }
+
+                progress.Report(p);
+                lastValueBox.Store(value);
+            }
         });
     }
 
@@ -128,4 +132,10 @@ public static class ProgressExtensions
     /// </summary>
     public static IProgress<int> ToInt32Based(this IProgress<Percentage> progress) =>
         progress.WithTransform((int p) => Percentage.FromValue(p));
+
+    /// <summary>
+    /// Creates a muxer for the specified progress handler, allowing it to aggregate
+    /// reports from multiple sources.
+    /// </summary>
+    public static ProgressMuxer CreateMuxer(this IProgress<Percentage> progress) => new(progress);
 }

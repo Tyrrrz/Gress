@@ -5,14 +5,14 @@ using Xunit;
 
 namespace Gress.Tests;
 
-public class SinkSpecs
+public class TerminalSpecs
 {
     [Fact]
     public void Progress_reports_can_be_collected_as_an_array()
     {
         // Arrange
         var progress = new ProgressCollector<Percentage>();
-        progress.Clear();
+        progress.Reset();
 
         // Act
         progress.Report(Percentage.FromFraction(0.1));
@@ -20,7 +20,7 @@ public class SinkSpecs
         progress.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        progress.GetReports().Should().Equal(
+        progress.GetValues().Should().Equal(
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3),
             Percentage.FromFraction(0.5)
@@ -31,7 +31,7 @@ public class SinkSpecs
     public void Progress_reports_can_be_collected_into_a_single_value_container()
     {
         // Arrange
-        var progress = new ProgressTerminal<Percentage>();
+        var progress = new ProgressContainer<Percentage>();
 
         // Act
         progress.Report(Percentage.FromFraction(0.1));
@@ -39,14 +39,14 @@ public class SinkSpecs
         progress.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        progress.Progress.Should().Be(Percentage.FromFraction(0.5));
+        progress.Current.Should().Be(Percentage.FromFraction(0.5));
     }
 
     [Fact]
     public void Progress_reports_can_be_collected_into_a_single_value_container_with_change_notifications()
     {
         // Arrange
-        var progress = new ProgressTerminal<Percentage>();
+        var progress = new ProgressContainer<Percentage>();
 
         var triggerCount = 0;
         ((INotifyPropertyChanged)progress).PropertyChanged += (_, _) => Interlocked.Increment(ref triggerCount);

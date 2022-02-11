@@ -27,6 +27,6 @@
 
 ### Progress muxing
 
-### Progress sinks
+### Progress terminals
 
 ### Utilities

@@ -21,7 +21,7 @@ public class UtilitySpecs
         progress.Report("abcdef");
 
         // Assert
-        collector.GetReports().Should().Equal(0, 1, 3, 6);
+        collector.GetValues().Should().Equal(0, 1, 3, 6);
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class UtilitySpecs
         progress.Report(3);
 
         // Assert
-        collector.GetReports().Should().Equal(2, 4, 6);
+        collector.GetValues().Should().Equal(2, 4, 6);
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class UtilitySpecs
         progress.Report(5);
 
         // Assert
-        collector.GetReports().Should().Equal(0, 2, 4);
+        collector.GetValues().Should().Equal(0, 2, 4);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class UtilitySpecs
         progress.Report(Percentage.FromFraction(0.9));
 
         // Assert
-        collector.GetReports().Should().Equal(
+        collector.GetValues().Should().Equal(
             Percentage.FromFraction(0.0),
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3),
@@ -105,13 +105,13 @@ public class UtilitySpecs
         progress.Report(Percentage.FromFraction(0.3));
 
         // Assert
-        collector1.GetReports().Should().Equal(
+        collector1.GetValues().Should().Equal(
             Percentage.FromFraction(0.0),
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3)
         );
 
-        collector2.GetReports().Should().Equal(
+        collector2.GetValues().Should().Equal(
             Percentage.FromFraction(0.0),
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3)
@@ -137,7 +137,7 @@ public class UtilitySpecs
         // Assert
         foreach (var collector in collectors)
         {
-            collector.GetReports().Should().Equal(
+            collector.GetValues().Should().Equal(
                 Percentage.FromFraction(0.0),
                 Percentage.FromFraction(0.1),
                 Percentage.FromFraction(0.3)
@@ -159,7 +159,7 @@ public class UtilitySpecs
         progress.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        collector.GetReports().Should().Equal(0.1, 0.3, 0.5);
+        collector.GetValues().Should().Equal(0.1, 0.3, 0.5);
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class UtilitySpecs
         progress.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        collector.GetReports().Should().Equal(10, 30, 50);
+        collector.GetValues().Should().Equal(10, 30, 50);
     }
 
     [Fact]
@@ -193,7 +193,7 @@ public class UtilitySpecs
         progress.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        collector.GetReports().Should().Equal(10, 30, 50);
+        collector.GetValues().Should().Equal(10, 30, 50);
     }
 
     [Fact]
@@ -210,7 +210,7 @@ public class UtilitySpecs
         progress.Report(0.5);
 
         // Assert
-        collector.GetReports().Should().Equal(
+        collector.GetValues().Should().Equal(
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3),
             Percentage.FromFraction(0.5)
@@ -231,7 +231,7 @@ public class UtilitySpecs
         progress.Report(50);
 
         // Assert
-        collector.GetReports().Should().Equal(
+        collector.GetValues().Should().Equal(
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3),
             Percentage.FromFraction(0.5)
@@ -252,7 +252,7 @@ public class UtilitySpecs
         progress.Report(50);
 
         // Assert
-        collector.GetReports().Should().Equal(
+        collector.GetValues().Should().Equal(
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3),
             Percentage.FromFraction(0.5)

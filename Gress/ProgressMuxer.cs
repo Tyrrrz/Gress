@@ -32,16 +32,18 @@ public partial class ProgressMuxer
                 weightedMax += input.Weight * 1.0;
             }
 
-            _target.Report(
-                Percentage.FromFraction(weightedSum / weightedMax)
-            );
+            _target.Report(Percentage.FromFraction(
+                weightedSum != 0
+                    ? weightedSum / weightedMax
+                    : 0
+            ));
         }
     }
 
     /// <summary>
     /// Creates a progress handler that reports progress to this muxer.
     /// Specified weight determines the priority of this handler relative to other
-    /// handlers linked to this muxer. Progress reported by a handler with higher
+    /// handlers connected to this muxer. Progress reported by a handler with higher
     /// weight influences the final progress to a greater degree.
     /// </summary>
     public IProgress<Percentage> CreateInput(double weight = 1.0)
@@ -65,14 +67,16 @@ public partial class ProgressMuxer
     }
 
     /// <summary>
-    /// Removes all progress handlers from this muxer.
+    /// Disconnects all progress handlers from this muxer.
     /// </summary>
-    internal void ClearInputs()
+    public void Reset()
     {
         lock (_lock)
         {
             _inputs.Clear();
             _anyInputReported = false;
+
+            ReportAggregatedProgress();
         }
     }
 }
@@ -81,15 +85,15 @@ public partial class ProgressMuxer
 {
     private class Input : IProgress<Percentage>
     {
-        private readonly ProgressMuxer _muxer;
+        private readonly ProgressMuxer _parent;
 
         public double Weight { get; }
 
         public Percentage Progress { get; private set; }
 
-        public Input(ProgressMuxer muxer, double weight)
+        public Input(ProgressMuxer parent, double weight)
         {
-            _muxer = muxer;
+            _parent = parent;
             Weight = weight;
         }
 
@@ -97,28 +101,16 @@ public partial class ProgressMuxer
         {
             Progress = value;
 
-            lock (_muxer._lock)
+            lock (_parent._lock)
             {
                 // This input could have been removed from the muxer.
                 // If that's the case, don't do anything.
-                if (!_muxer._inputs.Contains(this))
+                if (!_parent._inputs.Contains(this))
                     return;
 
-                _muxer.ReportAggregatedProgress();
-                _muxer._anyInputReported = true;
+                _parent.ReportAggregatedProgress();
+                _parent._anyInputReported = true;
             }
         }
     }
-}
-
-/// <summary>
-/// Extensions for <see cref="ProgressMuxer"/>.
-/// </summary>
-public static class ProgressMuxerExtensions
-{
-    /// <summary>
-    /// Creates a muxer for the specified progress handler, allowing it to aggregate
-    /// reports from multiple sources.
-    /// </summary>
-    public static ProgressMuxer CreateMuxer(this IProgress<Percentage> progress) => new(progress);
 }

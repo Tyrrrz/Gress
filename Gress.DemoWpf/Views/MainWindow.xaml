@@ -28,25 +28,28 @@
             <StackPanel Orientation="Vertical">
                 <!--  Overview  -->
                 <TextBlock>
+                    <Run Text="Operations:" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Operations.Count, Mode=OneWay}" />
+                    <Run />
                     <Run Text="Progress:" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressTerminal.Progress, Mode=OneWay}" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress.Current, Mode=OneWay}" />
                 </TextBlock>
 
                 <!--  Progress  -->
                 <ProgressBar
                     Height="4"
                     Margin="0,16,0,0"
-                    Value="{Binding ProgressTerminal.Progress.Fraction, Mode=OneWay}" />
+                    Value="{Binding Progress.Current.Fraction, Mode=OneWay}" />
             </StackPanel>
         </GroupBox>
 
-        <!--  Tasks  -->
+        <!--  Operations  -->
         <GroupBox
             Grid.Row="1"
-            Header="Tasks"
+            Header="Operations"
             Margin="8">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding Tasks}">
+                <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding Operations}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,0,0,8">
@@ -65,7 +68,7 @@
                                     <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Weight, Mode=OneWay}" />
                                     <Run />
                                     <Run Text="Progress:" />
-                                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressTerminal.Progress, Mode=OneWay}" />
+                                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress.Current, Mode=OneWay}" />
                                 </TextBlock>
 
                                 <!--  Progress  -->
@@ -76,7 +79,7 @@
                                     Maximum="1"
                                     Minimum="0"
                                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                    Value="{Binding ProgressTerminal.Progress.Fraction, Mode=OneWay}" />
+                                    Value="{Binding Progress.Current.Fraction, Mode=OneWay}" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -84,7 +87,7 @@
             </ScrollViewer>
         </GroupBox>
 
-        <!--  New task  -->
+        <!--  New operation  -->
         <Grid Grid.Row="2" Margin="8,16,8,16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
@@ -114,7 +117,7 @@
 
             <!--  Start button  -->
             <Button
-                Command="{Binding StartTaskCommand}"
+                Command="{Binding StartOperationCommand}"
                 CommandParameter="{Binding Value, ElementName=WeightSlider}"
                 Content="START OPERATION"
                 Grid.Column="2" />

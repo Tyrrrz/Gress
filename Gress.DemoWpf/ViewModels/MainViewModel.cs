@@ -1,46 +1,43 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Gress.Completable;
 using Gress.DemoWpf.ViewModels.Framework;
-using Gress.Specialized;
 
 namespace Gress.DemoWpf.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public ProgressTerminal<Percentage> ProgressTerminal { get; } = new();
+    private readonly AutoResetProgressMuxer _progressMuxer;
 
-    public CompletableProgressMuxer ProgressMuxer { get; }
+    public ProgressContainer<Percentage> Progress { get; } = new();
 
-    public ObservableCollection<TaskViewModel> Tasks { get; } = new();
+    public ObservableCollection<OperationViewModel> Operations { get; } = new();
 
-    // Commands
-    public RelayCommand<double> StartTaskCommand { get; }
+    public RelayCommand<double> StartOperationCommand { get; }
 
     public MainViewModel()
     {
-        ProgressMuxer = ProgressTerminal.CreateMuxer().CreateCompletableProgressMuxer();
-
-        // Commands
-        StartTaskCommand = new RelayCommand<double>(StartTask);
+        _progressMuxer = Progress.CreateMuxer().WithAutoReset();
+        StartOperationCommand = new RelayCommand<double>(StartOperation);
     }
 
-    // Start a task that simulates some work and reports progress
-    public async void StartTask(double weight)
+    // Start an operation that simulates some work and reports progress
+    public async void StartOperation(double weight)
     {
-        using var progress = ProgressMuxer.CreateInput(weight);
+        using var progress = _progressMuxer.CreateInput(weight).AsDisposable();
 
-        var task = new TaskViewModel(weight);
-        var merged = progress.Merge(task.ProgressTerminal);
+        var operation = new OperationViewModel(weight);
+        var progressMerged = progress.Merge(operation.Progress);
 
-        Tasks.Add(task);
+        Operations.Add(operation);
 
         for (var i = 1; i <= 100; i++)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
-            merged.Report(Percentage.FromValue(i));
+            progressMerged.Report(Percentage.FromValue(i));
         }
 
-        Tasks.Remove(task);
+        Operations.Remove(operation);
     }
 }

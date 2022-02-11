@@ -5,20 +5,24 @@ using System.Runtime.CompilerServices;
 namespace Gress;
 
 /// <summary>
-/// Progress handler that records the last reported progress value.
+/// Terminal progress handler that records the last reported progress value.
 /// </summary>
-public partial class ProgressTerminal<T> : IProgress<T>
+public partial class ProgressContainer<T> : IProgress<T>
 {
     /// <summary>
     /// Last reported progress value.
     /// </summary>
-    public T Progress { get; private set; } = default!;
+    /// <remarks>
+    /// If this property is accessed before any progress has been reported,
+    /// it will evaluate to the default value of <see cref="T"/>, which may be <c>null</c>.
+    /// </remarks>
+    public T Current { get; private set; } = default!;
 
     /// <inheritdoc />
-    public void Report(T value) => Progress = value;
+    public void Report(T value) => Current = value;
 }
 
-public partial class ProgressTerminal<T> : INotifyPropertyChanged
+public partial class ProgressContainer<T> : INotifyPropertyChanged
 {
     private event PropertyChangedEventHandler? PropertyChanged;
 
