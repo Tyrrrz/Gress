@@ -25,7 +25,7 @@ public class MainViewModel : ViewModelBase
     // Start an operation that simulates some work and reports progress
     public async void StartOperation(double weight)
     {
-        using var progress = _progressMuxer.CreateInput(weight).AsDisposable();
+        using var progress = _progressMuxer.CreateInput(weight).ToDisposable();
 
         var operation = new OperationViewModel(weight);
         var progressMerged = progress.Merge(operation.Progress);

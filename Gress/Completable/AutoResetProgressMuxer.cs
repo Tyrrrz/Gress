@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 
 namespace Gress.Completable;
 
@@ -34,8 +32,12 @@ public partial class AutoResetProgressMuxer
     {
         lock (_lock)
         {
+            var item = new Item(this, _muxer.CreateInput(weight));
+
+            // Make sure item was created successfully before incrementing
             _pendingInputs++;
-            return new Item(this, _muxer.CreateInput(weight));
+
+            return item;
         }
     }
 }
@@ -66,26 +68,8 @@ public partial class AutoResetProgressMuxer
             lock (_parent._lock)
             {
                 if (--_parent._pendingInputs <= 0)
-                {
                     _parent._muxer.Reset();
-                }
             }
         }
     }
-}
-
-public partial class AutoResetProgressMuxer : INotifyPropertyChanged
-{
-    private event PropertyChangedEventHandler? PropertyChanged;
-
-    event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged
-    {
-        add => PropertyChanged += value;
-        remove => PropertyChanged -= value;
-    }
-
-    // Instrumented automatically by Fody
-    // ReSharper disable once UnusedMember.Local
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

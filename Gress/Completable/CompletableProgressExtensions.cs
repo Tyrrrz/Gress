@@ -9,7 +9,7 @@ public static class CompletableProgressExtensions
     /// Wraps the specified completable progress handler in a disposable container.
     /// Disposing the container reports completion on the handler.
     /// </summary>
-    public static DisposableCompletableProgress<T> AsDisposable<T>(this ICompletableProgress<T> progress) =>
+    public static DisposableCompletableProgress<T> ToDisposable<T>(this ICompletableProgress<T> progress) =>
         new(progress);
 
     /// <summary>
