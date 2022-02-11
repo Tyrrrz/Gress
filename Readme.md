@@ -9,7 +9,7 @@
 
 ✅ **Project status: active**. [What does it mean?](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)
 
-**Gress** is a library that extends the standard interface for reporting progress ([`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1)) with a set of utilities for transforming, filtering, aggregating, and muxing handlers.
+**Gress** is a library that extends the standard interface for reporting progress ([`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1)) with a set of utilities for transforming, filtering, aggregating, and muxing progress handlers.
 
 💬 **If you want to chat, join my [Discord server](https://discord.gg/2SUWKFnHSm)**.
 
@@ -23,10 +23,75 @@
 
 ## Usage
 
-### Unified progress unit
+### Percentages
 
-### Progress muxing
+Gress provides a unified progress unit -- the `Percentage` type.
+Unlike raw `int` and `double` values commonly used with `IProgress<T>`, this type unambiguously represents progress as a portion of all work that has been completed so far.
 
-### Progress terminals
+An instance of `Percentage` can be created from either a value or a fraction:
 
-### Utilities
+```csharp
+using Gress;
+
+// 50% mapped from percentage value
+var fiftyPercent = Percentage.FromValue(50);
+
+// 20% mapped from fractional (decimal) representation
+var twentyPercent = Percentage.FromFraction(0.2);
+```
+
+Similarly, both value and fraction can be extracted from an initialized `Percentage` by accessing the corresponding properties:
+
+```csharp
+using Gress;
+
+var fiftyPercent = Percentage.FromValue(50);
+
+var asValue = fiftyPercent.Value; // 50.0 (double)
+var asFraction = fiftyPercent.Fraction; // 0.5 (double)
+```
+
+You can use the `Percentage` type as the generic argument for `IProgress<T>` handlers to establish a more consistent foundation for progress reporting in your application or library.
+
+When interfacing with external methods that define their own progress handlers, you can use one of the provided extensions to convert a percentage-based handler into a handler of a different type:
+
+```csharp
+using Gress;
+
+var progress = new Progress<Percentage>(p => Console.WriteLine(p)); // IProgress<Percentage>
+
+// Expects the reported value to represent a percentage in fractional form
+var progressOfDouble1 = progress.ToDoubleBased(); // IProgress<double>
+
+// Expects the reported value to represent a percentage in value form
+var progressOfDouble2 = progress.ToDoubleBased(false); // IProgress<double>
+
+// Expects the reported value to represent a percentage in value form
+var progressOfInt = progress.ToInt32Based(); // IProgress<int>
+```
+
+There are also methods that allow conversion in the other direction as well:
+
+```csharp
+using Gress;
+
+var progressOfDouble = new Progress<double>(p => Console.WriteLine(p)); // IProgress<double>
+var progressOfInt = new Progress<double>(p => Console.WriteLine(p)); // IProgress<double>
+
+// Reports the percentage in fractional form
+var progressOfPercentage1 = progressOfDouble.ToPercentageBased();
+
+// Reports the percentage in value form
+var progressOfPercentage2 = progressOfDouble.ToPercentageBased(false);
+
+// Reports the percentage in value form
+var progressOfPercentage3 = progressOfInt.ToPercentageBased();
+```
+
+### Filters and transforms
+
+### Muxing
+
+Muxing allows
+
+### Terminals
