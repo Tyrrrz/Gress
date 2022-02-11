@@ -84,29 +84,23 @@ public class MuxingSpecs
         var muxer = collector.CreateMuxer().WithAutoReset();
 
         // Act
-        var progress1 = muxer.CreateInput();
-        var progress2 = muxer.CreateInput();
-        var progress3 = muxer.CreateInput();
+        using (var progress1 = muxer.CreateInput().ToDisposable())
+        using (var progress2 = muxer.CreateInput().ToDisposable())
+        using (var progress3 = muxer.CreateInput().ToDisposable())
+        {
+            progress1.Report(Percentage.FromFraction(1));
+            progress2.Report(Percentage.FromFraction(0.5));
+            progress3.Report(Percentage.FromFraction(0.25));
+        }
 
-        progress1.Report(Percentage.FromFraction(1));
-        progress2.Report(Percentage.FromFraction(0.5));
-        progress3.Report(Percentage.FromFraction(0.25));
-
-        progress1.ReportCompletion();
-        progress2.ReportCompletion();
-        progress3.ReportCompletion();
-
-        var progress4 = muxer.CreateInput();
-        var progress5 = muxer.CreateInput();
-        var progress6 = muxer.CreateInput();
-
-        progress4.Report(Percentage.FromFraction(0.65));
-        progress5.Report(Percentage.FromFraction(0.25));
-        progress6.Report(Percentage.FromFraction(0.09));
-
-        progress1.ReportCompletion();
-        progress5.ReportCompletion();
-        progress6.ReportCompletion();
+        using (var progress4 = muxer.CreateInput().ToDisposable())
+        using (var progress5 = muxer.CreateInput().ToDisposable())
+        using (var progress6 = muxer.CreateInput().ToDisposable())
+        {
+            progress4.Report(Percentage.FromFraction(0.65));
+            progress5.Report(Percentage.FromFraction(0.25));
+            progress6.Report(Percentage.FromFraction(0.09));
+        }
 
         // Assert
         collector.GetValues().Should().Equal(
