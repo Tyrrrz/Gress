@@ -26,7 +26,7 @@
 ### Percentages
 
 Gress provides a unified progress unit -- the `Percentage` type.
-Unlike raw `int` and `double` values commonly used with `IProgress<T>`, this type unambiguously represents progress as a portion of all work that has been completed so far.
+Unlike raw `int` and `double` values commonly used with `IProgress<T>`, this type unambiguously represents progress as a portion of work that has been completed so far.
 
 An instance of `Percentage` can be created from either a value or a fraction:
 
@@ -58,7 +58,7 @@ When interfacing with external methods that define their own progress handlers, 
 ```csharp
 using Gress;
 
-var progress = new Progress<Percentage>(p => Console.WriteLine(p)); // IProgress<Percentage>
+var progress = new Progress<Percentage>(p => /* ... */); // IProgress<Percentage>
 
 // Expects the reported value to represent a percentage in fractional form
 var progressOfDouble1 = progress.ToDoubleBased(); // IProgress<double>
@@ -75,17 +75,17 @@ There are also methods that allow conversion in the other direction as well:
 ```csharp
 using Gress;
 
-var progressOfDouble = new Progress<double>(p => Console.WriteLine(p)); // IProgress<double>
-var progressOfInt = new Progress<double>(p => Console.WriteLine(p)); // IProgress<double>
+var progressOfDouble = new Progress<double>(p => /* ... */); // IProgress<double>
+var progressOfInt = new Progress<double>(p => /* ... */); // IProgress<double>
 
 // Reports the percentage in fractional form
-var progressOfPercentage1 = progressOfDouble.ToPercentageBased();
+var progressOfPercentage1 = progressOfDouble.ToPercentageBased(); // IProgress<Percentage>
 
 // Reports the percentage in value form
-var progressOfPercentage2 = progressOfDouble.ToPercentageBased(false);
+var progressOfPercentage2 = progressOfDouble.ToPercentageBased(false); // IProgress<Percentage>
 
 // Reports the percentage in value form
-var progressOfPercentage3 = progressOfInt.ToPercentageBased();
+var progressOfPercentage3 = progressOfInt.ToPercentageBased(); // IProgress<Percentage>
 ```
 
 ### Filters and transforms
