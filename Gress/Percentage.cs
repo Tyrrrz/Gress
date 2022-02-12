@@ -22,8 +22,14 @@ public readonly partial struct Percentage
     /// </summary>
     public Percentage(double value) => Value = value;
 
-    /// <inheritdoc />
-    public override string ToString() => Fraction.ToString("P1");
+    /// <summary>
+    /// Formats the value of this instance to a string.
+    /// </summary>
+    public string ToString(IFormatProvider? formatProvider) =>
+        Fraction.ToString("P1", formatProvider);
+
+    /// <inheritdoc cref="ToString(System.IFormatProvider?)" />
+    public override string ToString() => ToString(null);
 }
 
 public partial struct Percentage
@@ -72,4 +78,10 @@ public partial struct Percentage : IEquatable<Percentage>, IComparable<Percentag
     /// Inequality operator.
     /// </summary>
     public static bool operator !=(Percentage left, Percentage right) => !(left == right);
+}
+
+public partial struct Percentage : IFormattable
+{
+    string IFormattable.ToString(string format, IFormatProvider formatProvider) =>
+        ToString(formatProvider);
 }
