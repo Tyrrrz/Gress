@@ -43,7 +43,7 @@ public partial class ProgressMuxer
     /// <summary>
     /// Creates a progress handler that reports progress to this muxer.
     /// Specified weight determines the priority of this handler relative to other
-    /// handlers connected to this muxer. Progress reported by a handler with higher
+    /// handlers connected to this muxer. Progress reported on a handler with higher
     /// weight influences the final progress to a greater degree.
     /// </summary>
     public IProgress<Percentage> CreateInput(double weight = 1.0)

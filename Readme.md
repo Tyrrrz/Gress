@@ -9,7 +9,8 @@
 
 ✅ **Project status: active**. [What does it mean?](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)
 
-**Gress** is a library that extends the standard interface for reporting progress ([`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1)) with a set of utilities for transforming, filtering, aggregating, and muxing progress handlers.
+**Gress** is a library that builds upon the standard interface for reporting progress in .NET ([`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1)) to provide a exhaustive set of tools for tracking and routing progress in your code.
+It offers utilities for collecting, transforming, and filtering progress updates, merging and muxing progress handlers, and more.
 
 💬 **If you want to chat, join my [Discord server](https://discord.gg/2SUWKFnHSm)**.
 
@@ -23,9 +24,9 @@
 
 ## Usage
 
-### Percentages
+### Percentage type
 
-**Gress** provides a unified progress unit -- the `Percentage` type.
+**Gress** provides a universal progress unit -- the `Percentage` type.
 Unlike raw `int` and `double` values commonly used with `IProgress<T>`, this type unambiguously represents progress as a portion of work that has been completed so far.
 
 An instance of `Percentage` can be created from either a value or a fraction:
@@ -33,11 +34,11 @@ An instance of `Percentage` can be created from either a value or a fraction:
 ```csharp
 using Gress;
 
-// 50%; mapped from value
-var fiftyPercent = Percentage.FromValue(50);
+// Mapped from value
+var fiftyPercent = Percentage.FromValue(50);       // 50%
 
-// 20%; mapped from fractional representation
-var twentyPercent = Percentage.FromFraction(0.2);
+// Mapped from fractional representation
+var twentyPercent = Percentage.FromFraction(0.2);  // 20%
 ```
 
 Similarly, both value and fraction can be extracted from an initialized `Percentage` by accessing the corresponding properties:
@@ -47,13 +48,11 @@ using Gress;
 
 var fiftyPercent = Percentage.FromValue(50);
 
-var asValue = fiftyPercent.Value; // 50.0 (double)
-var asFraction = fiftyPercent.Fraction; // 0.5 (double)
+var asValue = fiftyPercent.Value;        // 50.0 (double)
+var asFraction = fiftyPercent.Fraction;  // 0.5  (double)
 ```
 
-You can use the `Percentage` type as the generic argument for `IProgress<T>` handlers to establish a more consistent foundation for progress reporting in your application or library.
-
-When interfacing with external methods that define their own progress handlers, you can use one of the provided extensions to convert a percentage-based handler into a handler of a different type:
+You can use `Percentage` as the type argument in `IProgress<T>` handlers to establish a consistent foundation for reporting progress in your code. When interfacing with external methods that already define their own progress handlers, you can also use one of the provided conversion methods to wrap an existing percentage-based handler into a handler of an appropriate type:
 
 ```csharp
 using Gress;
@@ -64,7 +63,7 @@ var progressOfDouble = progress.ToDoubleBased();          // IProgress<double>
 var progressOfInt = progress.ToInt32Based();              // IProgress<int>
 ```
 
-There are also methods that allow conversion in the other direction as well:
+Likewise, there are methods that facilitate conversion in the other direction as well:
 
 ```csharp
 using Gress;
@@ -79,13 +78,14 @@ var progressOfPercentage2 = progressOfInt.ToPercentageBased();     // IProgress<
 > 💡 When converting between percentage-based and double-based handlers, percentages are mapped using their fractional form by default.
 To override this behavior and map by value instead, use `ToDoubleBased(false)` and `ToPercentageBased(false)`.
 
-### Composition
+### Composing handlers
 
-Existing progress handlers can be also composed into more complex handlers using some of the extension methods that **Gress** offers.
+Existing progress handlers can be composed into more complex handlers using some of the extension methods that **Gress** offers.
+These can be used to easily apply transformations, inject filtering logic, or merge multiple handlers together.
 
 #### Transformation
 
-You can use `WithTransform(...)` method to apply custom transformations to all progress values reported by a given handler:
+You can use `WithTransform(...)` method to create a handler that transforms all reported progress values:
 
 ```csharp
 using Gress;
@@ -107,7 +107,7 @@ var progressTransformed = progress.WithTransform((Status s) => s switch
 progressTransformed.Report(Status.HalfWay);
 ```
 
-A simpler overload of the same method can be used when transforming the value to the same type:
+A simpler overload of the above method can also be used when transforming between values of the same type:
 
 ```csharp
 using Gress;
@@ -120,12 +120,12 @@ var progressTransformed = progress.WithTransform(p => 5 * p);  // IProgress<int>
 progressTransformed.Report(10);
 ```
 
-> 💡 Method `WithTransform(...)` bears some resemblance to LINQ's `Select(...)`.
-The main difference is that the flow of data in `IProgress<T>` is inverse to that of `IEnumerable<T>`, which means that the transformations in `WithTransform(...)` are applied in the opposite direction compared to `Select(...)`.
+> 💡 Method `WithTransform(...)` bears some resemblance to LINQ's `Select(...)`, however they are not equivalent.
+The main difference is that the flow of data in `IProgress<T>` is inverse to that of `IEnumerable<T>`, which means that the transformations in `WithTransform(...)` are applied in the opposite direction.
 
 #### Filtering
 
-You can use `WithFilter(...)` method to selectively filter progress values reported by a given handler:
+You can use `WithFilter(...)` method to create a handler that selectively filters reported progress values:
 
 ```csharp
 using Gress;
@@ -144,7 +144,7 @@ progressFiltered.Report(Percentage.FromFraction(0.25));
 
 #### Deduplication
 
-You can use `WithDeduplication(...)` method to filter out consecutive progress reports with the same value:
+You can use `WithDeduplication(...)` method to create a handler that filters out consecutive progress reports with the same value:
 
 ```csharp
 using Gress;
@@ -176,6 +176,8 @@ var progressMerged = progress1.Merge(progress2);           // IProgress<Percenta
 progressMerged.Report(Percentage.FromFraction(0.5));
 ```
 
+This method can also be called on collections:
+
 ```csharp
 using Gress;
 
@@ -195,8 +197,105 @@ progressMerged.Report(Percentage.FromFraction(0.5));
 
 ### Muxing
 
-Muxing allows
+Muxing allows a single handler to aggregate progress reports from multiple input handlers.
+This is useful when you want to track progress of an operation that itself encapsulates other operations.
+
+To do this, call `CreateMuxer()` on a progress handler and then create an input corresponding to each operation:
+
+```csharp
+using Gress;
+
+var progress = new Progress<Percentage>(p => /* ... */);  // IProgress<Percentage>
+
+var muxer = progress.CreateMuxer();
+var progressInput1 = muxer.CreateInput();                 // IProgress<Percentage>
+var progressInput2 = muxer.CreateInput();                 // IProgress<Percentage>
+var progressInput3 = muxer.CreateInput();                 // IProgress<Percentage>
+```
+
+When progress is reported on any of the individual inputs, its value is aggregated with values reported on other inputs, and then routed to the original target handler.
+The sample below illustrates this process:
+
+```csharp
+// ...
+
+progressInput1.Report(Percentage.FromFraction(0.5));
+
+// Input 1 ->  50%
+// Input 2 ->   0%
+// Input 3 ->   0%
+// Total   -> ~17%
+
+progressInput1.Report(Percentage.FromFraction(1));
+progressInput2.Report(Percentage.FromFraction(0.75));
+
+// Input 1 -> 100%
+// Input 2 ->  75%
+// Input 3 ->   0%
+// Total   -> ~58%
+
+progressInput2.Report(Percentage.FromFraction(1));
+progressInput3.Report(Percentage.FromFraction(0.9));
+
+// Input 1 -> 100%
+// Input 2 -> 100%
+// Input 3 ->  90%
+// Total   -> ~97%
+
+progressInput3.Report(Percentage.FromFraction(1));
+
+// Input 1 -> 100%
+// Input 2 -> 100%
+// Input 3 -> 100%
+// Total   -> 100%
+```
+
+> 💡 `ProgressMuxer` is thread-safe and can be used to aggregate progress across parallel operations.
+
+> ⚠️ Muxing is only available for percentage-based handlers. 
+If you need to, you can convert the handler to the expected type by calling `ToPercentageBased()` on it.
+
+Inputs can also be muxed further:
+ 
+#### With custom weight
+
+A muxer input may be created with a custom weight, which determines the priority of a particular input in relation to others.
+Progress reported on a handler with higher weight influences the final progress to a greater degree and vice versa.
+
+To create a weighted muxer input, pass the weight when calling the `CreateInput(...)` method:
+
+```csharp
+using Gress;
+
+var progress = new Progress<Percentage>(p => /* ... */);  // IProgress<Percentage>
+
+var muxer = progress.CreateMuxer();
+var progressInput1 = muxer.CreateInput(2);                 // IProgress<Percentage>
+var progressInput2 = muxer.CreateInput(8);                 // IProgress<Percentage>
+
+// Weight split:
+// Input 1 -> 20% of total
+// Input 2 -> 80% of total
+
+progressInput1.Report(Percentage.FromFraction(0.9));
+progressInput2.Report(Percentage.FromFraction(0.3));
+
+// Input 1 -> 90%
+// Input 2 -> 30%
+// Total   -> 42%
+```
+
+#### With auto-reset
+
+
 
 ### Terminals
 
-Terminal progress handlers
+**Gress** offers a few progress handlers that can be used to collect progress.
+These handlers do not route the progress anywhere and just store it instead, which effectively makes them terminal nodes in progress-routing pipelines.
+
+#### `ProgressContainer`
+
+#### `ProgressCollector`
+
+### Completable handlers
