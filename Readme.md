@@ -25,7 +25,7 @@
 
 ### Percentages
 
-Gress provides a unified progress unit -- the `Percentage` type.
+**Gress** provides a unified progress unit -- the `Percentage` type.
 Unlike raw `int` and `double` values commonly used with `IProgress<T>`, this type unambiguously represents progress as a portion of work that has been completed so far.
 
 An instance of `Percentage` can be created from either a value or a fraction:
@@ -81,7 +81,7 @@ To override this behavior and map by value instead, use `ToDoubleBased(false)` a
 
 ### Composition
 
-Existing progress handlers can be also composed into more complex handlers using some of the extension methods that Gress offers.
+Existing progress handlers can be also composed into more complex handlers using some of the extension methods that **Gress** offers.
 
 #### Transformation
 
@@ -162,7 +162,7 @@ progressDeduplicated.Report(Percentage.FromFraction(0.5));  // reported
 
 #### Merging
 
-You can use `Merge(...)` method to combine multiple progress handlers of the same type into one:
+You can use `Merge(...)` method to combine multiple progress handlers into one:
 
 ```csharp
 using Gress;
