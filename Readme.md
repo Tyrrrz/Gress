@@ -76,7 +76,7 @@ There are also methods that allow conversion in the other direction as well:
 using Gress;
 
 var progressOfDouble = new Progress<double>(p => /* ... */); // IProgress<double>
-var progressOfInt = new Progress<double>(p => /* ... */); // IProgress<double>
+var progressOfInt = new Progress<int>(p => /* ... */); // IProgress<int>
 
 // Reports the percentage in fractional form
 var progressOfPercentage1 = progressOfDouble.ToPercentageBased(); // IProgress<Percentage>
