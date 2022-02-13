@@ -1,10 +1,18 @@
-﻿namespace Gress.Completable;
+﻿using System;
+
+namespace Gress.Completable;
 
 /// <summary>
 /// Extensions for <see cref="CompletableProgressExtensions"/>.
 /// </summary>
 public static class CompletableProgressExtensions
 {
+    /// <summary>
+    /// Converts a regular progress handler into a progress handler with explicit completion.
+    /// </summary>
+    public static ICompletableProgress<T> ToCompletable<T>(this IProgress<T> progress, Action handleCompletion) =>
+        new DelegateCompletableProgress<T>(progress.Report, handleCompletion);
+
     /// <summary>
     /// Wraps the specified completable progress handler in a disposable container.
     /// Disposing the container reports completion on the handler.

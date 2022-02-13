@@ -1,10 +1,11 @@
 ﻿using System.Linq;
 using FluentAssertions;
+using Gress.Completable;
 using Xunit;
 
 namespace Gress.Tests;
 
-public class UtilitySpecs
+public class CompositionSpecs
 {
     [Fact]
     public void Progress_reports_can_be_transformed_into_a_different_type()
@@ -252,6 +253,30 @@ public class UtilitySpecs
         progress.Report(50);
 
         // Assert
+        collector.GetValues().Should().Equal(
+            Percentage.FromFraction(0.1),
+            Percentage.FromFraction(0.3),
+            Percentage.FromFraction(0.5)
+        );
+    }
+
+    [Fact]
+    public void Progress_handler_can_be_converted_into_a_completable_progress_handler()
+    {
+        // Arrange
+        var isCompleted = false;
+        var collector = new ProgressCollector<Percentage>();
+
+        // Act
+        var progress = collector.ToCompletable(() => isCompleted = true);
+
+        progress.Report(Percentage.FromFraction(0.1));
+        progress.Report(Percentage.FromFraction(0.3));
+        progress.Report(Percentage.FromFraction(0.5));
+        progress.ReportCompletion();
+
+        // Assert
+        isCompleted.Should().BeTrue();
         collector.GetValues().Should().Equal(
             Percentage.FromFraction(0.1),
             Percentage.FromFraction(0.3),
