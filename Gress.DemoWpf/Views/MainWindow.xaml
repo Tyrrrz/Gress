@@ -20,39 +20,36 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!--  Progress manager  -->
+        <!--  Aggregated progress  -->
         <GroupBox
             Grid.Row="0"
-            Header="Progress manager"
+            Header="Overall"
             Margin="8">
             <StackPanel Orientation="Vertical">
                 <!--  Overview  -->
                 <TextBlock>
                     <Run Text="Operations:" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Operations.Count, Mode=OneWay}" />
-                    <Run />
-                    <Run Text="Active:" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.IsActive, Mode=OneWay}" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Operations.Count, Mode=OneWay}" />
                     <Run />
                     <Run Text="Progress:" />
-                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding ProgressManager.Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
+                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress.Current, Mode=OneWay}" />
                 </TextBlock>
 
                 <!--  Progress  -->
                 <ProgressBar
                     Height="4"
                     Margin="0,16,0,0"
-                    Value="{Binding ProgressManager.Progress, Mode=OneWay}" />
+                    Value="{Binding Progress.Current.Fraction, Mode=OneWay}" />
             </StackPanel>
         </GroupBox>
 
-        <!--  Progress operations  -->
+        <!--  Operations  -->
         <GroupBox
             Grid.Row="1"
-            Header="Progress operations"
+            Header="Operations"
             Margin="8">
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding ProgressManager.Operations}">
+                <ItemsControl HorizontalContentAlignment="Stretch" ItemsSource="{Binding Operations}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,0,0,8">
@@ -71,7 +68,7 @@
                                     <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Weight, Mode=OneWay}" />
                                     <Run />
                                     <Run Text="Progress:" />
-                                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress, StringFormat=\{0:P1\}, Mode=OneWay}" />
+                                    <Run Foreground="{DynamicResource PrimaryTextBrush}" Text="{Binding Progress.Current, Mode=OneWay}" />
                                 </TextBlock>
 
                                 <!--  Progress  -->
@@ -82,7 +79,7 @@
                                     Maximum="1"
                                     Minimum="0"
                                     Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                    Value="{Binding Progress, Mode=OneWay}" />
+                                    Value="{Binding Progress.Current.Fraction, Mode=OneWay}" />
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -98,7 +95,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <!--  New operation weight  -->
+            <!--  Weight  -->
             <StackPanel
                 Grid.Column="1"
                 Orientation="Horizontal"
@@ -118,7 +115,7 @@
                     x:Name="WeightSlider" />
             </StackPanel>
 
-            <!--  New operation button  -->
+            <!--  Start button  -->
             <Button
                 Command="{Binding StartOperationCommand}"
                 CommandParameter="{Binding Value, ElementName=WeightSlider}"
