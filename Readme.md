@@ -9,7 +9,7 @@
 
 ✅ **Project status: active**. [What does it mean?](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)
 
-**Gress** is a library that extends the standard [`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1) interface with a set of utilities to transform, route, and report progress in your code.
+**Gress** is a library that extends the standard [`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1) interface with a set of utilities for collecting, transforming, filtering, and muxing progress updates in your code.
 
 💬 **If you want to chat, join my [Discord server](https://discord.gg/2SUWKFnHSm)**.
 
@@ -88,7 +88,7 @@ using Gress;
 async Task FooAsync(IProgress<double> progress) { /* ... */ }
 async Task BarAsync(IProgress<int> progress) { /* ... */ }
 
-var progress = new Progress<Percentage>(p => /* ... */ );
+var progress = new Progress<Percentage>(p => /* ... */);
 
 await FooAsync(progress.ToDoubleBased());
 await BarAsync(progress.ToInt32Based());

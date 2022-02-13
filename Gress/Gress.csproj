@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Authors>$(Company)</Authors>
-    <Description>Progress aggregator</Description>
+    <Description>Progress reporting toolbox</Description>
     <IsPackable>true</IsPackable>
-    <PackageTags>progress manager aggregator net standard core</PackageTags>
+    <PackageTags>progress aggregation muxing transform filter net standard core</PackageTags>
     <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/Changelog.md</PackageReleaseNotes>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>

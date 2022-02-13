@@ -1,3 +1,12 @@
+### v2.0 (13-Feb-2022)
+
+- Completely reworked the library from the ground up.
+- Split up `ProgressManager` into a set of modular and composable utilities.
+- Added extension methods for composing and wrapping existing progress handlers.
+- Added the `Percentage` type for an unambiguous representation of progress.
+
+Refer to the [migration guide](https://github.com/Tyrrrz/Gress/wiki/Migration-guide-(from-v1.2-to-v2.0)) to see how you can update your old code to work with Gress v3.0. Also check out the new readme to see the complete list of new features.
+
 ### v1.2 (19-Apr-2020)
 
 - Added `IProgress<double>.Wrap()` extension method that wraps any existing progress as `ProgressManager`.
