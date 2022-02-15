@@ -26,7 +26,7 @@
 ### Percentage type
 
 To make progress updates more explicit, **Gress** provides a universal progress unit -- the `Percentage` type.
-Unlike raw numeric values commonly used with `IProgress<T>`, this type unambiguously represents reported progress as a portion of work that has been completed so far.
+Unlike primitive numeric types commonly used with `IProgress<T>`, this type unambiguously represents reported progress as a portion of work that has been completed so far.
 
 An instance of `Percentage` can be created from either a value or a fraction:
 
