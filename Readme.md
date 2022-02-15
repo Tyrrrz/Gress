@@ -9,7 +9,7 @@
 
 ✅ **Project status: active**. [What does it mean?](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)
 
-**Gress** is a library that extends the standard [`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1) interface with a set of utilities for collecting, transforming, filtering, and muxing progress updates in your code.
+**Gress** is a library that extends the standard [`IProgress<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.iprogress-1) interface with a set of utilities for collecting, transforming, filtering, and multiplexing progress updates in your code.
 
 💬 **If you want to chat, join my [Discord server](https://discord.gg/2SUWKFnHSm)**.
 
@@ -51,7 +51,7 @@ var asValue = fiftyPercent.Value; // 50.0 (double)
 var asFraction = fiftyPercent.Fraction; // 0.5 (double)
 ```
 
-Using `IProgress<Percentage>` allows an operation to communicate its progress to the caller without relying on any semantic assumptions:
+Using `Percentage` in your `IProgress<T>` handlers lets you communicate progress updates without making any assumptions about their semantics:
 
 ```csharp
 using Gress;
@@ -61,7 +61,7 @@ async Task PerformWorkAsync(IProgress<Percentage> progrss)
     await Task.Delay(100);
     
     // Half-way done
-    progress.Report(Percentage.FromFraction(0.5));
+    progress.Report(Percentage.FromValue(50));
     
     await Task.Delay(100);
     
@@ -79,8 +79,8 @@ await PerformWorkAsync(progress);
 // 100,0%
 ```
 
-However, you may need to interface with external methods that already specify their own progress handler signatures.
-In such cases, you can use some of the provided extensions to convert a percentage-based handler into a handler of an appropriate type:
+When interfacing with external methods, however, you may need to provide a specific progress handler required by their signature.
+In such cases, you can convert an existing percentage-based handler into another type using one of the available extension methods:
 
 ```csharp
 using Gress;
@@ -94,7 +94,7 @@ await FooAsync(progress.ToDoubleBased());
 await BarAsync(progress.ToInt32Based());
 ```
 
-Likewise, there are also extensions that facilitate conversion in the other direction, which can be useful for preserving backwards-compatibility in existing methods:
+Likewise, you can also perform conversions in the other direction, which can be useful for preserving backwards-compatibility in your own methods:
 
 ```csharp
 using Gress;
@@ -128,8 +128,8 @@ To simplify some of the most common scenarios, **Gress** comes with two terminal
 
 #### Progress container
 
-This handler simply represents an object with a single property, whose value is updated every time a new progress update is reported.
-It also implements `INotifyPropertyChanged`, which allows the property to be bound with XAML-based UI frameworks.
+This handler simply represents an object with a single property, whose value is overwritten every time a new progress update is reported.
+It also implements the `INotifyPropertyChanged` interface, allowing the property to be bound from XAML-based user interfaces.
 
 Here's a very basic example of how you would use it in a typical WPF application:
 
@@ -179,10 +179,10 @@ public class MainViewModel
 
 #### Progress collector
 
-This handler works by storing every reported progress update in an internal collection that can be accessed later.
-It's primarily designed for testing scenarios, where it can be useful to verify whether a specific routine reports its progress correctly.
+This handler works by storing all reported progress updates in a collection, whose values can be retrieved later.
+It's primarily designed for testing purposes.
 
-You can use it like so:
+Here's how you can use it to verify that a method reported its progress correctly:
 
 ```csharp
 [Fact]
@@ -196,7 +196,10 @@ public async Task My_method_reports_progress_correctly()
     await worker.PerformWorkAsync(progress);
     
     // Assert
-    progress.GetValues().Should().OnlyHaveUniqueItems(); // e.g.: no redundant progress updates
+    var values = progress.GetValues(); 
+    
+    values.Should().NotBeEmpty(); // not empty
+    values.Should().OnlyHaveUniqueItems(); // no redundant updates
 }
 ```
 
@@ -207,7 +210,7 @@ These can be used to easily apply transformations, inject filtering logic, or me
 
 #### Transformation
 
-You can use `WithTransform(...)` to create a handler that transforms all reported progress values into a different form:
+You can use `WithTransform(...)` to create a handler that transforms all reported progress updates into a different form:
 
 ```csharp
 using Gress;
@@ -266,7 +269,7 @@ progressFiltered.Report(Percentage.FromFraction(0.25));
 
 #### Deduplication
 
-You can use `WithDeduplication(...)` to create a handler that filters out consecutive progress reports with the same value:
+You can use `WithDeduplication(...)` to create a handler that filters out consecutive progress updates with the same value:
 
 ```csharp
 using Gress;
@@ -317,12 +320,12 @@ var progressMerged = progresses.Merge();
 progressMerged.Report(Percentage.FromFraction(0.5));
 ```
 
-### Muxing
+### Multiplexing
 
-Muxing allows a single handler to aggregate progress reports from multiple input sources.
-This is useful when you want to track progress of an operation that itself encapsulates other operations.
+Multiplexing allows a single handler to aggregate progress reports from multiple input sources.
+This is useful when you want to encapsulate several progress-reporting operations in a single higher-order operation.
 
-To do this, call `CreateMuxer()` on a progress handler and then create an input corresponding to each operation:
+To do this, create a muxer for the target progress handler and use it to create an input for each operation:
 
 ```csharp
 using Gress;
@@ -335,8 +338,8 @@ var progressSub2 = muxer.CreateInput();
 var progressSub3 = muxer.CreateInput();
 ```
 
-When progress is reported on any of the individual inputs, its value is aggregated with values reported on other inputs, and then routed to the original target handler.
-The sample below illustrates this process:
+When a progress update is reported on any of these inputs, all of the updates up to that point are aggregated into one and routed to the target handler.
+The sample below illustrates this process in detail:
 
 ```csharp
 // ...
@@ -372,7 +375,8 @@ progressSub3.Report(Percentage.FromFraction(1));
 // Total   -> 100%
 ```
 
-Muxer inputs, being progress handlers themselves, can be muxed even further to create a progress hierarchy:
+Additionally, since muxer inputs are progress handlers themselves, they can be multiplexed as well.
+Doing this allows you to create a progress reporting chain that form a hierarchy:
 
 ```csharp
 using Gress;
@@ -413,15 +417,15 @@ async Task BarAsync(IProgress<Percentage> progress)
 }
 ```
 
-> ⚠️ Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a fraction of all work.
-If needed, you can convert certain numeric handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
+> ⚠️ Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a relative fraction.
+If required, you can convert certain other handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
 
 #### With custom weight
 
-A muxer input may be assigned a custom weight, which determines the priority of a particular input in relation to others.
-Progress reported on a handler with higher weight influences the aggregated progress to a greater degree and vice versa.
+A muxer input may be assigned a custom weight modifier, which determines its priority in relation to others.
+Progress reported on an input with higher weight influences the aggregated progress to a greater degree and vice versa.
 
-To create a weighted muxer input, pass the corresponding value to the `CreateInput(...)` method:
+You can specify the input weight by passing it to the `CreateInput(...)` method:
 
 ```csharp
 using Gress;
@@ -439,18 +443,20 @@ var progressSub2 = muxer.CreateInput(4);
 progressSub1.Report(Percentage.FromFraction(0.9));
 progressSub2.Report(Percentage.FromFraction(0.3));
 
-// Input 1 -> 90%
-// Input 2 -> 30%
-// Total   -> 42%
+// Input 1 -> 90% (less important)
+// Input 2 -> 30% (more important)
+// Total   -> 42% (would've been 60% without weights)
 ```
 
 #### With auto-reset
 
-In some cases, you may need to report progress on an infinite workflow where new operations start and complete in a continuous fashion.
+In some cases, you may need to report progress on an infinite workflow where new operations are started and completed in a continuous fashion.
 This can be achieved by using an auto-reset muxer.
 
 Inputs to an auto-reset muxer implement the `ICompletableProgress<T>` interface and are capable of reporting completion after all of the underlying work is finished.
-Once all connected handlers report completion, they are disconnected and the muxer resets back to the initial state:
+Once all connected inputs report completion, they are disconnected and the muxer resets back to its initial state.
+
+To create an auto-reset muxer, call `WithAutoReset()` on an existing instance:
 
 ```csharp
 using Gress;
@@ -490,4 +496,4 @@ progressSub3.Report(Percentage.FromFraction(0.5));
 ```
 
 > 💡 You can wrap an instance of `ICompletableProgress<T>` in a disposable container by calling `ToDisposable()`.
-This allows you to encapsulate the handler in a `using (...)` block, which ensures that it reports completion regardless of potential exceptions.
+This allows you to place the handler in a `using (...)` block, which ensures that the completion is always reported at the end.
