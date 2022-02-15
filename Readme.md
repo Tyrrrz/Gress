@@ -325,7 +325,7 @@ progressMerged.Report(Percentage.FromFraction(0.5));
 Multiplexing allows a single handler to aggregate progress reports from multiple input sources.
 This is useful when you want to encapsulate several progress-reporting operations in a single higher-order operation.
 
-To do this, create a muxer for the target progress handler and use it to create an input for each operation:
+To do this, create a muxer for the target progress handler and then use it to create an input for each operation:
 
 ```csharp
 using Gress;
@@ -376,7 +376,7 @@ progressSub3.Report(Percentage.FromFraction(1));
 ```
 
 Additionally, since muxer inputs are progress handlers themselves, they can be multiplexed as well.
-Doing this allows you to create a progress reporting chain that form a hierarchy:
+Doing this allows you to create a progress reporting chain that forms a hierarchy:
 
 ```csharp
 using Gress;
