@@ -99,10 +99,10 @@ public partial class ProgressMuxer
 
         public void Report(Percentage value)
         {
-            Progress = value;
-
             lock (_parent._lock)
             {
+                Progress = value;
+
                 // This input could have been removed from the muxer.
                 // If that's the case, don't do anything.
                 if (!_parent._inputs.Contains(this))
