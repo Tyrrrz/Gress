@@ -28,14 +28,14 @@ public class MainViewModel : ViewModelBase
         using var progress = _progressMuxer.CreateInput(weight).ToDisposable();
 
         var operation = new OperationViewModel(weight);
-        var progressMerged = progress.Merge(operation.Progress);
+        var mergedProgress = progress.Merge(operation.Progress);
 
         Operations.Add(operation);
 
         for (var i = 1; i <= 100; i++)
         {
             await Task.Delay(TimeSpan.FromSeconds(0.1));
-            progressMerged.Report(Percentage.FromValue(i));
+            mergedProgress.Report(Percentage.FromValue(i));
         }
 
         Operations.Remove(operation);

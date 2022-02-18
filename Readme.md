@@ -221,15 +221,15 @@ var progress = new Progress<Percentage>(p => /* ... */);
 
 // Transform into a progress handler that accepts an enum value and maps
 // it into a value of the original type
-var progressTransformed = progress.WithTransform((Status s) => s switch
+var transformedProgress = progress.WithTransform((Status s) => s switch
 {
     Status.Completed => Percentage.FromValue(100), // 100%
     Status.HalfWay => Percentage.FromValue(50), // 50%
     _ => Percentage.FromValue(0) // 0%
 });
 
-// This effectively reports 50% on the original handler
-progressTransformed.Report(Status.HalfWay);
+// Effectively reports 50% on the original handler
+transformedProgress.Report(Status.HalfWay);
 ```
 
 A simpler overload of the above method can also be used when transforming between values of the same type:
@@ -239,10 +239,10 @@ using Gress;
 
 var progress = new Progress<int>(p => /* ... */);
 
-var progressTransformed = progress.WithTransform(p => 5 * p);
+var transformedProgress = progress.WithTransform(p => 5 * p);
 
-// This effectively reports 50 on the original handler
-progressTransformed.Report(10);
+// Effectively reports 50 on the original handler
+transformedProgress.Report(10);
 ```
 
 > 💡 Method `WithTransform(...)` bears some resemblance to LINQ's `Select(...)`, however they are not completely equivalent.
@@ -258,13 +258,10 @@ using Gress;
 var progress = new Progress<Percentage>(p => /* ... */);
 
 // Filter out values below 10%
-var progressFiltered = progress.WithFilter(p => p.Fraction >= 0.1);
+var filteredProgress = progress.WithFilter(p => p.Fraction >= 0.1);
 
-// ✖
-progressFiltered.Report(Percentage.FromFraction(0.05));
-
-// ✓
-progressFiltered.Report(Percentage.FromFraction(0.25));
+filteredProgress.Report(Percentage.FromFraction(0.05)); // ✖
+filteredProgress.Report(Percentage.FromFraction(0.25)); // ✓
 ```
 
 #### Deduplication
@@ -276,13 +273,13 @@ using Gress;
 
 var progress = new Progress<Percentage>(p => /* ... */);
 
-var progressDeduplicated = progress.WithDeduplication();
+var deduplicatedProgress = progress.WithDeduplication();
 
-progressDeduplicated.Report(Percentage.FromFraction(0.1)); // ✓
-progressDeduplicated.Report(Percentage.FromFraction(0.3)); // ✓
-progressDeduplicated.Report(Percentage.FromFraction(0.3)); // ✖
-progressDeduplicated.Report(Percentage.FromFraction(0.3)); // ✖
-progressDeduplicated.Report(Percentage.FromFraction(0.5)); // ✓
+deduplicatedProgress.Report(Percentage.FromFraction(0.1)); // ✓
+deduplicatedProgress.Report(Percentage.FromFraction(0.3)); // ✓
+deduplicatedProgress.Report(Percentage.FromFraction(0.3)); // ✖
+deduplicatedProgress.Report(Percentage.FromFraction(0.3)); // ✖
+deduplicatedProgress.Report(Percentage.FromFraction(0.5)); // ✓
 ```
 
 #### Merging
@@ -295,10 +292,10 @@ using Gress;
 var progress1 = new Progress<Percentage>(p => /* ... */);
 var progress2 = new Progress<Percentage>(p => /* ... */);
 
-var progressMerged = progress1.Merge(progress2);
+var mergedProgress = progress1.Merge(progress2);
 
 // Reports 50% on both progress handlers
-progressMerged.Report(Percentage.FromFraction(0.5));
+mergedProgress.Report(Percentage.FromFraction(0.5));
 ```
 
 This method can also be called on collections:
@@ -314,10 +311,10 @@ var progresses = new[]
     new Progress<Percentage>(p => /* ... */)
 };
 
-var progressMerged = progresses.Merge();
+var mergedProgress = progresses.Merge();
 
 // Reports 50% on all progress handlers
-progressMerged.Report(Percentage.FromFraction(0.5));
+mergedProgress.Report(Percentage.FromFraction(0.5));
 ```
 
 ### Multiplexing
@@ -333,9 +330,9 @@ using Gress;
 var progress = new Progress<Percentage>(p => /* ... */);
 
 var muxer = progress.CreateMuxer();
-var progressSub1 = muxer.CreateInput();
-var progressSub2 = muxer.CreateInput();
-var progressSub3 = muxer.CreateInput();
+var subProgress1 = muxer.CreateInput();
+var subProgress2 = muxer.CreateInput();
+var subProgress3 = muxer.CreateInput();
 ```
 
 When a progress update is reported on any of these inputs, all of the updates up to that point are aggregated into one and routed to the target handler.
@@ -344,30 +341,30 @@ The sample below illustrates this process in detail:
 ```csharp
 // ...
 
-progressSub1.Report(Percentage.FromFraction(0.5));
+subProgress1.Report(Percentage.FromFraction(0.5));
 
 // Input 1 ->  50%
 // Input 2 ->   0%
 // Input 3 ->   0%
 // Total   -> ~17%
 
-progressSub1.Report(Percentage.FromFraction(1));
-progressSub2.Report(Percentage.FromFraction(0.75));
+subProgress1.Report(Percentage.FromFraction(1));
+subProgress2.Report(Percentage.FromFraction(0.75));
 
 // Input 1 -> 100%
 // Input 2 ->  75%
 // Input 3 ->   0%
 // Total   -> ~58%
 
-progressSub2.Report(Percentage.FromFraction(1));
-progressSub3.Report(Percentage.FromFraction(0.9));
+subProgress2.Report(Percentage.FromFraction(1));
+subProgress3.Report(Percentage.FromFraction(0.9));
 
 // Input 1 -> 100%
 // Input 2 -> 100%
 // Input 3 ->  90%
 // Total   -> ~97%
 
-progressSub3.Report(Percentage.FromFraction(1));
+subProgress3.Report(Percentage.FromFraction(1));
 
 // Input 1 -> 100%
 // Input 2 -> 100%
@@ -393,26 +390,26 @@ async Task PerformWorkAsync(IProgress<Percentage> progress)
 async Task FooAsync(IProgress<Percentage> progress)
 {
     var muxer = progress.CreateMuxer();
-    var progressSub1 = muxer.CreateInput();
-    var progressSub2 = muxer.CreateInput();
+    var subProgress1 = muxer.CreateInput();
+    var subProgress2 = muxer.CreateInput();
     
     await Task.WhenAll(
-        PerformWorkAsync(progressSub1),
-        PerformWorkAsync(progressSub2)
+        PerformWorkAsync(subProgress1),
+        PerformWorkAsync(subProgress2)
     );
 }
 
 async Task BarAsync(IProgress<Percentage> progress)
 {
     var muxer = progress.CreateMuxer();
-    var progressSub1 = muxer.CreateInput();
-    var progressSub2 = muxer.CreateInput();
-    var progressSub3 = muxer.CreateInput();
+    var subProgress1 = muxer.CreateInput();
+    var subProgress2 = muxer.CreateInput();
+    var subProgress3 = muxer.CreateInput();
     
     await Task.WhenAll(
-        FooAsync(progressSub1),
-        FooAsync(progressSub2),
-        FooAsync(progressSub3)
+        FooAsync(subProgress1),
+        FooAsync(subProgress2),
+        FooAsync(subProgress3)
     );
 }
 ```
@@ -433,15 +430,15 @@ using Gress;
 var progress = new Progress<Percentage>(p => /* ... */);
 
 var muxer = progress.CreateMuxer();
-var progressSub1 = muxer.CreateInput(1);
-var progressSub2 = muxer.CreateInput(4);
+var subProgress1 = muxer.CreateInput(1);
+var subProgress2 = muxer.CreateInput(4);
 
 // Weight split:
 // Input 1 -> 20% of total
 // Input 2 -> 80% of total
 
-progressSub1.Report(Percentage.FromFraction(0.9));
-progressSub2.Report(Percentage.FromFraction(0.3));
+subProgress1.Report(Percentage.FromFraction(0.9));
+subProgress2.Report(Percentage.FromFraction(0.3));
 
 // Input 1 -> 90% (less important)
 // Input 2 -> 30% (more important)
@@ -465,31 +462,31 @@ using Gress.Completable;
 var progress = new Progress<Percentage>(p => /* ... */);
 
 var muxer = progress.CreateMuxer().WithAutoReset();
-var progressSub1 = muxer.CreateInput();
-var progressSub2 = muxer.CreateInput();
+var subProgress1 = muxer.CreateInput();
+var subProgress2 = muxer.CreateInput();
 
-progressSub1.Report(Percentage.FromFraction(0.3));
-progressSub2.Report(Percentage.FromFraction(0.9));
+subProgress1.Report(Percentage.FromFraction(0.3));
+subProgress2.Report(Percentage.FromFraction(0.9));
 
 // Input 1 -> 30%
 // Input 2 -> 90%
 // Total   -> 60%
 
-progressSub1.Report(Percentage.FromFraction(1));
-progressSub1.ReportCompletion();
+subProgress1.Report(Percentage.FromFraction(1));
+subProgress1.ReportCompletion();
 
 // Input 1 -> 100% (completed)
 // Input 2 -> 90%
 // Total   -> 95%
 
-progressSub2.Report(Percentage.FromFraction(1));
-progressSub2.ReportCompletion();
+subProgress2.Report(Percentage.FromFraction(1));
+subProgress2.ReportCompletion();
 
 // All inputs disconnected
 // Total   -> 0%
 
-var progressSub3 = muxer.CreateInput();
-progressSub3.Report(Percentage.FromFraction(0.5));
+var subProgress3 = muxer.CreateInput();
+subProgress3.Report(Percentage.FromFraction(0.5));
 
 // Input 3 -> 50%
 // Total   -> 50%
