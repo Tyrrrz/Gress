@@ -1,12 +1,13 @@
 # Gress
 
-[![Build](https://github.com/Tyrrrz/Gress/workflows/main/badge.svg?branch=master)](https://github.com/Tyrrrz/Gress/actions)
-[![Coverage](https://codecov.io/gh/Tyrrrz/Gress/branch/master/graph/badge.svg)](https://codecov.io/gh/Tyrrrz/Gress)
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://vshymanskyy.github.io/StandWithUkraine)
+[![Build](https://img.shields.io/github/workflow/status/Tyrrrz/Gress/CI/master)](https://github.com/Tyrrrz/Gress/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/Gress/master)](https://codecov.io/gh/Tyrrrz/Gress)
 [![Version](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
 [![Downloads](https://img.shields.io/nuget/dt/Gress.svg)](https://nuget.org/packages/Gress)
 [![Discord](https://img.shields.io/discord/869237470565392384?label=discord)](https://discord.gg/2SUWKFnHSm)
-[![Donate](https://img.shields.io/badge/donate-$$$-purple.svg)](https://tyrrrz.me/donate)
-[![Fuck Russia](https://img.shields.io/badge/fuck-russia-black.svg)](https://twitter.com/Tyrrrz/status/1495972128977571848)
+[![Donate](https://img.shields.io/badge/donate-$$$-8a2be2.svg)](https://tyrrrz.me/donate)
+[![Fuck Russia](https://img.shields.io/badge/fuck-russia-e4181c.svg?labelColor=000000)](https://twitter.com/tyrrrz/status/1495972128977571848)
 
 ✅ **Project status: active**<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)</sup>
 
@@ -23,9 +24,9 @@ By using this project or its source code, for any purpose and in any shape or fo
 
 To learn more about the war and how you can help, [click here](https://tyrrrz.me). Glory to Ukraine! 🇺🇦
 
-## Download
+## Install
 
-📦 [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
+- 📦 [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
 
 ## Screenshots
 
@@ -35,7 +36,7 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 
 ### Percentage type
 
-To make progress updates more explicit, **Gress** provides a universal progress unit -- the `Percentage` type.
+To make progress updates more explicit, **Gress** provides a universal progress unit — the `Percentage` type.
 Unlike primitive numeric types commonly used with `IProgress<T>`, this type unambiguously represents reported progress as a portion of work that has been completed so far.
 
 An instance of `Percentage` can be created from either a value or a fraction:
