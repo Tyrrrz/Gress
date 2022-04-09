@@ -112,7 +112,7 @@ using Gress;
 
 async Task FooAsync(IProgress<double> progress)
 {
-    var actualProgress = progress.ToPercentageBased();
+    var actualProgress = progress.ToPercentageBased(); // IProgress<Percentage>
     
     // Reports 0.5 on the original progress handler
     actualProgress.Report(Percentage.FromFraction(0.5));
@@ -120,7 +120,7 @@ async Task FooAsync(IProgress<double> progress)
 
 async Task BarAsync(IProgress<int> progress)
 {
-    var actualProgress = progress.ToPercentageBased();
+    var actualProgress = progress.ToPercentageBased(); // IProgress<Percentage>
     
     // Reports 50 on the original progress handler
     actualProgress.Report(Percentage.FromFraction(0.5));
@@ -237,7 +237,7 @@ var transformedProgress = progress.WithTransform((Status s) => s switch
     Status.Completed => Percentage.FromValue(100), // 100%
     Status.HalfWay => Percentage.FromValue(50), // 50%
     _ => Percentage.FromValue(0) // 0%
-});
+}); // IProgress<Status>
 
 // Effectively reports 50% on the original handler
 transformedProgress.Report(Status.HalfWay);
@@ -250,7 +250,7 @@ using Gress;
 
 var progress = new Progress<int>(p => /* ... */);
 
-var transformedProgress = progress.WithTransform(p => 5 * p);
+var transformedProgress = progress.WithTransform(p => 5 * p); // IProgress<int>
 
 // Effectively reports 50 on the original handler
 transformedProgress.Report(10);
@@ -303,7 +303,7 @@ using Gress;
 var progress1 = new Progress<Percentage>(p => /* ... */);
 var progress2 = new Progress<Percentage>(p => /* ... */);
 
-var mergedProgress = progress1.Merge(progress2);
+var mergedProgress = progress1.Merge(progress2); // IProgress<Percentage>
 
 // Reports 50% on both progress handlers
 mergedProgress.Report(Percentage.FromFraction(0.5));
@@ -322,7 +322,7 @@ var progresses = new[]
     new Progress<Percentage>(p => /* ... */)
 };
 
-var mergedProgress = progresses.Merge();
+var mergedProgress = progresses.Merge(); // IProgress<Percentage>
 
 // Reports 50% on all progress handlers
 mergedProgress.Report(Percentage.FromFraction(0.5));
@@ -333,7 +333,7 @@ mergedProgress.Report(Percentage.FromFraction(0.5));
 Multiplexing allows a single handler to aggregate progress reports from multiple input sources.
 This is useful when you want to encapsulate several progress-reporting operations in a single higher-order operation.
 
-To do this, create a muxer for the target progress handler and then use it to create an input for each operation:
+To do this, create a muxer for the target progress handler and then use it to assign an input for each operation:
 
 ```csharp
 using Gress;
@@ -341,9 +341,9 @@ using Gress;
 var progress = new Progress<Percentage>(p => /* ... */);
 
 var muxer = progress.CreateMuxer();
-var subProgress1 = muxer.CreateInput();
-var subProgress2 = muxer.CreateInput();
-var subProgress3 = muxer.CreateInput();
+var subProgress1 = muxer.CreateInput(); // IProgress<Percentage>
+var subProgress2 = muxer.CreateInput(); // IProgress<Percentage>
+var subProgress3 = muxer.CreateInput(); // IProgress<Percentage>
 ```
 
 When a progress update is reported on any of these inputs, all of the updates up to that point are aggregated into one and routed to the target handler.
@@ -383,8 +383,8 @@ subProgress3.Report(Percentage.FromFraction(1));
 // Total   -> 100%
 ```
 
-Additionally, since muxer inputs are progress handlers themselves, they can be multiplexed as well.
-Doing this allows you to create a progress reporting chain that forms a hierarchy:
+Additionally, since muxer inputs are progress handlers themselves, they can be multiplexed further as well.
+Doing this allows you to create hierarchical progress reporting chains:
 
 ```csharp
 using Gress;
@@ -473,8 +473,8 @@ using Gress.Completable;
 var progress = new Progress<Percentage>(p => /* ... */);
 
 var muxer = progress.CreateMuxer().WithAutoReset();
-var subProgress1 = muxer.CreateInput();
-var subProgress2 = muxer.CreateInput();
+var subProgress1 = muxer.CreateInput(); // ICompletableProgress<Percentage>
+var subProgress2 = muxer.CreateInput(); // ICompletableProgress<Percentage>
 
 subProgress1.Report(Percentage.FromFraction(0.3));
 subProgress2.Report(Percentage.FromFraction(0.9));
