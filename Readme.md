@@ -70,12 +70,12 @@ using Gress;
 async Task PerformWorkAsync(IProgress<Percentage> progrss)
 {
     await Task.Delay(100);
-    
+
     // Half-way done
     progress.Report(Percentage.FromValue(50));
-    
+
     await Task.Delay(100);
-    
+
     // Finished
     progress.Report(Percentage.FromFraction(1));
 }
@@ -113,7 +113,7 @@ using Gress;
 async Task FooAsync(IProgress<double> progress)
 {
     var actualProgress = progress.ToPercentageBased(); // IProgress<Percentage>
-    
+
     // Reports 0.5 on the original progress handler
     actualProgress.Report(Percentage.FromFraction(0.5));
 }
@@ -121,14 +121,14 @@ async Task FooAsync(IProgress<double> progress)
 async Task BarAsync(IProgress<int> progress)
 {
     var actualProgress = progress.ToPercentageBased(); // IProgress<Percentage>
-    
+
     // Reports 50 on the original progress handler
     actualProgress.Report(Percentage.FromFraction(0.5));
 }
 ```
 
 > 💡 When converting between percentage-based and double-based handlers, percentages are mapped using their fractional form by default.
-To override this behavior and map by value instead, use `ToDoubleBased(false)` and `ToPercentageBased(false)`.
+> To override this behavior and map by value instead, use `ToDoubleBased(false)` and `ToPercentageBased(false)`.
 
 > 💡 For more complex conversion scenarios, consider using the [`WithTransform(...)`](#transformation) method.
 
@@ -148,12 +148,12 @@ Here's a very basic example of how you would use it in a typical WPF application
 public class MainViewModel
 {
     public ProgressContainer<Percentage> Progress { get; } = new();
-    
+
     public IRelayCommand PerformWorkCommand { get; }
-    
+
     public MainViewModel() =>
         PerformWorkCommand = new RelayCommand(PerformWork);
-        
+
     public async void PerformWork()
     {
         for (var i = 1; i <= 100; i++)
@@ -174,7 +174,7 @@ public class MainViewModel
     d:DataContext="{d:DesignInstance Type=MainViewModel}">
     <StackPanel>
         <Button
-            Margin="32" 
+            Margin="32"
             Content="Execute"
             Command="{Binding PerformWorkCommand}" />
 
@@ -202,13 +202,13 @@ public async Task My_method_reports_progress_correctly()
     // Arrange
     var progress = new ProgressCollector<Percentage>();
     var worker = new Worker();
-    
+
     // Act
     await worker.PerformWorkAsync(progress);
-    
+
     // Assert
-    var values = progress.GetValues(); 
-    
+    var values = progress.GetValues();
+
     values.Should().NotBeEmpty(); // not empty
     values.Should().OnlyHaveUniqueItems(); // no redundant updates
 }
@@ -257,7 +257,7 @@ transformedProgress.Report(10);
 ```
 
 > 💡 Method `WithTransform(...)` bears some resemblance to LINQ's `Select(...)`, however they are not completely equivalent.
-The main difference is that the flow of data in `IProgress<T>` is inverse to that of `IEnumerable<T>`, which means that the transformations in `WithTransform(...)` are applied in the opposite direction.
+> The main difference is that the flow of data in `IProgress<T>` is inverse to that of `IEnumerable<T>`, which means that the transformations in `WithTransform(...)` are applied in the opposite direction.
 
 #### Filtering
 
@@ -346,7 +346,7 @@ var subProgress2 = muxer.CreateInput(); // IProgress<Percentage>
 var subProgress3 = muxer.CreateInput(); // IProgress<Percentage>
 ```
 
-When a progress update is reported on any of these inputs, all of the updates up to that point are aggregated into one and routed to the target handler.
+When a progress update is reported on any of these inputs, all the updates up to that point are aggregated into one and routed to the target handler.
 The sample below illustrates this process in detail:
 
 ```csharp
@@ -403,7 +403,7 @@ async Task FooAsync(IProgress<Percentage> progress)
     var muxer = progress.CreateMuxer();
     var subProgress1 = muxer.CreateInput();
     var subProgress2 = muxer.CreateInput();
-    
+
     await Task.WhenAll(
         PerformWorkAsync(subProgress1),
         PerformWorkAsync(subProgress2)
@@ -416,7 +416,7 @@ async Task BarAsync(IProgress<Percentage> progress)
     var subProgress1 = muxer.CreateInput();
     var subProgress2 = muxer.CreateInput();
     var subProgress3 = muxer.CreateInput();
-    
+
     await Task.WhenAll(
         FooAsync(subProgress1),
         FooAsync(subProgress2),
@@ -426,7 +426,7 @@ async Task BarAsync(IProgress<Percentage> progress)
 ```
 
 > ⚠️ Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a relative fraction.
-If required, you can convert certain other handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
+> If required, you can convert certain other handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
 
 #### With custom weight
 
@@ -504,4 +504,4 @@ subProgress3.Report(Percentage.FromFraction(0.5));
 ```
 
 > 💡 You can wrap an instance of `ICompletableProgress<T>` in a disposable container by calling `ToDisposable()`.
-This allows you to place the handler in a `using (...)` block, which ensures that the completion is always reported at the end.
+> This allows you to place the handler in a `using (...)` block, which ensures that the completion is always reported at the end.
