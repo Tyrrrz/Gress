@@ -127,10 +127,12 @@ async Task BarAsync(IProgress<int> progress)
 }
 ```
 
-> 💡 When converting between percentage-based and double-based handlers, percentages are mapped using their fractional form by default.
+> **Note**:
+> When converting between percentage-based and double-based handlers, percentages are mapped using their fractional form by default.
 > To override this behavior and map by value instead, use `ToDoubleBased(false)` and `ToPercentageBased(false)`.
 
-> 💡 For more complex conversion scenarios, consider using the [`WithTransform(...)`](#transformation) method.
+> **Note**:
+> For more complex conversion scenarios, consider using the [`WithTransform(...)`](#transformation) method.
 
 ### Terminal handlers
 
@@ -256,7 +258,8 @@ var transformedProgress = progress.WithTransform(p => 5 * p); // IProgress<int>
 transformedProgress.Report(10);
 ```
 
-> 💡 Method `WithTransform(...)` bears some resemblance to LINQ's `Select(...)`, however they are not completely equivalent.
+> **Note**:
+> Method `WithTransform(...)` bears some resemblance to LINQ's `Select(...)`, however they are not completely equivalent.
 > The main difference is that the flow of data in `IProgress<T>` is inverse to that of `IEnumerable<T>`, which means that the transformations in `WithTransform(...)` are applied in the opposite direction.
 
 #### Filtering
@@ -425,7 +428,8 @@ async Task BarAsync(IProgress<Percentage> progress)
 }
 ```
 
-> ⚠️ Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a relative fraction.
+> **Warning**:
+> Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a relative fraction.
 > If required, you can convert certain other handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
 
 #### With custom weight
@@ -503,5 +507,6 @@ subProgress3.Report(Percentage.FromFraction(0.5));
 // Total   -> 50%
 ```
 
-> 💡 You can wrap an instance of `ICompletableProgress<T>` in a disposable container by calling `ToDisposable()`.
+> **Note**:
+> You can wrap an instance of `ICompletableProgress<T>` in a disposable container by calling `ToDisposable()`.
 > This allows you to place the handler in a `using (...)` block, which ensures that the completion is always reported at the end.
