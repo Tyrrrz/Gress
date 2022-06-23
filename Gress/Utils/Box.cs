@@ -1,6 +1,7 @@
 ﻿namespace Gress.Utils;
 
-// Budget Maybe<T> where null values are valid
+// Container for a value that may or may not be set.
+// Essentially Nullable<T>, but for cases where null is also allowed.
 internal class Box<T>
 {
     private bool _isValueSet;
