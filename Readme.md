@@ -37,7 +37,7 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 ### Percentage type
 
 To make progress updates more explicit, **Gress** provides a universal progress unit — the `Percentage` type.
-Unlike primitive numeric types commonly used with `IProgress<T>`, this type unambiguously represents reported progress as a portion of work that has been completed so far.
+Unlike the primitive numeric types that are commonly paired with `IProgress<T>`, this type can be used to unambiguously represent progress as a ratio of completed work to the total amount of work encapsulated by a given operation.
 
 An instance of `Percentage` can be created from either a value or a fraction:
 
@@ -129,7 +129,7 @@ async Task BarAsync(IProgress<int> progress)
 
 > **Note**:
 > When converting between percentage-based and double-based handlers, percentages are mapped using their fractional form by default.
-> To override this behavior and map by value instead, use `ToDoubleBased(false)` and `ToPercentageBased(false)`.
+> To override this behavior and map by value instead, use `ToDoubleBased(asFraction: false)` and `ToPercentageBased(asFraction: false)`.
 
 > **Note**:
 > For more complex conversion scenarios, consider using the [`WithTransform(...)`](#transformation) method.
@@ -141,7 +141,7 @@ To simplify some of the most common scenarios, **Gress** comes with two terminal
 
 #### Progress container
 
-This handler simply represents an object with a single property, whose value is overwritten every time a new progress update is reported.
+This handler is an object with a single property, whose value is overwritten with every new progress update that gets reported.
 It also implements the `INotifyPropertyChanged` interface, allowing the property to be bound from XAML-based user interfaces.
 
 Here's a very basic example of how you would use it in a typical WPF application:
@@ -333,7 +333,7 @@ mergedProgress.Report(Percentage.FromFraction(0.5));
 
 ### Multiplexing
 
-Multiplexing allows a single handler to aggregate progress reports from multiple input sources.
+Multiplexing allows a single handler to aggregate progress updates from multiple input sources.
 This is useful when you want to encapsulate several progress-reporting operations in a single higher-order operation.
 
 To do this, create a muxer for the target progress handler and then use it to assign an input for each operation:

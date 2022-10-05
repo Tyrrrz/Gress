@@ -5,16 +5,16 @@ using System.Runtime.CompilerServices;
 namespace Gress;
 
 /// <summary>
-/// Terminal progress handler that records the last reported progress value.
+/// Terminal progress handler that records the last reported progress update.
 /// </summary>
 public partial class ProgressContainer<T> : IProgress<T>
 {
     /// <summary>
-    /// Last reported progress value.
+    /// Last reported progress update.
     /// </summary>
     /// <remarks>
     /// If this property is accessed before any progress has been reported,
-    /// it will evaluate to the default value of <see cref="T"/>, which may be <c>null</c>.
+    /// it will evaluate to the default value of <typeparamref name="T" />, which may be <c>null</c>.
     /// </remarks>
     public T Current { get; private set; } = default!;
 

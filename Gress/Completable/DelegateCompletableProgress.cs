@@ -3,7 +3,7 @@
 namespace Gress.Completable;
 
 /// <summary>
-/// Simple implementation of <see cref="ICompletableProgress{T}"/> that uses the provided
+/// Simple implementation of <see cref="ICompletableProgress{T}" /> that uses the provided
 /// delegates to report progress updates and signal completion.
 /// </summary>
 public class DelegateCompletableProgress<T> : ICompletableProgress<T>
@@ -12,7 +12,7 @@ public class DelegateCompletableProgress<T> : ICompletableProgress<T>
     private readonly Action _reportCompletion;
 
     /// <summary>
-    /// Initializes an instance of <see cref="DelegateCompletableProgress{T}"/>.
+    /// Initializes an instance of <see cref="DelegateCompletableProgress{T}" />.
     /// </summary>
     public DelegateCompletableProgress(Action<T> report, Action reportCompletion)
     {

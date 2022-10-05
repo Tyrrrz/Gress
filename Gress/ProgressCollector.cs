@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Gress;
 
 /// <summary>
-/// Terminal progress handler that stores all reported progress values in a collection.
+/// Terminal progress handler that stores all reported progress updates in a collection.
 /// </summary>
 public class ProgressCollector<T> : IProgress<T>
 {
@@ -12,7 +12,7 @@ public class ProgressCollector<T> : IProgress<T>
     private readonly List<T> _reports = new();
 
     /// <summary>
-    /// Clears the reported values.
+    /// Clears the reported updates.
     /// </summary>
     public void Reset()
     {
@@ -21,7 +21,7 @@ public class ProgressCollector<T> : IProgress<T>
     }
 
     /// <summary>
-    /// Returns the list of values reported so far.
+    /// Returns the list of updates reported so far.
     /// </summary>
     public IReadOnlyList<T> GetValues()
     {

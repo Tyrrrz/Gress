@@ -18,7 +18,7 @@ public readonly partial struct Percentage
     public double Fraction => Value / 100.0;
 
     /// <summary>
-    /// Initializes an instance of <see cref="Percentage"/>.
+    /// Initializes an instance of <see cref="Percentage" />.
     /// </summary>
     public Percentage(double value) => Value = value;
 

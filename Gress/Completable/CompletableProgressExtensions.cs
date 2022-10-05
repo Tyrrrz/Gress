@@ -3,7 +3,7 @@
 namespace Gress.Completable;
 
 /// <summary>
-/// Extensions for <see cref="CompletableProgressExtensions"/>.
+/// Extensions for <see cref="CompletableProgressExtensions" />.
 /// </summary>
 public static class CompletableProgressExtensions
 {

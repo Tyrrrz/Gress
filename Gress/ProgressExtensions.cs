@@ -5,12 +5,12 @@ using Gress.Utils;
 namespace Gress;
 
 /// <summary>
-/// Extensions for <see cref="IProgress{T}"/>.
+/// Extensions for <see cref="IProgress{T}" />.
 /// </summary>
 public static class ProgressExtensions
 {
     /// <summary>
-    /// Projects progress reports into a different shape.
+    /// Projects progress updates into a different shape.
     /// </summary>
     public static IProgress<TTransformed> WithTransform<TOriginal, TTransformed>(
         this IProgress<TOriginal> progress,
@@ -18,13 +18,13 @@ public static class ProgressExtensions
         new DelegateProgress<TTransformed>(p => progress.Report(map(p)));
 
     /// <summary>
-    /// Projects progress reports into a different shape.
+    /// Projects progress updates into a different shape.
     /// </summary>
     public static IProgress<T> WithTransform<T>(this IProgress<T> progress, Func<T, T> map) =>
         progress.WithTransform<T, T>(map);
 
     /// <summary>
-    /// Filters progress reports based on the specified predicate.
+    /// Filters progress updates based on the specified predicate.
     /// </summary>
     public static IProgress<T> WithFilter<T>(this IProgress<T> progress, Func<T, bool> shouldReport) =>
         new DelegateProgress<T>(p =>
@@ -34,7 +34,7 @@ public static class ProgressExtensions
         });
 
     /// <summary>
-    /// Filters out consecutive progress reports with the same value of the specified key.
+    /// Filters out consecutive progress updates with the same value of the specified key.
     /// </summary>
     public static IProgress<T> WithDeduplication<T, TKey>(
         this IProgress<T> progress,
@@ -64,7 +64,7 @@ public static class ProgressExtensions
     }
 
     /// <summary>
-    /// Filters out consecutive progress reports with the same value.
+    /// Filters out consecutive progress updates with the same value.
     /// </summary>
     public static IProgress<T> WithDeduplication<T>(
         this IProgress<T> progress,
@@ -92,15 +92,15 @@ public static class ProgressExtensions
         });
 
     /// <summary>
-    /// Converts the specified progress handler into a <see cref="Percentage"/>-based progress handler.
+    /// Converts the specified progress handler into a <see cref="Percentage" />-based progress handler.
     /// </summary>
     public static IProgress<Percentage> ToPercentageBased<T>(this IProgress<T> progress, Func<Percentage, T> map) =>
         progress.WithTransform(map);
 
     /// <summary>
-    /// Converts the specified <see cref="double"/>-based progress handler into a
-    /// <see cref="Percentage"/>-based progress handler.
-    /// Parameter <paramref name="asFraction"/> specifies whether the percentage-based
+    /// Converts the specified <see cref="double" />-based progress handler into a
+    /// <see cref="Percentage" />-based progress handler.
+    /// Parameter <paramref name="asFraction" /> specifies whether the percentage-based
     /// progress is reported in its decimal form (true) or in percentage form (false).
     /// </summary>
     public static IProgress<Percentage> ToPercentageBased(this IProgress<double> progress, bool asFraction = true) =>
@@ -109,16 +109,16 @@ public static class ProgressExtensions
             : progress.ToPercentageBased(p => p.Value);
 
     /// <summary>
-    /// Converts the specified <see cref="int"/>-based progress handler into a
-    /// <see cref="Percentage"/>-based progress handler.
+    /// Converts the specified <see cref="int" />-based progress handler into a
+    /// <see cref="Percentage" />-based progress handler.
     /// </summary>
     public static IProgress<Percentage> ToPercentageBased(this IProgress<int> progress) =>
         progress.ToPercentageBased(p => (int)p.Value);
 
     /// <summary>
-    /// Converts the specified <see cref="Percentage"/>-based progress handler into a
-    /// <see cref="double"/>-based progress handler.
-    /// Parameter <paramref name="asFraction"/> specifies whether the percentage-based
+    /// Converts the specified <see cref="Percentage" />-based progress handler into a
+    /// <see cref="double" />-based progress handler.
+    /// Parameter <paramref name="asFraction" /> specifies whether the percentage-based
     /// progress is reported in its decimal form (true) or in percentage form (false).
     /// </summary>
     public static IProgress<double> ToDoubleBased(this IProgress<Percentage> progress, bool asFraction = true) =>
@@ -127,8 +127,8 @@ public static class ProgressExtensions
             : progress.WithTransform((double p) => Percentage.FromValue(p));
 
     /// <summary>
-    /// Converts the specified <see cref="Percentage"/>-based progress handler into an
-    /// <see cref="int"/>-based progress handler.
+    /// Converts the specified <see cref="Percentage" />-based progress handler into an
+    /// <see cref="int" />-based progress handler.
     /// </summary>
     public static IProgress<int> ToInt32Based(this IProgress<Percentage> progress) =>
         progress.WithTransform((int p) => Percentage.FromValue(p));

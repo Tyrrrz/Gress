@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Gress;
 
 /// <summary>
-/// Aggregates multiple progress reports to a single handler.
+/// Aggregates multiple progress updates to a single handler.
 /// </summary>
 public partial class ProgressMuxer
 {
@@ -15,7 +15,7 @@ public partial class ProgressMuxer
     private bool _anyInputReported;
 
     /// <summary>
-    /// Initializes an instance of <see cref="ProgressMuxer"/>.
+    /// Initializes an instance of <see cref="ProgressMuxer" />.
     /// </summary>
     public ProgressMuxer(IProgress<Percentage> target) => _target = target;
 
