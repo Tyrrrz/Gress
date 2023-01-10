@@ -1,6 +1,6 @@
 # Gress
 
-[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://vshymanskyy.github.io/StandWithUkraine)
+[![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://tyrrrz.me/ukraine)
 [![Build](https://img.shields.io/github/actions/workflow/status/Tyrrrz/Gress/main.yml?branch=master)](https://github.com/Tyrrrz/Gress/actions)
 [![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/Gress/master)](https://codecov.io/gh/Tyrrrz/Gress)
 [![Version](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
