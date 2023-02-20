@@ -12,7 +12,7 @@ public class ProgressCollector<T> : IProgress<T>
     private readonly List<T> _reports = new();
 
     /// <summary>
-    /// Clears the reported updates.
+    /// Clears the reported progress updates.
     /// </summary>
     public void Reset()
     {
@@ -21,7 +21,7 @@ public class ProgressCollector<T> : IProgress<T>
     }
 
     /// <summary>
-    /// Returns the list of updates reported so far.
+    /// Returns the progress updates reported so far.
     /// </summary>
     public IReadOnlyList<T> GetValues()
     {
