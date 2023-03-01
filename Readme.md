@@ -254,7 +254,7 @@ var progress = new Progress<int>(p => /* ... */);
 
 var transformedProgress = progress.WithTransform(p => 5 * p); // IProgress<int>
 
-// Effectively reports 50 on the original handler
+// Effectively reports 50% on the original handler
 transformedProgress.Report(10);
 ```
 

@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
-    <PackageReference Include="PolySharp" Version="1.8.1" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" Version="1.12.1" PrivateAssets="all" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
 
