@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1 (01-Mar-2023)
+
+- Added the `WithOrdering(...)` composition method. You can use it to filter out progress updates that arrive out of order.
+
 ## v2.0.1 (15-Feb-2022)
 
 - Made `DelegateProgress<T>` and `DelegateCompletableProgress<T>` public. You can use `DelegateProgress<T>` as a substitute for `Progress<T>` when you don't need scheduling based on synchronization context (e.g. in console applications). Both classes can be also used to implement your own extension methods similar to the likes of `WithTransform(...)` and `WithFilter(...)`.
