@@ -72,6 +72,33 @@ public static class ProgressExtensions
         progress.WithDeduplication(p => p, comparer);
 
     /// <summary>
+    /// Filters out progress updates that arrive out of order.
+    /// </summary>
+    public static IProgress<T> WithOrdering<T>(
+        this IProgress<T> progress,
+        IComparer<T>? comparer = null)
+    {
+        var syncRoot = new object();
+        var actualComparer = comparer ?? Comparer<T>.Default;
+        var lastValueBox = new Box<T>();
+
+        return new DelegateProgress<T>(p =>
+        {
+            lock (syncRoot)
+            {
+                if (lastValueBox.TryOpen(out var lastValue) &&
+                    actualComparer.Compare(lastValue, p) > 0)
+                {
+                    return;
+                }
+
+                progress.Report(p);
+                lastValueBox.Store(p);
+            }
+        });
+    }
+
+    /// <summary>
     /// Merges two progress handlers into one.
     /// </summary>
     public static IProgress<T> Merge<T>(this IProgress<T> progress, IProgress<T> otherProgress) =>

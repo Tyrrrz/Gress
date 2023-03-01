@@ -296,6 +296,24 @@ deduplicatedProgress.Report(Percentage.FromFraction(0.3)); // ✖
 deduplicatedProgress.Report(Percentage.FromFraction(0.5)); // ✓
 ```
 
+#### Ordering
+
+You can use `WithOrdering(...)` to create a handler that filters out progress updates that arrive out of order:
+
+```csharp
+using Gress;
+
+var progress = new Progress<Percentage>(p => /* ... */);
+
+var orderedProgress = progress.WithOrdering();
+
+orderedProgress.Report(Percentage.FromFraction(0.1)); // ✓
+orderedProgress.Report(Percentage.FromFraction(0.3)); // ✓
+orderedProgress.Report(Percentage.FromFraction(0.2)); // ✖
+orderedProgress.Report(Percentage.FromFraction(0.5)); // ✓
+orderedProgress.Report(Percentage.FromFraction(0.4)); // ✖
+```
+
 #### Merging
 
 You can use `Merge(...)` to combine multiple progress handlers into one:

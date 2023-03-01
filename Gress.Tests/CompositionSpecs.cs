@@ -8,7 +8,7 @@ namespace Gress.Tests;
 public class CompositionSpecs
 {
     [Fact]
-    public void Progress_reports_can_be_transformed_into_a_different_type()
+    public void I_can_transform_progress_updates_into_a_different_type()
     {
         // Arrange
         var collector = new ProgressCollector<int>();
@@ -26,7 +26,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Progress_reports_can_be_transformed_into_a_different_value()
+    public void I_can_transform_progress_updates_within_the_same_type()
     {
         // Arrange
         var collector = new ProgressCollector<int>();
@@ -43,7 +43,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Progress_reports_can_be_filtered_out_based_on_a_predicate()
+    public void I_can_filter_out_progress_updates_that_do_not_satisfy_a_predicate()
     {
         // Arrange
         var collector = new ProgressCollector<int>();
@@ -63,7 +63,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Progress_reports_can_be_deduplicated()
+    public void I_can_filter_out_progress_updates_with_duplicate_values()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -92,7 +92,36 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Progress_handler_can_be_merged_with_another_progress_handler()
+    public void I_can_filter_out_progress_updates_that_arrive_out_of_order()
+    {
+        // Arrange
+        var collector = new ProgressCollector<Percentage>();
+
+        // Act
+        var progress = collector.WithOrdering();
+
+        progress.Report(Percentage.FromFraction(0.0));
+        progress.Report(Percentage.FromFraction(0.1));
+        progress.Report(Percentage.FromFraction(0.3));
+        progress.Report(Percentage.FromFraction(0.2));
+        progress.Report(Percentage.FromFraction(0.5));
+        progress.Report(Percentage.FromFraction(0.3));
+        progress.Report(Percentage.FromFraction(0.6));
+        progress.Report(Percentage.FromFraction(0.9));
+
+        // Assert
+        collector.GetValues().Should().Equal(
+            Percentage.FromFraction(0.0),
+            Percentage.FromFraction(0.1),
+            Percentage.FromFraction(0.3),
+            Percentage.FromFraction(0.5),
+            Percentage.FromFraction(0.6),
+            Percentage.FromFraction(0.9)
+        );
+    }
+
+    [Fact]
+    public void I_can_merge_two_progress_handlers_together()
     {
         // Arrange
         var collector1 = new ProgressCollector<Percentage>();
@@ -120,7 +149,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Multiple_progress_handlers_can_be_merged_into_one()
+    public void I_can_merge_multiple_progress_handlers_together()
     {
         // Arrange
         var collectors = Enumerable
@@ -147,7 +176,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Double_based_progress_handler_can_be_converted_into_a_percentage_based_handler_using_fraction_mapping()
+    public void I_can_convert_a_double_based_progress_handler_into_a_percentage_based_handler_using_fraction_mapping()
     {
         // Arrange
         var collector = new ProgressCollector<double>();
@@ -164,7 +193,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Double_based_progress_handler_can_be_converted_into_a_percentage_based_handler_using_value_mapping()
+    public void I_can_convert_a_double_based_progress_handler_into_a_percentage_based_handler_using_value_mapping()
     {
         // Arrange
         var collector = new ProgressCollector<double>();
@@ -181,7 +210,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Integer_based_progress_handler_can_be_converted_into_a_percentage_based_handler()
+    public void I_can_convert_an_integer_based_progress_handler_into_a_percentage_based_handler()
     {
         // Arrange
         var collector = new ProgressCollector<int>();
@@ -198,7 +227,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Percentage_based_progress_handler_can_be_converted_into_a_double_based_handler_using_fraction_mapping()
+    public void I_can_convert_a_percentage_based_progress_handler_into_a_double_based_handler_using_fraction_mapping()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -219,7 +248,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Percentage_based_progress_handler_can_be_converted_into_a_double_based_handler_using_value_mapping()
+    public void I_can_convert_a_percentage_based_progress_handler_into_a_double_based_handler_using_value_mapping()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -240,7 +269,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Percentage_based_progress_handler_can_be_converted_into_an_integer_based_handler()
+    public void I_can_convert_a_percentage_based_progress_handler_into_an_integer_based_handler()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -261,7 +290,7 @@ public class CompositionSpecs
     }
 
     [Fact]
-    public void Progress_handler_can_be_converted_into_a_completable_progress_handler()
+    public void I_can_convert_a_normal_progress_handler_into_a_completable_handler()
     {
         // Arrange
         var isCompleted = false;

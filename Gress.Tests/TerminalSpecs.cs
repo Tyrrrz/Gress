@@ -8,7 +8,7 @@ namespace Gress.Tests;
 public class TerminalSpecs
 {
     [Fact]
-    public void Progress_reports_can_be_collected_as_an_array()
+    public void I_can_route_progress_updates_into_a_collection()
     {
         // Arrange
         var progress = new ProgressCollector<Percentage>();
@@ -28,7 +28,7 @@ public class TerminalSpecs
     }
 
     [Fact]
-    public void Progress_reports_can_be_collected_into_a_single_value_container()
+    public void I_can_route_progress_updates_into_a_property()
     {
         // Arrange
         var progress = new ProgressContainer<Percentage>();
@@ -43,7 +43,7 @@ public class TerminalSpecs
     }
 
     [Fact]
-    public void Progress_reports_can_be_collected_into_a_single_value_container_with_change_notifications()
+    public void I_can_route_progress_updates_into_a_property_with_change_notifications()
     {
         // Arrange
         var progress = new ProgressContainer<Percentage>();

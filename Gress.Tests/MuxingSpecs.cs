@@ -7,7 +7,7 @@ namespace Gress.Tests;
 public class MuxingSpecs
 {
     [Fact]
-    public void Progress_handler_can_be_muxed_from_a_single_input()
+    public void I_can_mux_progress_updates_from_a_single_operation()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -29,7 +29,7 @@ public class MuxingSpecs
     }
 
     [Fact]
-    public void Progress_handler_can_be_muxed_from_multiple_inputs()
+    public void I_can_mux_progress_updates_from_multiple_operations()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -53,7 +53,7 @@ public class MuxingSpecs
     }
 
     [Fact]
-    public void Progress_handler_can_be_muxed_from_multiple_inputs_with_different_weights()
+    public void I_can_mux_progress_updates_from_multiple_operations_with_different_weights()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
@@ -77,7 +77,7 @@ public class MuxingSpecs
     }
 
     [Fact]
-    public void Progress_handler_can_be_muxed_from_multiple_inputs_with_auto_reset_behavior()
+    public void I_can_mux_progress_updates_from_multiple_operations_with_auto_reset_behavior()
     {
         // Arrange
         var collector = new ProgressCollector<Percentage>();
