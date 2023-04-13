@@ -450,7 +450,7 @@ async Task BarAsync(IProgress<Percentage> progress)
 > Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a relative fraction.
 > If required, you can convert certain other handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
 
-#### With custom weight
+#### Custom weights
 
 A muxer input may be assigned a custom weight modifier, which determines its priority in relation to others.
 Progress reported on an input with higher weight influences the aggregated progress to a greater degree and vice versa.
@@ -478,13 +478,13 @@ subProgress2.Report(Percentage.FromFraction(0.3));
 // Total   -> 42% (would've been 60% without weights)
 ```
 
-#### With auto-reset
+#### Auto-reset muxer
 
 In some cases, you may need to report progress on an infinite workflow where new operations are started and completed in a continuous fashion.
 This can be achieved by using an auto-reset muxer.
 
 Inputs to an auto-reset muxer implement the `ICompletableProgress<T>` interface and are capable of reporting completion after all of the underlying work is finished.
-Once all connected inputs report completion, they are disconnected and the muxer resets back to its initial state.
+Once all connected inputs report completion, they are disconnected from the muxer and the latter is reset back to the initial state.
 
 To create an auto-reset muxer, call `WithAutoReset()` on an existing instance:
 
