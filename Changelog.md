@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.1 (27-Apr-2023)
+
+- Improved support for older target frameworks via polyfills.
+
 ## v2.1 (01-Mar-2023)
 
 - Added the `WithOrdering(...)` composition method. You can use it to filter out progress updates that arrive out of order.
