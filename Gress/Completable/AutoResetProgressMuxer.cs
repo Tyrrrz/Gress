@@ -3,7 +3,7 @@
 namespace Gress.Completable;
 
 /// <summary>
-/// Aggregates multiple progress updates to a single handler.
+/// Aggregates multiple progress updates into a single handler.
 /// Resets itself once all inputs report completion.
 /// </summary>
 public partial class AutoResetProgressMuxer
@@ -34,7 +34,7 @@ public partial class AutoResetProgressMuxer
         {
             var item = new Item(this, _muxer.CreateInput(weight));
 
-            // Make sure item was created successfully before incrementing
+            // Make sure the item was created successfully before incrementing
             _pendingInputs++;
 
             return item;

@@ -8,7 +8,7 @@ namespace Gress.Completable;
 public interface ICompletableProgress<in T> : IProgress<T>
 {
     /// <summary>
-    /// Reports overall completion of an operation.
+    /// Reports overall completion of the operation.
     /// </summary>
     void ReportCompletion();
 }

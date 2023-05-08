@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Gress;
 
 /// <summary>
-/// Aggregates multiple progress updates to a single handler.
+/// Aggregates multiple progress updates into a single handler.
 /// </summary>
 public partial class ProgressMuxer
 {

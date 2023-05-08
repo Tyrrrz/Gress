@@ -10,8 +10,8 @@ public static class CompletableProgressExtensions
     /// <summary>
     /// Converts a regular progress handler into a progress handler with explicit completion.
     /// </summary>
-    public static ICompletableProgress<T> ToCompletable<T>(this IProgress<T> progress, Action handleCompletion) =>
-        new DelegateCompletableProgress<T>(progress.Report, handleCompletion);
+    public static ICompletableProgress<T> ToCompletable<T>(this IProgress<T> progress, Action reportCompletion) =>
+        new DelegateCompletableProgress<T>(progress.Report, reportCompletion);
 
     /// <summary>
     /// Wraps the specified completable progress handler in a disposable container.
@@ -22,7 +22,7 @@ public static class CompletableProgressExtensions
 
     /// <summary>
     /// Wraps the muxer in a special adapter that disconnects all inputs from the muxer
-    /// after each of them has reported completion.
+    /// after they all report completion.
     /// </summary>
     public static AutoResetProgressMuxer WithAutoReset(this ProgressMuxer muxer) => new(muxer);
 }
