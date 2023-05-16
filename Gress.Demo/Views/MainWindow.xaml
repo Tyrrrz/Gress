@@ -1,15 +1,15 @@
 ﻿<Window
     Background="{DynamicResource MaterialDesignPaper}"
     Height="400"
-    Icon="/Gress.DemoWpf;component/favicon.ico"
+    Icon="/Gress.Demo;component/favicon.ico"
     Style="{DynamicResource MaterialDesignRoot}"
     Title="Gress Demo"
     Width="500"
     WindowStartupLocation="CenterScreen"
-    x:Class="Gress.DemoWpf.Views.MainWindow"
+    x:Class="Gress.Demo.Views.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:viewModels="clr-namespace:Gress.DemoWpf.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModels="clr-namespace:Gress.Demo.ViewModels">
     <Window.DataContext>
         <viewModels:MainViewModel />
     </Window.DataContext>

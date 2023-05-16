@@ -1,6 +1,6 @@
-﻿using Gress.DemoWpf.ViewModels.Framework;
+﻿using Gress.Demo.ViewModels.Framework;
 
-namespace Gress.DemoWpf.ViewModels;
+namespace Gress.Demo.ViewModels;
 
 public class OperationViewModel : ViewModelBase
 {

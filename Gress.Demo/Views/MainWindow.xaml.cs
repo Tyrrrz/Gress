@@ -1,4 +1,4 @@
-﻿namespace Gress.DemoWpf.Views;
+﻿namespace Gress.Demo.Views;
 
 public partial class MainWindow
 {

@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Gress.DemoWpf.ViewModels.Framework;
+namespace Gress.Demo.ViewModels.Framework;
 
 public abstract class ViewModelBase : INotifyPropertyChanged
 {

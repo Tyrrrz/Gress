@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace Gress.DemoWpf.ViewModels.Framework;
+namespace Gress.Demo.ViewModels.Framework;
 
 public class RelayCommand<T> : ICommand
 {
