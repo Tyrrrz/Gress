@@ -14,16 +14,16 @@ public class MainViewModel : ViewModelBase
 
     public ObservableCollection<OperationViewModel> Operations { get; } = new();
 
-    public RelayCommand<double> StartOperationCommand { get; }
+    public RelayCommand<double> PerformWorkCommand { get; }
 
     public MainViewModel()
     {
         _progressMuxer = Progress.CreateMuxer().WithAutoReset();
-        StartOperationCommand = new RelayCommand<double>(StartOperation);
+        PerformWorkCommand = new RelayCommand<double>(w => _ = PerformWorkAsync(w));
     }
 
     // Start an operation that simulates some work and reports progress
-    public async void StartOperation(double weight)
+    public async Task PerformWorkAsync(double weight)
     {
         using var progress = _progressMuxer.CreateInput(weight).ToDisposable();
 
