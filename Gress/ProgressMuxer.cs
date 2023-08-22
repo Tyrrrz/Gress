@@ -32,11 +32,9 @@ public partial class ProgressMuxer
                 weightedMax += input.Weight * 1.0;
             }
 
-            _target.Report(Percentage.FromFraction(
-                weightedSum != 0
-                    ? weightedSum / weightedMax
-                    : 0
-            ));
+            _target.Report(
+                Percentage.FromFraction(weightedSum != 0 ? weightedSum / weightedMax : 0)
+            );
         }
     }
 

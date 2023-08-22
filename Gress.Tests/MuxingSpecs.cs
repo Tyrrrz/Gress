@@ -21,11 +21,14 @@ public class MuxingSpecs
         progress.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5)
+            );
     }
 
     [Fact]
@@ -45,11 +48,14 @@ public class MuxingSpecs
         progress3.Report(Percentage.FromFraction(0.09));
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.65 / 3),
-            Percentage.FromFraction((0.65 + 0.25) / 3),
-            Percentage.FromFraction((0.65 + 0.25 + 0.09) / 3)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.65 / 3),
+                Percentage.FromFraction((0.65 + 0.25) / 3),
+                Percentage.FromFraction((0.65 + 0.25 + 0.09) / 3)
+            );
     }
 
     [Fact]
@@ -69,11 +75,14 @@ public class MuxingSpecs
         progress3.Report(Percentage.FromFraction(0.25));
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(1.0 * 1 / 10),
-            Percentage.FromFraction((1.0 * 1 + 2.0 * 0.5) / 10),
-            Percentage.FromFraction((1.0 * 1 + 2.0 * 0.5 + 7.0 * 0.25) / 10)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(1.0 * 1 / 10),
+                Percentage.FromFraction((1.0 * 1 + 2.0 * 0.5) / 10),
+                Percentage.FromFraction((1.0 * 1 + 2.0 * 0.5 + 7.0 * 0.25) / 10)
+            );
     }
 
     [Fact]
@@ -103,15 +112,18 @@ public class MuxingSpecs
         }
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(1.0 / 3),
-            Percentage.FromFraction((1.0 + 0.5) / 3),
-            Percentage.FromFraction((1.0 + 0.5 + 0.25) / 3),
-            Percentage.FromFraction(0),
-            Percentage.FromFraction(0.65 / 3),
-            Percentage.FromFraction((0.65 + 0.25) / 3),
-            Percentage.FromFraction((0.65 + 0.25 + 0.09) / 3),
-            Percentage.FromFraction(0)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(1.0 / 3),
+                Percentage.FromFraction((1.0 + 0.5) / 3),
+                Percentage.FromFraction((1.0 + 0.5 + 0.25) / 3),
+                Percentage.FromFraction(0),
+                Percentage.FromFraction(0.65 / 3),
+                Percentage.FromFraction((0.65 + 0.25) / 3),
+                Percentage.FromFraction((0.65 + 0.25 + 0.09) / 3),
+                Percentage.FromFraction(0)
+            );
     }
 }

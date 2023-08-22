@@ -32,9 +32,7 @@ public partial class ProgressContainer<T> : IProgress<T>
     /// Consider using the other constructor overload to provide a non-null initial value.
     /// </remarks>
     public ProgressContainer()
-        : this(default!)
-    {
-    }
+        : this(default!) { }
 
     /// <inheritdoc />
     public void Report(T value) => Current = value;

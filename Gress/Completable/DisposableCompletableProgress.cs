@@ -13,8 +13,7 @@ public class DisposableCompletableProgress<T> : ICompletableProgress<T>, IDispos
     /// <summary>
     /// Initializes an instance of <see cref="DisposableCompletableProgress{T}" />.
     /// </summary>
-    public DisposableCompletableProgress(ICompletableProgress<T> target) =>
-        _target = target;
+    public DisposableCompletableProgress(ICompletableProgress<T> target) => _target = target;
 
     /// <inheritdoc />
     public void Report(T value) => _target.Report(value);

@@ -17,13 +17,13 @@ public class RelayCommand<T> : ICommand
     }
 
     public RelayCommand(Action<T> execute)
-        : this(execute, _ => true)
-    {
-    }
+        : this(execute, _ => true) { }
 
-    public bool CanExecute(object? parameter) => _canExecute(parameter is not null ? (T) parameter : default!);
+    public bool CanExecute(object? parameter) =>
+        _canExecute(parameter is not null ? (T)parameter : default!);
 
-    public void Execute(object? parameter) => _execute(parameter is not null ? (T) parameter : default!);
+    public void Execute(object? parameter) =>
+        _execute(parameter is not null ? (T)parameter : default!);
 
     public void RaiseCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 }
@@ -42,9 +42,7 @@ public class RelayCommand : ICommand
     }
 
     public RelayCommand(Action execute)
-        : this(execute, () => true)
-    {
-    }
+        : this(execute, () => true) { }
 
     public bool CanExecute(object? parameter) => _canExecute();
 

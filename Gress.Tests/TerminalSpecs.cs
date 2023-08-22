@@ -20,11 +20,14 @@ public class TerminalSpecs
         progress.Report(Percentage.FromFraction(0.5));
 
         // Assert
-        progress.GetValues().Should().Equal(
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5)
-        );
+        progress
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5)
+            );
     }
 
     [Fact]
@@ -49,7 +52,8 @@ public class TerminalSpecs
         var progress = new ProgressContainer<Percentage>();
 
         var triggerCount = 0;
-        ((INotifyPropertyChanged)progress).PropertyChanged += (_, _) => Interlocked.Increment(ref triggerCount);
+        ((INotifyPropertyChanged)progress).PropertyChanged += (_, _) =>
+            Interlocked.Increment(ref triggerCount);
 
         // Act
         progress.Report(Percentage.FromFraction(0.1));

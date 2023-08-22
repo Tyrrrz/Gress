@@ -81,14 +81,17 @@ public class CompositionSpecs
         progress.Report(Percentage.FromFraction(0.9));
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.0),
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5),
-            Percentage.FromFraction(0.6),
-            Percentage.FromFraction(0.9)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.0),
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5),
+                Percentage.FromFraction(0.6),
+                Percentage.FromFraction(0.9)
+            );
     }
 
     [Fact]
@@ -110,14 +113,17 @@ public class CompositionSpecs
         progress.Report(Percentage.FromFraction(0.9));
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.0),
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5),
-            Percentage.FromFraction(0.6),
-            Percentage.FromFraction(0.9)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.0),
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5),
+                Percentage.FromFraction(0.6),
+                Percentage.FromFraction(0.9)
+            );
     }
 
     [Fact]
@@ -135,17 +141,23 @@ public class CompositionSpecs
         progress.Report(Percentage.FromFraction(0.3));
 
         // Assert
-        collector1.GetValues().Should().Equal(
-            Percentage.FromFraction(0.0),
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3)
-        );
+        collector1
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.0),
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3)
+            );
 
-        collector2.GetValues().Should().Equal(
-            Percentage.FromFraction(0.0),
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3)
-        );
+        collector2
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.0),
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3)
+            );
     }
 
     [Fact]
@@ -167,11 +179,14 @@ public class CompositionSpecs
         // Assert
         foreach (var collector in collectors)
         {
-            collector.GetValues().Should().Equal(
-                Percentage.FromFraction(0.0),
-                Percentage.FromFraction(0.1),
-                Percentage.FromFraction(0.3)
-            );
+            collector
+                .GetValues()
+                .Should()
+                .Equal(
+                    Percentage.FromFraction(0.0),
+                    Percentage.FromFraction(0.1),
+                    Percentage.FromFraction(0.3)
+                );
         }
     }
 
@@ -240,11 +255,14 @@ public class CompositionSpecs
         progress.Report(0.5);
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5)
+            );
     }
 
     [Fact]
@@ -261,11 +279,14 @@ public class CompositionSpecs
         progress.Report(50);
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5)
+            );
     }
 
     [Fact]
@@ -282,11 +303,14 @@ public class CompositionSpecs
         progress.Report(50);
 
         // Assert
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5)
+            );
     }
 
     [Fact]
@@ -306,10 +330,13 @@ public class CompositionSpecs
 
         // Assert
         isCompleted.Should().BeTrue();
-        collector.GetValues().Should().Equal(
-            Percentage.FromFraction(0.1),
-            Percentage.FromFraction(0.3),
-            Percentage.FromFraction(0.5)
-        );
+        collector
+            .GetValues()
+            .Should()
+            .Equal(
+                Percentage.FromFraction(0.1),
+                Percentage.FromFraction(0.3),
+                Percentage.FromFraction(0.5)
+            );
     }
 }
