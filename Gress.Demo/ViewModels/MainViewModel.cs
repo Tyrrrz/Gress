@@ -19,7 +19,7 @@ public class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         _progressMuxer = Progress.CreateMuxer().WithAutoReset();
-        PerformWorkCommand = new RelayCommand<double>(w => _ = PerformWorkAsync(w));
+        PerformWorkCommand = new AsyncRelayCommand<double>(PerformWorkAsync);
     }
 
     // Start an operation that simulates some work and reports progress
