@@ -454,7 +454,7 @@ async Task BarAsync(IProgress<Percentage> progress)
 }
 ```
 
-> **Warning**:
+> **Note**:
 > Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a relative fraction.
 > If required, you can convert certain other handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
 
