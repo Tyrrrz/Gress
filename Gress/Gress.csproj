@@ -10,7 +10,7 @@
     <Description>Progress reporting toolbox</Description>
     <PackageTags>progress aggregation muxing transform filter net standard core</PackageTags>
     <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/Changelog.md</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/releases/tag/$(Version)</PackageReleaseNotes>
     <PackageIcon>favicon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

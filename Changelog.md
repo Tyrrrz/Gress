@@ -1,5 +1,9 @@
 # Changelog
 
+> **Important**:
+> This changelog is no longer maintained and will be removed in the future.
+> Going forward, new versions of this package will have the corresponding release notes published on [GitHub Releases](https://githu.com/Tyrrrz/Gress/releases).
+
 ## v2.1.1 (27-Apr-2023)
 
 - Improved support for older target frameworks via polyfills.
@@ -19,7 +23,7 @@
 - Added extension methods for composing and wrapping existing progress handlers.
 - Added the `Percentage` type for an unambiguous representation of progress.
 
-Refer to the [migration guide](https://github.com/Tyrrrz/Gress/wiki/Migration-guide-(from-v1.2-to-v2.0)) to see how you can update your old code to work with Gress v3.0. Also check out the new readme to see the complete list of new features.
+Refer to the [migration guide](<https://github.com/Tyrrrz/Gress/wiki/Migration-guide-(from-v1.2-to-v2.0)>) to see how you can update your old code to work with Gress v3.0. Also check out the new readme to see the complete list of new features.
 
 ## v1.2 (19-Apr-2020)
 
