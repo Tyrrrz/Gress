@@ -2,11 +2,9 @@
 
 namespace Gress.Demo.ViewModels;
 
-public class OperationViewModel : ViewModelBase
+public class OperationViewModel(double weight) : ViewModelBase
 {
-    public double Weight { get; }
+    public double Weight { get; } = weight;
 
     public ProgressContainer<Percentage> Progress { get; } = new();
-
-    public OperationViewModel(double weight) => Weight = weight;
 }

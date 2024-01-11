@@ -6,18 +6,12 @@ namespace Gress;
 /// <summary>
 /// Aggregates multiple progress updates into a single handler.
 /// </summary>
-public partial class ProgressMuxer
+public partial class ProgressMuxer(IProgress<Percentage> target)
 {
     private readonly object _lock = new();
-    private readonly IProgress<Percentage> _target;
     private readonly HashSet<Input> _inputs = new();
 
     private bool _anyInputReported;
-
-    /// <summary>
-    /// Initializes an instance of <see cref="ProgressMuxer" />.
-    /// </summary>
-    public ProgressMuxer(IProgress<Percentage> target) => _target = target;
 
     private void ReportAggregatedProgress()
     {
@@ -32,7 +26,7 @@ public partial class ProgressMuxer
                 weightedMax += input.Weight * 1.0;
             }
 
-            _target.Report(
+            target.Report(
                 Percentage.FromFraction(weightedSum != 0 ? weightedSum / weightedMax : 0)
             );
         }

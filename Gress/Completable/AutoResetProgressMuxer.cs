@@ -6,17 +6,12 @@ namespace Gress.Completable;
 /// Aggregates multiple progress updates into a single handler.
 /// Resets itself once all inputs report completion.
 /// </summary>
-public partial class AutoResetProgressMuxer
+public partial class AutoResetProgressMuxer(ProgressMuxer muxer)
 {
     private readonly object _lock = new();
-    private readonly ProgressMuxer _muxer;
+    private readonly ProgressMuxer _muxer = muxer;
 
     private int _pendingInputs;
-
-    /// <summary>
-    /// Initializes an instance of <see cref="AutoResetProgressMuxer" />.
-    /// </summary>
-    public AutoResetProgressMuxer(ProgressMuxer muxer) => _muxer = muxer;
 
     /// <summary>
     /// Creates a progress handler that reports progress to this muxer.

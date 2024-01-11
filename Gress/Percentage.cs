@@ -5,22 +5,17 @@ namespace Gress;
 /// <summary>
 /// Unit of progress.
 /// </summary>
-public readonly partial struct Percentage
+public readonly partial struct Percentage(double value)
 {
     /// <summary>
     /// Percentage value.
     /// </summary>
-    public double Value { get; }
+    public double Value { get; } = value;
 
     /// <summary>
     /// Percentage value in decimal form (e.g. 0.75 for 75%).
     /// </summary>
     public double Fraction => Value / 100.0;
-
-    /// <summary>
-    /// Initializes an instance of <see cref="Percentage" />.
-    /// </summary>
-    public Percentage(double value) => Value = value;
 
     /// <summary>
     /// Formats the value of this instance to a string.
