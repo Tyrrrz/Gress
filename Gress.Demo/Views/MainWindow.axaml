@@ -1,0 +1,118 @@
+﻿<Window
+    x:Class="Gress.Demo.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewModels="using:Gress.Demo.ViewModels"
+    Title="Gress Demo"
+    Width="500"
+    Height="400"
+    Icon="/favicon.ico"
+    WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <viewModels:MainViewModel />
+    </Window.DataContext>
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!--  Aggregated progress  -->
+        <StackPanel
+            Grid.Row="0"
+            Margin="16"
+            Orientation="Vertical">
+            <TextBlock
+                FontSize="18"
+                FontWeight="SemiBold"
+                Text="Summary" />
+            <StackPanel Margin="16" Orientation="Vertical">
+                <!--  Overview  -->
+                <TextBlock>
+                    <Run Text="Operations:" />
+                    <Run FontWeight="SemiBold" Text="{Binding Operations.Count, Mode=OneWay}" />
+                    <Run />
+                    <Run Text="Progress:" />
+                    <Run FontWeight="SemiBold" Text="{Binding Progress.Current, Mode=OneWay}" />
+                </TextBlock>
+
+                <!--  Progress  -->
+                <ProgressBar
+                    Height="4"
+                    Margin="0,16,0,0"
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{Binding Progress.Current.Fraction, Mode=OneWay}" />
+            </StackPanel>
+        </StackPanel>
+
+        <!--  Active operations  -->
+        <StackPanel
+            Grid.Row="1"
+            Margin="16"
+            Orientation="Vertical">
+            <TextBlock
+                FontSize="18"
+                FontWeight="SemiBold"
+                Text="Operations" />
+            <ScrollViewer
+                Margin="16"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <Panel>
+                    <!--  List  -->
+                    <ItemsControl ItemsSource="{Binding Operations}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="0,0,0,8" LastChildFill="False">
+                                    <!--  Overview  -->
+                                    <TextBlock Margin="0,2,0,0" DockPanel.Dock="Left">
+                                        <Run Text="Weight:" />
+                                        <Run FontWeight="SemiBold" Text="{Binding Weight, Mode=OneWay}" />
+                                        <Run />
+                                        <Run Text="Progress:" />
+                                        <Run FontWeight="SemiBold" Text="{Binding Progress.Current, Mode=OneWay}" />
+                                    </TextBlock>
+
+                                    <!--  Progress  -->
+                                    <ProgressBar
+                                        DockPanel.Dock="Right"
+                                        Maximum="1"
+                                        Minimum="0"
+                                        Value="{Binding Progress.Current.Fraction, Mode=OneWay}" />
+                                </DockPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!--  Placeholder  -->
+                    <TextBlock IsVisible="{Binding !Operations.Count}" Text="Start a new operation by clicking the button below" />
+                </Panel>
+            </ScrollViewer>
+        </StackPanel>
+
+        <!--  New operation  -->
+        <DockPanel
+            Grid.Row="2"
+            Margin="16"
+            LastChildFill="False">
+            <!--  Weight  -->
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center">
+                    <Run Text="Weight:" />
+                    <Run FontWeight="SemiBold" Text="{Binding Value, ElementName=WeightSlider, Mode=OneWay}" />
+                </TextBlock>
+                <Slider
+                    x:Name="WeightSlider"
+                    Width="200"
+                    Margin="24,0,0,0"
+                    IsSnapToTickEnabled="True"
+                    Maximum="10"
+                    Minimum="1"
+                    TickFrequency="1" />
+            </StackPanel>
+
+            <!--  Start button  -->
+            <Button
+                Command="{Binding EnqueueOperationCommand}"
+                CommandParameter="{Binding Value, ElementName=WeightSlider}"
+                Content="Start Operation"
+                DockPanel.Dock="Right" />
+        </DockPanel>
+    </Grid>
+</Window>

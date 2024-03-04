@@ -1,6 +1,4 @@
-﻿using Gress.Demo.ViewModels.Framework;
-
-namespace Gress.Demo.ViewModels;
+﻿namespace Gress.Demo.ViewModels;
 
 public class OperationViewModel(double weight) : ViewModelBase
 {
