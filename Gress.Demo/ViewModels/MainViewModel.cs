@@ -13,7 +13,7 @@ public class MainViewModel : ViewModelBase
 
     public ProgressContainer<Percentage> Progress { get; } = new();
 
-    public ObservableCollection<OperationViewModel> Operations { get; } = new();
+    public ObservableCollection<OperationViewModel> Operations { get; } = [];
 
     public ReactiveCommand<double, Unit> EnqueueOperationCommand { get; }
 
@@ -24,8 +24,7 @@ public class MainViewModel : ViewModelBase
     }
 
     // Start an operation that simulates some work and reports progress
-    public void EnqueueOperation(double weight)
-    {
+    public void EnqueueOperation(double weight) =>
         Task.Run(async () =>
         {
             using var progress = _progressMuxer.CreateInput(weight).ToDisposable();
@@ -43,5 +42,4 @@ public class MainViewModel : ViewModelBase
 
             Operations.Remove(operation);
         });
-    }
 }
