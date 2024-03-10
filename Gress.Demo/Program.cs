@@ -15,6 +15,6 @@ public static class Program
             .UseReactiveUI();
 
     [STAThread]
-    public static void Main(string[] args) =>
+    public static int Main(string[] args) =>
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
 }
