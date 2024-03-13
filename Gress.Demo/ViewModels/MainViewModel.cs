@@ -36,7 +36,7 @@ public class MainViewModel : ObservableObject
 
             for (var i = 1; i <= 100; i++)
             {
-                await Task.Delay(TimeSpan.FromSeconds(0.1));
+                await Task.Delay(TimeSpan.FromSeconds(Random.Shared.Next(1, 5) / 10.0));
                 mergedProgress.Report(Percentage.FromValue(i));
             }
 
