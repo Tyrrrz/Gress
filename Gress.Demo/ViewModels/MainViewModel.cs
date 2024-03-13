@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Reactive;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Gress.Completable;
-using ReactiveUI;
 
 namespace Gress.Demo.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public class MainViewModel : ObservableObject
 {
     private readonly AutoResetProgressMuxer _progressMuxer;
 
@@ -15,12 +15,12 @@ public class MainViewModel : ViewModelBase
 
     public ObservableCollection<OperationViewModel> Operations { get; } = [];
 
-    public ReactiveCommand<double, Unit> EnqueueOperationCommand { get; }
+    public RelayCommand<double> EnqueueOperationCommand { get; }
 
     public MainViewModel()
     {
         _progressMuxer = Progress.CreateMuxer().WithAutoReset();
-        EnqueueOperationCommand = ReactiveCommand.Create<double>(EnqueueOperation);
+        EnqueueOperationCommand = new RelayCommand<double>(EnqueueOperation);
     }
 
     // Start an operation that simulates some work and reports progress

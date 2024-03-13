@@ -18,7 +18,7 @@
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.9" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.9" />
     <PackageReference Include="Avalonia.Diagnostics" Version="11.0.9" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.9" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="CSharpier.MsBuild" Version="0.27.3" PrivateAssets="all" />
   </ItemGroup>
 

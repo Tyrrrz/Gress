@@ -81,7 +81,7 @@
                     </ItemsControl>
 
                     <!--  Placeholder  -->
-                    <TextBlock IsVisible="{Binding !Operations.Count}" Text="Start a new operation by clicking the button below" />
+                    <TextBlock IsVisible="{Binding !Operations.Count}" Text="Start a new operation by clicking the button below..." />
                 </Panel>
             </ScrollViewer>
         </StackPanel>

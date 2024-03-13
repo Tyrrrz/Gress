@@ -1,6 +1,8 @@
-﻿namespace Gress.Demo.ViewModels;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-public class OperationViewModel(double weight) : ViewModelBase
+namespace Gress.Demo.ViewModels;
+
+public class OperationViewModel(double weight) : ObservableObject
 {
     public double Weight { get; } = weight;
 
