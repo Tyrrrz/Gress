@@ -2,7 +2,7 @@
     x:Class="Gress.Demo.Views.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:viewModels="using:Gress.Demo.ViewModels"
+    xmlns:viewModels="clr-namespace:Gress.Demo.ViewModels"
     Title="Gress Demo"
     Width="500"
     Height="400"
