@@ -109,7 +109,7 @@
 
             <!--  Start button  -->
             <Button
-                Command="{Binding EnqueueOperationCommand}"
+                Command="{Binding PerformWorkCommand}"
                 CommandParameter="{Binding Value, ElementName=WeightSlider}"
                 Content="Start Operation"
                 DockPanel.Dock="Right" />

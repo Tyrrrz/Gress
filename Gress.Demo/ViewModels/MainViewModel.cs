@@ -18,26 +18,25 @@ public partial class MainViewModel : ObservableObject
     public MainViewModel() => _progressMuxer = Progress.CreateMuxer().WithAutoReset();
 
     // Start an operation that simulates some work and reports progress
-    [RelayCommand]
-    private void EnqueueOperation(double weight) =>
-        Task.Run(async () =>
+    [RelayCommand(AllowConcurrentExecutions = true)]
+    private async Task PerformWorkAsync(double weight)
+    {
+        using var progress = _progressMuxer.CreateInput(weight).ToDisposable();
+
+        var operation = new OperationViewModel(weight);
+        var mergedProgress = progress.Merge(operation.Progress);
+
+        Operations.Add(operation);
+
+        for (var i = 1; i <= 100; i++)
         {
-            using var progress = _progressMuxer.CreateInput(weight).ToDisposable();
+            // Simulate work
+            await Task.Delay(TimeSpan.FromSeconds(Random.Shared.Next(1, 5) / 10.0));
 
-            var operation = new OperationViewModel(weight);
-            var mergedProgress = progress.Merge(operation.Progress);
+            // Report progress as a value in the 0..100 range
+            mergedProgress.Report(Percentage.FromValue(i));
+        }
 
-            Operations.Add(operation);
-
-            for (var i = 1; i <= 100; i++)
-            {
-                // Simulate work
-                await Task.Delay(TimeSpan.FromSeconds(Random.Shared.Next(1, 5) / 10.0));
-                
-                // Report progress as a value in the 0..100 range
-                mergedProgress.Report(Percentage.FromValue(i));
-            }
-
-            Operations.Remove(operation);
-        });
+        Operations.Remove(operation);
+    }
 }
