@@ -7,7 +7,7 @@ using Gress.Completable;
 
 namespace Gress.Demo.ViewModels;
 
-public class MainViewModel : ObservableObject
+public partial class MainViewModel : ObservableObject
 {
     private readonly AutoResetProgressMuxer _progressMuxer;
 
@@ -15,16 +15,11 @@ public class MainViewModel : ObservableObject
 
     public ObservableCollection<OperationViewModel> Operations { get; } = [];
 
-    public RelayCommand<double> EnqueueOperationCommand { get; }
-
-    public MainViewModel()
-    {
-        _progressMuxer = Progress.CreateMuxer().WithAutoReset();
-        EnqueueOperationCommand = new RelayCommand<double>(EnqueueOperation);
-    }
+    public MainViewModel() => _progressMuxer = Progress.CreateMuxer().WithAutoReset();
 
     // Start an operation that simulates some work and reports progress
-    public void EnqueueOperation(double weight) =>
+    [RelayCommand]
+    private void EnqueueOperation(double weight) =>
         Task.Run(async () =>
         {
             using var progress = _progressMuxer.CreateInput(weight).ToDisposable();
@@ -36,7 +31,10 @@ public class MainViewModel : ObservableObject
 
             for (var i = 1; i <= 100; i++)
             {
+                // Simulate work
                 await Task.Delay(TimeSpan.FromSeconds(Random.Shared.Next(1, 5) / 10.0));
+                
+                // Report progress as a value in the 0..100 range
                 mergedProgress.Report(Percentage.FromValue(i));
             }
 

@@ -162,15 +162,18 @@ public class MainViewModel
     public IRelayCommand PerformWorkCommand { get; }
 
     public MainViewModel() =>
-        PerformWorkCommand = new RelayCommand(PerformWork);
+        PerformWorkCommand = new AsyncRelayCommand(PerformWorkAsync);
 
-    public async void PerformWork()
+    public async Task PerformWorkAsync()
     {
         for (var i = 1; i <= 100; i++)
         {
+            // Simulate work
             await Task.Delay(200);
+            
+            // Report progress as a value in the 0..100 range
             Progress.Report(Percentage.FromValue(i));
-        }
+        }    
     }
 }
 ```
