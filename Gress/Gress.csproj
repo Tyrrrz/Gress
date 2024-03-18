@@ -24,7 +24,6 @@
     <PackageReference Include="CSharpier.MsBuild" Version="0.27.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
     <PackageReference Include="PolyShim" Version="1.10.0" PrivateAssets="all" />
-    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

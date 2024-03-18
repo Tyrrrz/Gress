@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -27,7 +28,18 @@ public partial class ProgressContainer<T>(T initial) : IProgress<T>
     /// If this property is accessed before any progress has been reported,
     /// it will evaluate to the initial value provided by the constructor.
     /// </remarks>
-    public T Current { get; private set; } = initial;
+    public T Current
+    {
+        get => initial;
+        private set
+        {
+            if (EqualityComparer<T>.Default.Equals(value, initial))
+                return;
+
+            initial = value;
+            OnPropertyChanged();
+        }
+    }
 
     /// <inheritdoc />
     public void Report(T value) => Current = value;
