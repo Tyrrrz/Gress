@@ -11,6 +11,7 @@
     <Window.DataContext>
         <viewModels:MainViewModel />
     </Window.DataContext>
+
     <Grid RowDefinitions="Auto,*,Auto">
         <!--  Aggregated progress  -->
         <StackPanel
