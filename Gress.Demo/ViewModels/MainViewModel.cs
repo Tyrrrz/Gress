@@ -11,11 +11,11 @@ public partial class MainViewModel : ObservableObject
 {
     private readonly AutoResetProgressMuxer _progressMuxer;
 
+    public MainViewModel() => _progressMuxer = Progress.CreateMuxer().WithAutoReset();
+
     public ProgressContainer<Percentage> Progress { get; } = new();
 
     public ObservableCollection<OperationViewModel> Operations { get; } = [];
-
-    public MainViewModel() => _progressMuxer = Progress.CreateMuxer().WithAutoReset();
 
     // Start an operation that simulates some work and reports progress
     [RelayCommand(AllowConcurrentExecutions = true)]

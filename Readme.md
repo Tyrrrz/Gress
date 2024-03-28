@@ -157,12 +157,12 @@ Here's a very basic example of how you would use it in a typical WPF application
 ```csharp
 public class MainViewModel
 {
+    public MainViewModel() =>
+        PerformWorkCommand = new AsyncRelayCommand(PerformWorkAsync);
+
     public ProgressContainer<Percentage> Progress { get; } = new();
 
     public IRelayCommand PerformWorkCommand { get; }
-
-    public MainViewModel() =>
-        PerformWorkCommand = new AsyncRelayCommand(PerformWorkAsync);
 
     public async Task PerformWorkAsync()
     {
