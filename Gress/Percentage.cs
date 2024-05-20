@@ -77,6 +77,6 @@ public partial struct Percentage : IEquatable<Percentage>, IComparable<Percentag
 
 public partial struct Percentage : IFormattable
 {
-    string IFormattable.ToString(string format, IFormatProvider formatProvider) =>
+    string IFormattable.ToString(string? format, IFormatProvider? formatProvider) =>
         ToString(formatProvider);
 }
