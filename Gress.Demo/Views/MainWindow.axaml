@@ -6,6 +6,7 @@
     Title="Gress Demo"
     Width="500"
     Height="400"
+    x:DataType="viewModels:MainViewModel"
     Icon="/favicon.ico"
     WindowStartupLocation="CenterScreen">
     <Window.DataContext>
