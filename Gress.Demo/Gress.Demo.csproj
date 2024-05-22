@@ -4,13 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ApplicationIcon>..\favicon.ico</ApplicationIcon>
-  </PropertyGroup>
-
-  <!-- Avalonia-related settings -->
-  <PropertyGroup>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <AvaloniaResource Include="..\favicon.ico" Link="favicon.ico" />
   </ItemGroup>
