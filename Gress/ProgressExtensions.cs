@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Gress.Utils;
 
 namespace Gress;
@@ -45,13 +46,13 @@ public static class ProgressExtensions
         IEqualityComparer<TKey>? comparer = null
     )
     {
-        var syncRoot = new object();
+        var syncRoot = new Lock();
         var actualComparer = comparer ?? EqualityComparer<TKey>.Default;
         var lastValueBox = new Box<TKey>();
 
         return new DelegateProgress<T>(p =>
         {
-            lock (syncRoot)
+            using (syncRoot.EnterScope())
             {
                 var value = getKey(p);
 
@@ -85,13 +86,13 @@ public static class ProgressExtensions
         IComparer<T>? comparer = null
     )
     {
-        var syncRoot = new object();
+        var syncRoot = new Lock();
         var actualComparer = comparer ?? Comparer<T>.Default;
         var lastValueBox = new Box<T>();
 
         return new DelegateProgress<T>(p =>
         {
-            lock (syncRoot)
+            using (syncRoot.EnterScope())
             {
                 if (
                     lastValueBox.TryOpen(out var lastValue)

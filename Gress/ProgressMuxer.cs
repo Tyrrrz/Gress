@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Gress;
 
@@ -8,14 +9,14 @@ namespace Gress;
 /// </summary>
 public partial class ProgressMuxer(IProgress<Percentage> target)
 {
-    private readonly object _lock = new();
-    private readonly HashSet<Input> _inputs = new();
+    private readonly Lock _lock = new();
+    private readonly HashSet<Input> _inputs = [];
 
     private bool _anyInputReported;
 
     private void ReportAggregatedProgress()
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             var weightedSum = 0.0;
             var weightedMax = 0.0;
@@ -43,7 +44,7 @@ public partial class ProgressMuxer(IProgress<Percentage> target)
         if (weight <= 0)
             throw new ArgumentOutOfRangeException(nameof(weight), "Weight must be positive.");
 
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             var input = new Input(this, weight);
             _inputs.Add(input);
@@ -63,7 +64,7 @@ public partial class ProgressMuxer(IProgress<Percentage> target)
     /// </summary>
     public void Reset()
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             _inputs.Clear();
             _anyInputReported = false;
@@ -91,7 +92,7 @@ public partial class ProgressMuxer
 
         public void Report(Percentage value)
         {
-            lock (_parent._lock)
+            using (_parent._lock.EnterScope())
             {
                 Progress = value;
 

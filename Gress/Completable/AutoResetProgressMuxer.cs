@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace Gress.Completable;
 
@@ -8,7 +9,7 @@ namespace Gress.Completable;
 /// </summary>
 public partial class AutoResetProgressMuxer(ProgressMuxer muxer)
 {
-    private readonly object _lock = new();
+    private readonly Lock _lock = new();
     private readonly ProgressMuxer _muxer = muxer;
 
     private int _pendingInputs;
@@ -25,7 +26,7 @@ public partial class AutoResetProgressMuxer(ProgressMuxer muxer)
     /// </remarks>
     public ICompletableProgress<Percentage> CreateInput(double weight = 1.0)
     {
-        lock (_lock)
+        using (_lock.EnterScope())
         {
             var item = new Item(this, _muxer.CreateInput(weight));
 
@@ -52,7 +53,7 @@ public partial class AutoResetProgressMuxer
 
         public void Report(Percentage value)
         {
-            lock (_parent._lock)
+            using (_parent._lock.EnterScope())
             {
                 _target.Report(value);
             }
@@ -60,7 +61,7 @@ public partial class AutoResetProgressMuxer
 
         public void ReportCompletion()
         {
-            lock (_parent._lock)
+            using (_parent._lock.EnterScope())
             {
                 if (--_parent._pendingInputs <= 0)
                     _parent._muxer.Reset();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Gress;
 
@@ -8,15 +9,15 @@ namespace Gress;
 /// </summary>
 public class ProgressCollector<T> : IProgress<T>
 {
-    private readonly object _lock = new();
-    private readonly List<T> _reports = new();
+    private readonly Lock _lock = new();
+    private readonly List<T> _reports = [];
 
     /// <summary>
     /// Clears the reported progress updates.
     /// </summary>
     public void Reset()
     {
-        lock (_lock)
+        using (_lock.EnterScope())
             _reports.Clear();
     }
 
@@ -25,14 +26,14 @@ public class ProgressCollector<T> : IProgress<T>
     /// </summary>
     public IReadOnlyList<T> GetValues()
     {
-        lock (_lock)
+        using (_lock.EnterScope())
             return _reports.ToArray();
     }
 
     /// <inheritdoc />
     public void Report(T value)
     {
-        lock (_lock)
+        using (_lock.EnterScope())
             _reports.Add(value);
     }
 }
