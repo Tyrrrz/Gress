@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{F26213DC-B
 		License.txt = License.txt
 		Readme.md = Readme.md
 		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gress.Demo", "Gress.Demo\Gress.Demo.csproj", "{E4B1AB9A-599F-4A46-A08C-00C77B01C6C4}"
