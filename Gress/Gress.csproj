@@ -12,13 +12,7 @@
     >
   </PropertyGroup>
   <PropertyGroup>
-    <Authors>$(Company)</Authors>
-    <Description>Progress reporting toolbox</Description>
-    <PackageTags>progress aggregation muxing transform filter net standard core</PackageTags>
-    <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/releases</PackageReleaseNotes>
     <PackageIcon>favicon.png</PackageIcon>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>

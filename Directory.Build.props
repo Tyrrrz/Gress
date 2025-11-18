@@ -22,4 +22,13 @@
     <EnableAotAnalyzer>false</EnableAotAnalyzer>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Authors>$(Company)</Authors>
+    <Description>Progress reporting toolbox</Description>
+    <PackageTags>progress aggregation muxing transform filter net standard core</PackageTags>
+    <PackageProjectUrl>https://github.com/Tyrrrz/Gress</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/Tyrrrz/Gress/blob/master/releases</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
 </Project>
