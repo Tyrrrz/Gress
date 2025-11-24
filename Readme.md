@@ -135,11 +135,11 @@ async Task BarAsync(IProgress<int> progress)
 }
 ```
 
-> **Note**:
+> [!NOTE]
 > When converting between percentage-based and double-based handlers, percentages are mapped using their fractional form by default.
 > To override this behavior and map by value instead, use `ToDoubleBased(asFraction: false)` and `ToPercentageBased(asFraction: false)`.
 
-> **Note**:
+> [!NOTE]
 > For more complex conversion scenarios, consider using the [`WithTransform(...)`](#transformation) method.
 
 ### Terminal handlers
@@ -269,7 +269,7 @@ var transformedProgress = progress.WithTransform(p => 5 * p); // IProgress<int>
 transformedProgress.Report(10);
 ```
 
-> **Note**:
+> [!NOTE]
 > Method `WithTransform(...)` bears some resemblance to LINQ's `Select(...)`, however they are not completely equivalent.
 > The main difference is that the flow of data in `IProgress<T>` is inverse to that of `IEnumerable<T>`, which means that the transformations in `WithTransform(...)` are applied in the opposite direction.
 
@@ -457,7 +457,7 @@ async Task BarAsync(IProgress<Percentage> progress)
 }
 ```
 
-> **Note**:
+> [!NOTE]
 > Muxing is only available on percentage-based handlers because it relies on their ability to represent progress as a relative fraction.
 > If required, you can convert certain other handlers into percentage-based handlers using the `ToPercentageBased()` extension method.
 
@@ -536,6 +536,6 @@ subProgress3.Report(Percentage.FromFraction(0.5));
 // Total   -> 50%
 ```
 
-> **Note**:
+> [!NOTE]
 > You can wrap an instance of `ICompletableProgress<T>` in a disposable container by calling `ToDisposable()`.
 > This allows you to place the handler in a `using (...)` block, which ensures that the completion is always reported at the end.
