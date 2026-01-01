@@ -21,6 +21,6 @@
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" Version="1.1.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="all" />
-    <PackageReference Include="PolyShim" Version="2.2.0" PrivateAssets="all" />
+    <PackageReference Include="PolyShim" Version="2.4.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>
