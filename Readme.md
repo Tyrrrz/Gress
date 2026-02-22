@@ -152,7 +152,7 @@ To simplify some of the most common scenarios, **Gress** comes with two terminal
 This handler is an object with a single property, whose value is overwritten with every new progress update that gets reported.
 It also implements the `INotifyPropertyChanged` interface, allowing the property to be bound from XAML-based user interfaces.
 
-Here's a very basic example of how you would use it in a typical WPF application:
+Here's a very basic example of how you would use it in a typical Avalonia application:
 
 ```csharp
 public class MainViewModel
@@ -181,10 +181,9 @@ public class MainViewModel
 ```xml
 <Window
     x:Class="MainWindow"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    d:DataContext="{d:DesignInstance Type=MainViewModel}">
+    x:DataType="MainViewModel">
     <StackPanel>
         <Button
             Margin="32"
