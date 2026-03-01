@@ -5,19 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.11" />
+    <PackageVersion Include="Avalonia" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.12" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.12" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
+    <PackageVersion Include="coverlet.collector" Version="8.0.0" />
     <PackageVersion Include="CSharpier.MsBuild" Version="1.2.5" />
     <PackageVersion Include="FluentAssertions" Version="8.8.0" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="3.0.1" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
-    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-    <PackageVersion Include="PolyShim" Version="2.5.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
+    <PackageVersion Include="Microsoft.SourceLink.GitHub" Version="10.0.103" />
+    <PackageVersion Include="PolyShim" Version="2.6.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
