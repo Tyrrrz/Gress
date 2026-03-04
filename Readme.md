@@ -1,9 +1,9 @@
 # Gress
 
-[![Status](https://img.shields.io/badge/status-maintenance-ffd700.svg)](https://github.com/Tyrrrz/.github/blob/master/docs/project-status.md)
+[![Status](https://img.shields.io/badge/status-maintenance-ffd700.svg)](https://github.com/Tyrrrz/.github/blob/prime/docs/project-status.md)
 [![Made in Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://tyrrrz.me/ukraine)
-[![Build](https://img.shields.io/github/actions/workflow/status/Tyrrrz/Gress/main.yml?branch=master)](https://github.com/Tyrrrz/Gress/actions)
-[![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/Gress/master)](https://codecov.io/gh/Tyrrrz/Gress)
+[![Build](https://img.shields.io/github/actions/workflow/status/Tyrrrz/Gress/main.yml?branch=prime)](https://github.com/Tyrrrz/Gress/actions)
+[![Coverage](https://img.shields.io/codecov/c/github/Tyrrrz/Gress/prime)](https://codecov.io/gh/Tyrrrz/Gress)
 [![Version](https://img.shields.io/nuget/v/Gress.svg)](https://nuget.org/packages/Gress)
 [![Downloads](https://img.shields.io/nuget/dt/Gress.svg)](https://nuget.org/packages/Gress)
 [![Discord](https://img.shields.io/discord/869237470565392384?label=discord)](https://discord.gg/2SUWKFnHSm)
@@ -21,7 +21,7 @@
 
 **Gress** is a library that extends the standard [`IProgress<T>`](https://learn.microsoft.com/dotnet/api/system.iprogress-1) interface with a set of utilities for collecting, transforming, filtering, and multiplexing progress updates in your code.
 
-## Terms of use<sup>[[?]](https://github.com/Tyrrrz/.github/blob/master/docs/why-so-political.md)</sup>
+## Terms of use<sup>[[?]](https://github.com/Tyrrrz/.github/blob/prime/docs/why-so-political.md)</sup>
 
 By using this project or its source code, for any purpose and in any shape or form, you grant your **implicit agreement** to all the following statements:
 
@@ -170,10 +170,10 @@ public class MainViewModel
         {
             // Simulate work
             await Task.Delay(200);
-            
+
             // Report progress as a value in the 0..100 range
             Progress.Report(Percentage.FromValue(i));
-        }    
+        }
     }
 }
 ```
