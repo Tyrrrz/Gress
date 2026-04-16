@@ -11,13 +11,16 @@
       >true</IsAotCompatible
     >
   </PropertyGroup>
+
   <PropertyGroup>
     <PackageIcon>favicon.png</PackageIcon>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+
   <ItemGroup>
     <None Include="../favicon.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
     <PackageReference Include="PolyShim" PrivateAssets="all" />

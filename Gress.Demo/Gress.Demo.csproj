@@ -2,12 +2,14 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
-    <ApplicationIcon>..\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>../favicon.ico</ApplicationIcon>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
+
   <ItemGroup>
-    <AvaloniaResource Include="..\favicon.ico" Link="favicon.ico" />
+    <AvaloniaResource Include="../favicon.ico" Link="favicon.ico" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
@@ -17,7 +19,8 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="CSharpier.MsBuild" PrivateAssets="all" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Gress\Gress.csproj" />
+    <ProjectReference Include="../Gress/Gress.csproj" />
   </ItemGroup>
 </Project>
