@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Gress.Utils;
+using PowerKit;
 
 namespace Gress;
 
@@ -44,7 +44,7 @@ public static class ProgressExtensions
         {
             var syncRoot = new Lock();
             var actualComparer = comparer ?? EqualityComparer<TKey>.Default;
-            var lastValueBox = new Box<TKey>();
+            var lastValueCell = new Cell<TKey>();
 
             return new DelegateProgress<T>(p =>
             {
@@ -53,7 +53,7 @@ public static class ProgressExtensions
                     var value = getKey(p);
 
                     if (
-                        lastValueBox.TryOpen(out var lastValue)
+                        lastValueCell.TryOpen(out var lastValue)
                         && actualComparer.Equals(lastValue, value)
                     )
                     {
@@ -61,7 +61,7 @@ public static class ProgressExtensions
                     }
 
                     progress.Report(p);
-                    lastValueBox.Store(value);
+                    lastValueCell.Store(value);
                 }
             });
         }
@@ -79,14 +79,14 @@ public static class ProgressExtensions
         {
             var syncRoot = new Lock();
             var actualComparer = comparer ?? Comparer<T>.Default;
-            var lastValueBox = new Box<T>();
+            var lastValueCell = new Cell<T>();
 
             return new DelegateProgress<T>(p =>
             {
                 using (syncRoot.EnterScope())
                 {
                     if (
-                        lastValueBox.TryOpen(out var lastValue)
+                        lastValueCell.TryOpen(out var lastValue)
                         && actualComparer.Compare(lastValue, p) > 0
                     )
                     {
@@ -94,7 +94,7 @@ public static class ProgressExtensions
                     }
 
                     progress.Report(p);
-                    lastValueBox.Store(p);
+                    lastValueCell.Store(p);
                 }
             });
         }
