@@ -23,7 +23,7 @@ public readonly partial struct Percentage(double value)
     public string ToString(IFormatProvider? formatProvider) =>
         Fraction.ToString("P1", formatProvider);
 
-    /// <inheritdoc cref="ToString(System.IFormatProvider?)" />
+    /// <inheritdoc cref="ToString(IFormatProvider?)" />
     public override string ToString() => ToString(null);
 }
 
