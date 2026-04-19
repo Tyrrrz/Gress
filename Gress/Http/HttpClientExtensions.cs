@@ -48,7 +48,9 @@ public static class HttpClientExtensions
                 HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken
             );
+
             response.EnsureSuccessStatusCode();
+
             return await response.Content.ReadAsByteArrayAsync(progress, cancellationToken);
         }
 
@@ -90,7 +92,9 @@ public static class HttpClientExtensions
                 HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken
             );
+
             response.EnsureSuccessStatusCode();
+
             return await response.Content.ReadAsStringAsync(progress, cancellationToken);
         }
 
@@ -131,7 +135,9 @@ public static class HttpClientExtensions
                 HttpCompletionOption.ResponseHeadersRead,
                 cancellationToken
             );
+
             response.EnsureSuccessStatusCode();
+
             await response.Content.CopyToAsync(destination, progress, cancellationToken);
         }
 
