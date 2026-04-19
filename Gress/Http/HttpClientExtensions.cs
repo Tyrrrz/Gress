@@ -134,7 +134,12 @@ public static class HttpClientExtensions
             string filePath,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        ) => client.DownloadAsync(new Uri(requestUri), filePath, progress, cancellationToken);
+        ) => client.DownloadAsync(
+            new Uri(requestUri, UriKind.RelativeOrAbsolute),
+            filePath,
+            progress,
+            cancellationToken
+        );
 
         /// <summary>
         /// Sends a GET request to the specified URI and saves the response body to a file,
