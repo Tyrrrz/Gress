@@ -41,7 +41,7 @@ public static class StreamExtensions
             var buffer = ArrayPool<byte>.Shared.Rent(DefaultBufferSize);
             try
             {
-                while (source.Read(buffer, 0, DefaultBufferSize) is > 0 and var count)
+                while (source.Read(buffer, 0, buffer.Length) is > 0 and var count)
                 {
                     destination.Write(buffer, 0, count);
                     bytesRead += count;
@@ -103,7 +103,7 @@ public static class StreamExtensions
             {
                 while (
                     await source
-                        .ReadAsync(buffer, 0, DefaultBufferSize, cancellationToken)
+                        .ReadAsync(buffer, 0, buffer.Length, cancellationToken)
                         .ConfigureAwait(false)
                         is > 0
                             and var count
