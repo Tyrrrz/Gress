@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -10,19 +9,11 @@ using Xunit;
 
 namespace Gress.Tests;
 
-public class HttpClientSpecs(HttpClientSpecs.Fixture fixture)
-    : IClassFixture<HttpClientSpecs.Fixture>
+public class HttpClientSpecs
 {
     private const string TestUrl = "http://example.com/";
 
-    private readonly HttpClient _http = fixture.Http;
-
-    public class Fixture : IDisposable
-    {
-        public HttpClient Http { get; } = new();
-
-        public void Dispose() => Http.Dispose();
-    }
+    private readonly HttpClient _http = new();
 
     [Fact]
     public async Task I_can_download_a_byte_array_with_progress()
