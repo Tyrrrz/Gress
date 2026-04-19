@@ -48,6 +48,7 @@ public static class HttpContentExtensions
                 await destination
                     .WriteAsync(buffer, 0, count, cancellationToken)
                     .ConfigureAwait(false);
+
                 bytesRead += count;
 
                 if (progress is not null && totalBytes > 0)
