@@ -64,7 +64,12 @@ public static class HttpClientExtensions
             string requestUri,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        ) => client.GetStringAsync(new Uri(requestUri), progress, cancellationToken);
+        ) =>
+            client.GetStringAsync(
+                new Uri(requestUri, UriKind.RelativeOrAbsolute),
+                progress,
+                cancellationToken
+            );
 
         /// <summary>
         /// Sends a GET request to the specified URI and returns the response body as a string,
@@ -100,7 +105,13 @@ public static class HttpClientExtensions
             Stream destination,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        ) => client.DownloadAsync(new Uri(requestUri), destination, progress, cancellationToken);
+        ) =>
+            client.DownloadAsync(
+                new Uri(requestUri, UriKind.RelativeOrAbsolute),
+                destination,
+                progress,
+                cancellationToken
+            );
 
         /// <summary>
         /// Sends a GET request to the specified URI and copies the response body to the
