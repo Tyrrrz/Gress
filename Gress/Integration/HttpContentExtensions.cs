@@ -6,10 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using PowerKit.Extensions;
 
-namespace Gress.Http;
+namespace Gress.Integration;
 
 /// <summary>
-/// Extensions for <see cref="HttpContent" />.
+/// Provides progress-aware extensions for <see cref="HttpContent" />.
 /// </summary>
 public static class HttpContentExtensions
 {
@@ -17,10 +17,7 @@ public static class HttpContentExtensions
     extension(HttpContent content)
     {
         /// <summary>
-        /// Serializes the HTTP content and writes it to a stream,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the <c>Content-Length</c> header is present,
-        /// as the total byte count must be known to compute a percentage.
+        /// Serializes the HTTP content and writes it to the specified stream.
         /// </summary>
         public async Task CopyToAsync(
             Stream destination,
@@ -32,10 +29,7 @@ public static class HttpContentExtensions
                 .ConfigureAwait(false);
 
         /// <summary>
-        /// Reads the HTTP content and returns it as a byte array,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the <c>Content-Length</c> header is present,
-        /// as the total byte count must be known to compute a percentage.
+        /// Reads the HTTP content and returns it as a byte array.
         /// </summary>
         public async Task<byte[]> ReadAsByteArrayAsync(
             IProgress<Percentage>? progress,
@@ -68,12 +62,7 @@ public static class HttpContentExtensions
         }
 
         /// <summary>
-        /// Reads the HTTP content and returns it as a string,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the <c>Content-Length</c> header is present,
-        /// as the total byte count must be known to compute a percentage.
-        /// The character encoding is inferred from the <c>Content-Type</c> charset header,
-        /// falling back to UTF-8 when absent or unrecognized.
+        /// Reads the HTTP content and returns it as a string.
         /// </summary>
         public async Task<string> ReadAsStringAsync(
             IProgress<Percentage>? progress,

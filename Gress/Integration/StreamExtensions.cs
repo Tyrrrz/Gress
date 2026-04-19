@@ -5,24 +5,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using PowerKit.Extensions;
 
-namespace Gress.Http;
+namespace Gress.Integration;
 
 /// <summary>
-/// Extensions for <see cref="Stream" />.
+/// Provides progress-aware extensions for <see cref="Stream" />.
 /// </summary>
 public static class StreamExtensions
 {
-    private const int DefaultBufferSize = 81920;
-
     /// <inheritdoc cref="StreamExtensions" />
     extension(Stream source)
     {
         /// <summary>
-        /// Asynchronously reads the bytes from the current stream and writes them to another
-        /// stream, reporting progress as a <see cref="Percentage" /> value.
-        /// The <paramref name="sourceLength" /> parameter specifies the total number of bytes
-        /// to use when computing progress. If set to a negative value, the length is inferred
-        /// from the stream when it supports seeking; otherwise progress is not reported.
+        /// Asynchronously copies bytes from the source stream to the destination stream.
         /// </summary>
         public async Task CopyToAsync(
             Stream destination,
@@ -38,10 +32,7 @@ public static class StreamExtensions
             );
 
         /// <summary>
-        /// Asynchronously reads the bytes from the current stream and writes them to another
-        /// stream, reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the source stream supports seeking,
-        /// as the total byte count must be known to compute a percentage.
+        /// Asynchronously copies bytes from the source stream to the destination stream.
         /// </summary>
         public Task CopyToAsync(
             Stream destination,

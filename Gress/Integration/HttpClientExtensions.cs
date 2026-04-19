@@ -4,10 +4,10 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Gress.Http;
+namespace Gress.Integration;
 
 /// <summary>
-/// Extensions for <see cref="HttpClient" />.
+/// Provides progress-aware extensions for <see cref="HttpClient" />.
 /// </summary>
 public static class HttpClientExtensions
 {
@@ -15,10 +15,7 @@ public static class HttpClientExtensions
     extension(HttpClient client)
     {
         /// <summary>
-        /// Sends a GET request to the specified URI and returns the response body as a byte array,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
+        /// Sends a GET request and returns the response body as a byte array.
         /// </summary>
         public async Task<byte[]> GetByteArrayAsync(
             Uri requestUri,
@@ -38,10 +35,7 @@ public static class HttpClientExtensions
         }
 
         /// <summary>
-        /// Sends a GET request to the specified URI and returns the response body as a byte array,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
+        /// Sends a GET request and returns the response body as a byte array.
         /// </summary>
         public async Task<byte[]> GetByteArrayAsync(
             string requestUri,
@@ -57,12 +51,7 @@ public static class HttpClientExtensions
                 .ConfigureAwait(false);
 
         /// <summary>
-        /// Sends a GET request to the specified URI and returns the response body as a string,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
-        /// The character encoding is inferred from the <c>Content-Type</c> charset header,
-        /// falling back to UTF-8 when absent or unrecognized.
+        /// Sends a GET request and returns the response body as text.
         /// </summary>
         public async Task<string> GetStringAsync(
             Uri requestUri,
@@ -82,12 +71,7 @@ public static class HttpClientExtensions
         }
 
         /// <summary>
-        /// Sends a GET request to the specified URI and returns the response body as a string,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
-        /// The character encoding is inferred from the <c>Content-Type</c> charset header,
-        /// falling back to UTF-8 when absent or unrecognized.
+        /// Sends a GET request and returns the response body as text.
         /// </summary>
         public async Task<string> GetStringAsync(
             string requestUri,
@@ -103,10 +87,7 @@ public static class HttpClientExtensions
                 .ConfigureAwait(false);
 
         /// <summary>
-        /// Sends a GET request to the specified URI and copies the response body to the
-        /// provided stream, reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
+        /// Sends a GET request and copies the response body to the provided stream.
         /// </summary>
         public async Task DownloadAsync(
             Uri requestUri,
@@ -127,10 +108,7 @@ public static class HttpClientExtensions
         }
 
         /// <summary>
-        /// Sends a GET request to the specified URI and copies the response body to the
-        /// provided stream, reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
+        /// Sends a GET request and copies the response body to the provided stream.
         /// </summary>
         public async Task DownloadAsync(
             string requestUri,
@@ -148,10 +126,7 @@ public static class HttpClientExtensions
                 .ConfigureAwait(false);
 
         /// <summary>
-        /// Sends a GET request to the specified URI and saves the response body to a file,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
+        /// Sends a GET request and saves the response body to a file.
         /// </summary>
         public async Task DownloadAsync(
             Uri requestUri,
@@ -175,10 +150,7 @@ public static class HttpClientExtensions
         }
 
         /// <summary>
-        /// Sends a GET request to the specified URI and saves the response body to a file,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
+        /// Sends a GET request and saves the response body to a file.
         /// </summary>
         public async Task DownloadAsync(
             string requestUri,

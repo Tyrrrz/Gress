@@ -5,14 +5,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Gress.Http;
+using Gress.Integration;
 using PowerKit;
 using PowerKit.Extensions;
 using Xunit;
 
 namespace Gress.Tests;
 
-public class ExtensionSpecs
+public class IntegrationSpecs
 {
     [Fact]
     public async Task I_can_copy_a_stream_to_another_stream_with_progress()
