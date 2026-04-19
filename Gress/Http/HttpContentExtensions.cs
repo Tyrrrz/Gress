@@ -37,13 +37,12 @@ public static class HttpContentExtensions
                 .ConfigureAwait(false);
 
             var buffer = new byte[DefaultBufferSize];
-            int count;
             while (
-                (
-                    count = await sourceStream
+                
+                    await sourceStream
                         .ReadAsync(buffer, 0, buffer.Length, cancellationToken)
                         .ConfigureAwait(false)
-                ) > 0
+                is > 0 count
             )
             {
                 await destination
@@ -72,10 +71,28 @@ public static class HttpContentExtensions
         )
         {
             using var destination = new MemoryStream();
+
             await content
                 .CopyToAsync(destination, progress, cancellationToken)
                 .ConfigureAwait(false);
+
             return destination.ToArray();
+        }
+
+        private Encoding? TryGetEncoding()
+        {
+            var charset = content.Headers.ContentType?.CharSet;
+            if (charset is null)
+                return null;
+        
+            try
+            {
+                return Encoding.GetEncoding(charset);
+            }
+            catch (ArgumentException)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -96,22 +113,6 @@ public static class HttpContentExtensions
                 .ConfigureAwait(false);
 
             return (content.TryGetEncoding() ?? Encoding.UTF8).GetString(bytes);
-        }
-    }
-
-    private static Encoding? TryGetEncoding(this HttpContent content)
-    {
-        var charset = content.Headers.ContentType?.CharSet;
-        if (charset is null)
-            return null;
-
-        try
-        {
-            return Encoding.GetEncoding(charset);
-        }
-        catch (ArgumentException)
-        {
-            return null;
         }
     }
 }
