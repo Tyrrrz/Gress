@@ -63,10 +63,12 @@ public class ExtensionSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await http.GetByteArrayAsync("http://example.com/", progress);
+        var result = await http.GetByteArrayAsync("https://github.com/Tyrrrz/Gress", progress);
 
         // Assert
         result.Should().NotBeEmpty();
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 
     [Fact]
@@ -77,10 +79,12 @@ public class ExtensionSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await http.GetStringAsync("http://example.com/", progress);
+        var result = await http.GetStringAsync("https://github.com/Tyrrrz/Gress", progress);
 
         // Assert
         result.Should().NotBeNullOrEmpty();
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 
     [Fact]
@@ -92,9 +96,11 @@ public class ExtensionSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await http.DownloadAsync("http://example.com/", tempFile.Path, progress);
+        await http.DownloadAsync("https://github.com/Tyrrrz/Gress", tempFile.Path, progress);
 
         // Assert
         File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 }
