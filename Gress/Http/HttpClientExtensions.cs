@@ -20,6 +20,29 @@ public static class HttpClientExtensions
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
+        public async Task<byte[]> GetByteArrayAsync(
+            Uri requestUri,
+            IProgress<Percentage>? progress,
+            CancellationToken cancellationToken = default
+        )
+        {
+            using var response = await client
+                .GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                .ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+
+            return await response
+                .Content.ReadAsByteArrayAsync(progress, cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Sends a GET request to the specified URI and returns the response body as a byte array,
+        /// reporting progress as a <see cref="Percentage" /> value.
+        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
+        /// as the total byte count must be known to compute a percentage.
+        /// </summary>
         public Task<byte[]> GetByteArrayAsync(
             string requestUri,
             IProgress<Percentage>? progress,
@@ -32,26 +55,28 @@ public static class HttpClientExtensions
             );
 
         /// <summary>
-        /// Sends a GET request to the specified URI and returns the response body as a byte array,
+        /// Sends a GET request to the specified URI and returns the response body as a string,
         /// reporting progress as a <see cref="Percentage" /> value.
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
+        /// The character encoding is inferred from the <c>Content-Type</c> charset header,
+        /// falling back to UTF-8 when absent or unrecognized.
         /// </summary>
-        public async Task<byte[]> GetByteArrayAsync(
+        public async Task<string> GetStringAsync(
             Uri requestUri,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         )
         {
-            using var response = await client.GetAsync(
-                requestUri,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken
-            );
+            using var response = await client
+                .GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                .ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsByteArrayAsync(progress, cancellationToken);
+            return await response
+                .Content.ReadAsStringAsync(progress, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -74,28 +99,27 @@ public static class HttpClientExtensions
             );
 
         /// <summary>
-        /// Sends a GET request to the specified URI and returns the response body as a string,
-        /// reporting progress as a <see cref="Percentage" /> value.
+        /// Sends a GET request to the specified URI and copies the response body to the
+        /// provided stream, reporting progress as a <see cref="Percentage" /> value.
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
-        /// The character encoding is inferred from the <c>Content-Type</c> charset header,
-        /// falling back to UTF-8 when absent or unrecognized.
         /// </summary>
-        public async Task<string> GetStringAsync(
+        public async Task DownloadAsync(
             Uri requestUri,
+            Stream destination,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         )
         {
-            using var response = await client.GetAsync(
-                requestUri,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken
-            );
+            using var response = await client
+                .GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                .ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsStringAsync(progress, cancellationToken);
+            await response
+                .Content.CopyToAsync(destination, progress, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -118,27 +142,29 @@ public static class HttpClientExtensions
             );
 
         /// <summary>
-        /// Sends a GET request to the specified URI and copies the response body to the
-        /// provided stream, reporting progress as a <see cref="Percentage" /> value.
+        /// Sends a GET request to the specified URI and saves the response body to a file,
+        /// reporting progress as a <see cref="Percentage" /> value.
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
         public async Task DownloadAsync(
             Uri requestUri,
-            Stream destination,
+            string filePath,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         )
         {
-            using var response = await client.GetAsync(
-                requestUri,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken
+            using var fileStream = new FileStream(
+                filePath,
+                FileMode.Create,
+                FileAccess.Write,
+                FileShare.None,
+                4096,
+                FileOptions.Asynchronous
             );
-
-            response.EnsureSuccessStatusCode();
-
-            await response.Content.CopyToAsync(destination, progress, cancellationToken);
+            await client
+                .DownloadAsync(requestUri, fileStream, progress, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -159,22 +185,5 @@ public static class HttpClientExtensions
                 progress,
                 cancellationToken
             );
-
-        /// <summary>
-        /// Sends a GET request to the specified URI and saves the response body to a file,
-        /// reporting progress as a <see cref="Percentage" /> value.
-        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
-        /// as the total byte count must be known to compute a percentage.
-        /// </summary>
-        public async Task DownloadAsync(
-            Uri requestUri,
-            string filePath,
-            IProgress<Percentage>? progress,
-            CancellationToken cancellationToken = default
-        )
-        {
-            using var fileStream = File.Create(filePath);
-            await client.DownloadAsync(requestUri, fileStream, progress, cancellationToken);
-        }
     }
 }

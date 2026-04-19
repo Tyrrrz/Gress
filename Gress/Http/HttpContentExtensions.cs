@@ -32,16 +32,23 @@ public static class HttpContentExtensions
             var totalBytes = content.Headers.ContentLength ?? -1;
             var bytesRead = 0L;
 
-            using var sourceStream = await content.ReadAsStreamAsync(cancellationToken);
+            using var sourceStream = await content
+                .ReadAsStreamAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             var buffer = new byte[DefaultBufferSize];
             int count;
             while (
-                (count = await sourceStream.ReadAsync(buffer, 0, buffer.Length, cancellationToken))
-                > 0
+                (
+                    count = await sourceStream
+                        .ReadAsync(buffer, 0, buffer.Length, cancellationToken)
+                        .ConfigureAwait(false)
+                ) > 0
             )
             {
-                await destination.WriteAsync(buffer, 0, count, cancellationToken);
+                await destination
+                    .WriteAsync(buffer, 0, count, cancellationToken)
+                    .ConfigureAwait(false);
                 bytesRead += count;
 
                 if (progress is not null && totalBytes > 0)
@@ -65,7 +72,9 @@ public static class HttpContentExtensions
         )
         {
             using var destination = new MemoryStream();
-            await content.CopyToAsync(destination, progress, cancellationToken);
+            await content
+                .CopyToAsync(destination, progress, cancellationToken)
+                .ConfigureAwait(false);
             return destination.ToArray();
         }
 
@@ -82,7 +91,9 @@ public static class HttpContentExtensions
             CancellationToken cancellationToken = default
         )
         {
-            var bytes = await content.ReadAsByteArrayAsync(progress, cancellationToken);
+            var bytes = await content
+                .ReadAsByteArrayAsync(progress, cancellationToken)
+                .ConfigureAwait(false);
 
             var charset = content.Headers.ContentType?.CharSet;
             var encoding = Encoding.UTF8;

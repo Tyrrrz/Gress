@@ -78,7 +78,9 @@ public static class StreamExtensions
         {
             if (progress is null)
             {
-                await source.CopyToAsync(destination, DefaultBufferSize, cancellationToken);
+                await source
+                    .CopyToAsync(destination, DefaultBufferSize, cancellationToken)
+                    .ConfigureAwait(false);
                 return;
             }
 
@@ -92,10 +94,16 @@ public static class StreamExtensions
             var buffer = new byte[DefaultBufferSize];
             int count;
             while (
-                (count = await source.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0
+                (
+                    count = await source
+                        .ReadAsync(buffer, 0, buffer.Length, cancellationToken)
+                        .ConfigureAwait(false)
+                ) > 0
             )
             {
-                await destination.WriteAsync(buffer, 0, count, cancellationToken);
+                await destination
+                    .WriteAsync(buffer, 0, count, cancellationToken)
+                    .ConfigureAwait(false);
                 bytesRead += count;
 
                 if (totalBytes > 0)

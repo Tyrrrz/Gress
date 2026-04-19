@@ -1,3 +1,4 @@
+using System;
 using System.Buffers;
 using System.IO;
 using System.Linq;
@@ -19,8 +20,8 @@ public class ExtensionSpecs
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
         var data = ArrayPool<byte>.Shared.Rent(81920 * 2 + 1000);
         Random.Shared.NextBytes(data);
-        var source = new MemoryStream(data);
-        var destination = new MemoryStream();
+        using var source = new MemoryStream(data);
+        using var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
 
         // Act
@@ -42,8 +43,8 @@ public class ExtensionSpecs
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
         var data = ArrayPool<byte>.Shared.Rent(81920 * 2 + 1000);
         Random.Shared.NextBytes(data);
-        var source = new MemoryStream(data);
-        var destination = new MemoryStream();
+        using var source = new MemoryStream(data);
+        using var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
 
         // Act
