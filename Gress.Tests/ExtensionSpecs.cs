@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -16,9 +17,8 @@ public class ExtensionSpecs
     {
         // Arrange
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
-        var data = new byte[81920 * 2 + 1000];
-        for (var i = 0; i < data.Length; i++)
-            data[i] = (byte)(i % 256);
+        var data = ArrayPool<byte>.Shared.Rent(81920 * 2 + 1000);
+        Random.Shared.NextBytes(data);
         var source = new MemoryStream(data);
         var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
@@ -31,6 +31,8 @@ public class ExtensionSpecs
         progress.GetValues().Should().NotBeEmpty();
         progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
         progress.GetValues().Should().BeInAscendingOrder();
+
+        ArrayPool<byte>.Shared.Return(data);
     }
 
     [Fact]
@@ -38,9 +40,8 @@ public class ExtensionSpecs
     {
         // Arrange
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
-        var data = new byte[81920 * 2 + 1000];
-        for (var i = 0; i < data.Length; i++)
-            data[i] = (byte)(i % 256);
+        var data = ArrayPool<byte>.Shared.Rent(81920 * 2 + 1000);
+        Random.Shared.NextBytes(data);
         var source = new MemoryStream(data);
         var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
@@ -53,6 +54,8 @@ public class ExtensionSpecs
         progress.GetValues().Should().NotBeEmpty();
         progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
         progress.GetValues().Should().BeInAscendingOrder();
+
+        ArrayPool<byte>.Shared.Return(data);
     }
 
     [Fact]
