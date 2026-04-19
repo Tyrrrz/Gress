@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,19 +38,25 @@ public static class StreamExtensions
 
             var bytesRead = 0L;
 
-            var buffer = new byte[DefaultBufferSize];
-            int count;
-            while ((count = source.Read(buffer, 0, buffer.Length)) > 0)
+            var buffer = ArrayPool<byte>.Shared.Rent(DefaultBufferSize);
+            try
             {
-                destination.Write(buffer, 0, count);
-                bytesRead += count;
-
-                if (totalBytes > 0)
+                while (source.Read(buffer, 0, DefaultBufferSize) is > 0 and var count)
                 {
-                    progress.Report(
-                        Percentage.FromFraction(Math.Min(1.0, (double)bytesRead / totalBytes))
-                    );
+                    destination.Write(buffer, 0, count);
+                    bytesRead += count;
+
+                    if (totalBytes > 0)
+                    {
+                        progress.Report(
+                            Percentage.FromFraction(Math.Min(1.0, (double)bytesRead / totalBytes))
+                        );
+                    }
                 }
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
 
@@ -91,27 +98,33 @@ public static class StreamExtensions
 
             var bytesRead = 0L;
 
-            var buffer = new byte[DefaultBufferSize];
-            int count;
-            while (
-                (
-                    count = await source
-                        .ReadAsync(buffer, 0, buffer.Length, cancellationToken)
-                        .ConfigureAwait(false)
-                ) > 0
-            )
+            var buffer = ArrayPool<byte>.Shared.Rent(DefaultBufferSize);
+            try
             {
-                await destination
-                    .WriteAsync(buffer, 0, count, cancellationToken)
-                    .ConfigureAwait(false);
-                bytesRead += count;
-
-                if (totalBytes > 0)
+                while (
+                    await source
+                        .ReadAsync(buffer, 0, DefaultBufferSize, cancellationToken)
+                        .ConfigureAwait(false)
+                        is > 0
+                            and var count
+                )
                 {
-                    progress.Report(
-                        Percentage.FromFraction(Math.Min(1.0, (double)bytesRead / totalBytes))
-                    );
+                    await destination
+                        .WriteAsync(buffer, 0, count, cancellationToken)
+                        .ConfigureAwait(false);
+                    bytesRead += count;
+
+                    if (totalBytes > 0)
+                    {
+                        progress.Report(
+                            Percentage.FromFraction(Math.Min(1.0, (double)bytesRead / totalBytes))
+                        );
+                    }
                 }
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
             }
         }
 

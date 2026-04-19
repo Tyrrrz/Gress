@@ -95,18 +95,23 @@ public static class HttpContentExtensions
                 .ReadAsByteArrayAsync(progress, cancellationToken)
                 .ConfigureAwait(false);
 
-            var charset = content.Headers.ContentType?.CharSet;
-            var encoding = Encoding.UTF8;
-            if (charset is not null)
-            {
-                try
-                {
-                    encoding = Encoding.GetEncoding(charset);
-                }
-                catch (ArgumentException) { }
-            }
+            return (content.TryGetEncoding() ?? Encoding.UTF8).GetString(bytes);
+        }
+    }
 
-            return encoding.GetString(bytes);
+    private static Encoding? TryGetEncoding(this HttpContent content)
+    {
+        var charset = content.Headers.ContentType?.CharSet;
+        if (charset is null)
+            return null;
+
+        try
+        {
+            return Encoding.GetEncoding(charset);
+        }
+        catch (ArgumentException)
+        {
+            return null;
         }
     }
 }

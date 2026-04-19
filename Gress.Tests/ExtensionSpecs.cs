@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Gress.Http;
 using PowerKit;
+using PowerKit.Extensions;
 using Xunit;
 
 namespace Gress.Tests;
@@ -18,8 +19,9 @@ public class ExtensionSpecs
     {
         // Arrange
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
-        var data = ArrayPool<byte>.Shared.Rent(81920 * 2 + 1000);
-        Random.Shared.NextBytes(data);
+        using var dataOwner = ArrayPool<byte>.Shared.RentOwner(81920 * 2 + 1000);
+        Random.Shared.NextBytes(dataOwner.Memory.Span);
+        var data = dataOwner.Memory.ToArray();
         using var source = new MemoryStream(data);
         using var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
@@ -32,8 +34,6 @@ public class ExtensionSpecs
         progress.GetValues().Should().NotBeEmpty();
         progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
         progress.GetValues().Should().BeInAscendingOrder();
-
-        ArrayPool<byte>.Shared.Return(data);
     }
 
     [Fact]
@@ -41,8 +41,9 @@ public class ExtensionSpecs
     {
         // Arrange
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
-        var data = ArrayPool<byte>.Shared.Rent(81920 * 2 + 1000);
-        Random.Shared.NextBytes(data);
+        using var dataOwner = ArrayPool<byte>.Shared.RentOwner(81920 * 2 + 1000);
+        Random.Shared.NextBytes(dataOwner.Memory.Span);
+        var data = dataOwner.Memory.ToArray();
         using var source = new MemoryStream(data);
         using var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
@@ -55,8 +56,6 @@ public class ExtensionSpecs
         progress.GetValues().Should().NotBeEmpty();
         progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
         progress.GetValues().Should().BeInAscendingOrder();
-
-        ArrayPool<byte>.Shared.Return(data);
     }
 
     [Fact]
