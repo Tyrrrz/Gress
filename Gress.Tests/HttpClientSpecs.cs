@@ -10,9 +10,19 @@ using Xunit;
 
 namespace Gress.Tests;
 
-public class HttpClientSpecs
+public class HttpClientSpecs(HttpClientSpecs.Fixture fixture)
+    : IClassFixture<HttpClientSpecs.Fixture>
 {
-    private static readonly HttpClient Http = new();
+    private const string TestUrl = "http://example.com/";
+
+    private readonly HttpClient _http = fixture.Http;
+
+    public class Fixture : IDisposable
+    {
+        public HttpClient Http { get; } = new();
+
+        public void Dispose() => Http.Dispose();
+    }
 
     [Fact]
     public async Task I_can_download_a_byte_array_via_string_url_with_progress()
@@ -21,7 +31,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await Http.GetByteArrayAsync("http://example.com/", progress);
+        var result = await _http.GetByteArrayAsync(TestUrl, progress);
 
         // Assert
         result.Should().NotBeEmpty();
@@ -36,7 +46,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await Http.GetByteArrayAsync(new Uri("http://example.com/"), progress);
+        var result = await _http.GetByteArrayAsync(new Uri(TestUrl), progress);
 
         // Assert
         result.Should().NotBeEmpty();
@@ -48,7 +58,7 @@ public class HttpClientSpecs
     public async Task I_can_download_a_byte_array_without_reporting_progress_when_the_handler_is_null()
     {
         // Act
-        var result = await Http.GetByteArrayAsync("http://example.com/", null);
+        var result = await _http.GetByteArrayAsync(TestUrl, null);
 
         // Assert
         result.Should().NotBeEmpty();
@@ -61,7 +71,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await Http.GetStringAsync("http://example.com/", progress);
+        var result = await _http.GetStringAsync(TestUrl, progress);
 
         // Assert
         result.Should().NotBeNullOrEmpty();
@@ -76,7 +86,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await Http.GetStringAsync(new Uri("http://example.com/"), progress);
+        var result = await _http.GetStringAsync(new Uri(TestUrl), progress);
 
         // Assert
         result.Should().NotBeNullOrEmpty();
@@ -88,7 +98,7 @@ public class HttpClientSpecs
     public async Task I_can_download_a_string_without_reporting_progress_when_the_handler_is_null()
     {
         // Act
-        var result = await Http.GetStringAsync("http://example.com/", null);
+        var result = await _http.GetStringAsync(TestUrl, null);
 
         // Assert
         result.Should().NotBeNullOrEmpty();
@@ -102,7 +112,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await Http.DownloadAsync("http://example.com/", destination, progress);
+        await _http.DownloadAsync(TestUrl, destination, progress);
 
         // Assert
         destination.ToArray().Should().NotBeEmpty();
@@ -118,7 +128,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await Http.DownloadAsync(new Uri("http://example.com/"), destination, progress);
+        await _http.DownloadAsync(new Uri(TestUrl), destination, progress);
 
         // Assert
         destination.ToArray().Should().NotBeEmpty();
@@ -133,7 +143,7 @@ public class HttpClientSpecs
         var destination = new MemoryStream();
 
         // Act
-        await Http.DownloadAsync("http://example.com/", destination, null);
+        await _http.DownloadAsync(TestUrl, destination, null);
 
         // Assert
         destination.ToArray().Should().NotBeEmpty();
@@ -147,7 +157,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await Http.DownloadAsync("http://example.com/", tempFile.Path, progress);
+        await _http.DownloadAsync(TestUrl, tempFile.Path, progress);
 
         // Assert
         File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
@@ -163,7 +173,7 @@ public class HttpClientSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await Http.DownloadAsync(new Uri("http://example.com/"), tempFile.Path, progress);
+        await _http.DownloadAsync(new Uri(TestUrl), tempFile.Path, progress);
 
         // Assert
         File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
@@ -178,7 +188,7 @@ public class HttpClientSpecs
         using var tempFile = TempFile.Create();
 
         // Act
-        await Http.DownloadAsync("http://example.com/", tempFile.Path, null);
+        await _http.DownloadAsync(TestUrl, tempFile.Path, null);
 
         // Assert
         File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
