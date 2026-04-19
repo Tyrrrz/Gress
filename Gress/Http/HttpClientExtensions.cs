@@ -43,16 +43,18 @@ public static class HttpClientExtensions
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
-        public Task<byte[]> GetByteArrayAsync(
+        public async Task<byte[]> GetByteArrayAsync(
             string requestUri,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         ) =>
-            client.GetByteArrayAsync(
-                new Uri(requestUri, UriKind.RelativeOrAbsolute),
-                progress,
-                cancellationToken
-            );
+            await client
+                .GetByteArrayAsync(
+                    new Uri(requestUri, UriKind.RelativeOrAbsolute),
+                    progress,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
 
         /// <summary>
         /// Sends a GET request to the specified URI and returns the response body as a string,
@@ -87,16 +89,18 @@ public static class HttpClientExtensions
         /// The character encoding is inferred from the <c>Content-Type</c> charset header,
         /// falling back to UTF-8 when absent or unrecognized.
         /// </summary>
-        public Task<string> GetStringAsync(
+        public async Task<string> GetStringAsync(
             string requestUri,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         ) =>
-            client.GetStringAsync(
-                new Uri(requestUri, UriKind.RelativeOrAbsolute),
-                progress,
-                cancellationToken
-            );
+            await client
+                .GetStringAsync(
+                    new Uri(requestUri, UriKind.RelativeOrAbsolute),
+                    progress,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
 
         /// <summary>
         /// Sends a GET request to the specified URI and copies the response body to the
@@ -128,18 +132,20 @@ public static class HttpClientExtensions
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
-        public Task DownloadAsync(
+        public async Task DownloadAsync(
             string requestUri,
             Stream destination,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         ) =>
-            client.DownloadAsync(
-                new Uri(requestUri, UriKind.RelativeOrAbsolute),
-                destination,
-                progress,
-                cancellationToken
-            );
+            await client
+                .DownloadAsync(
+                    new Uri(requestUri, UriKind.RelativeOrAbsolute),
+                    destination,
+                    progress,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
 
         /// <summary>
         /// Sends a GET request to the specified URI and saves the response body to a file,
@@ -174,17 +180,19 @@ public static class HttpClientExtensions
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
-        public Task DownloadAsync(
+        public async Task DownloadAsync(
             string requestUri,
             string filePath,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         ) =>
-            client.DownloadAsync(
-                new Uri(requestUri, UriKind.RelativeOrAbsolute),
-                filePath,
-                progress,
-                cancellationToken
-            );
+            await client
+                .DownloadAsync(
+                    new Uri(requestUri, UriKind.RelativeOrAbsolute),
+                    filePath,
+                    progress,
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
     }
 }

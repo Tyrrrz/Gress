@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using PowerKit.Extensions;
 
 namespace Gress.Http;
 
@@ -12,8 +13,6 @@ namespace Gress.Http;
 /// </summary>
 public static class HttpContentExtensions
 {
-    private const int DefaultBufferSize = 81920;
-
     /// <inheritdoc cref="HttpContentExtensions" />
     extension(HttpContent content)
     {
@@ -27,38 +26,10 @@ public static class HttpContentExtensions
             Stream destination,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        )
-        {
-            var totalBytes = content.Headers.ContentLength ?? -1;
-            var bytesRead = 0L;
-
-            using var sourceStream = await content
-                .ReadAsStreamAsync(cancellationToken)
+        ) =>
+            await content
+                .CopyToStreamAsync(destination, progress?.ToDoubleBased(), cancellationToken)
                 .ConfigureAwait(false);
-
-            var buffer = new byte[DefaultBufferSize];
-            while (
-                
-                    await sourceStream
-                        .ReadAsync(buffer, 0, buffer.Length, cancellationToken)
-                        .ConfigureAwait(false)
-                is > 0 count
-            )
-            {
-                await destination
-                    .WriteAsync(buffer, 0, count, cancellationToken)
-                    .ConfigureAwait(false);
-
-                bytesRead += count;
-
-                if (progress is not null && totalBytes > 0)
-                {
-                    progress.Report(
-                        Percentage.FromFraction(Math.Min(1.0, (double)bytesRead / totalBytes))
-                    );
-                }
-            }
-        }
 
         /// <summary>
         /// Reads the HTTP content and returns it as a byte array,
@@ -85,7 +56,7 @@ public static class HttpContentExtensions
             var charset = content.Headers.ContentType?.CharSet;
             if (charset is null)
                 return null;
-        
+
             try
             {
                 return Encoding.GetEncoding(charset);
