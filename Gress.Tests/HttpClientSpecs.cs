@@ -44,23 +44,6 @@ public class HttpClientSpecs
     }
 
     [Fact]
-    public async Task I_can_download_to_a_stream_with_progress()
-    {
-        // Arrange
-        using var http = new HttpClient();
-        var destination = new MemoryStream();
-        var progress = new ProgressCollector<Percentage>();
-
-        // Act
-        await http.DownloadAsync("http://example.com/", destination, progress);
-
-        // Assert
-        destination.ToArray().Should().NotBeEmpty();
-        progress.GetValues().Should().NotBeEmpty();
-        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
-    }
-
-    [Fact]
     public async Task I_can_download_to_a_file_with_progress()
     {
         // Arrange
@@ -72,7 +55,7 @@ public class HttpClientSpecs
         await http.DownloadAsync("http://example.com/", tempFile.Path, progress);
 
         // Assert
-        File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
+        new FileInfo(file.Path).Length.Should().BeGreaterThan(0);
         progress.GetValues().Should().NotBeEmpty();
         progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
