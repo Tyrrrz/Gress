@@ -55,7 +55,7 @@ public class HttpClientSpecs
         await http.DownloadAsync("http://example.com/", tempFile.Path, progress);
 
         // Assert
-        new FileInfo(file.Path).Length.Should().BeGreaterThan(0);
+        File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
         progress.GetValues().Should().NotBeEmpty();
         progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
