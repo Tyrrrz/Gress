@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Gress.Http;
+using PowerKit;
 using Xunit;
 
 namespace Gress.Tests;
@@ -176,23 +177,16 @@ public class HttpClientSpecs
         // Arrange
         var data = CreateTestData(1000);
         using var client = CreateClient(new ByteArrayContent(data));
-        var filePath = System.IO.Path.GetTempFileName();
+        using var tempFile = TempFile.Create();
         var progress = new ProgressCollector<Percentage>();
 
-        try
-        {
-            // Act
-            await client.DownloadAsync("http://example.com/", filePath, progress);
+        // Act
+        await client.DownloadAsync("http://example.com/", tempFile.Path, progress);
 
-            // Assert
-            System.IO.File.ReadAllBytes(filePath).Should().Equal(data);
-            progress.GetValues().Should().NotBeEmpty();
-            progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
-        }
-        finally
-        {
-            System.IO.File.Delete(filePath);
-        }
+        // Assert
+        System.IO.File.ReadAllBytes(tempFile.Path).Should().Equal(data);
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 
     [Fact]
@@ -201,23 +195,16 @@ public class HttpClientSpecs
         // Arrange
         var data = CreateTestData(1000);
         using var client = CreateClient(new ByteArrayContent(data));
-        var filePath = System.IO.Path.GetTempFileName();
+        using var tempFile = TempFile.Create();
         var progress = new ProgressCollector<Percentage>();
 
-        try
-        {
-            // Act
-            await client.DownloadAsync(new Uri("http://example.com/"), filePath, progress);
+        // Act
+        await client.DownloadAsync(new Uri("http://example.com/"), tempFile.Path, progress);
 
-            // Assert
-            System.IO.File.ReadAllBytes(filePath).Should().Equal(data);
-            progress.GetValues().Should().NotBeEmpty();
-            progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
-        }
-        finally
-        {
-            System.IO.File.Delete(filePath);
-        }
+        // Assert
+        System.IO.File.ReadAllBytes(tempFile.Path).Should().Equal(data);
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 
     [Fact]
@@ -226,20 +213,13 @@ public class HttpClientSpecs
         // Arrange
         var data = CreateTestData(1000);
         using var client = CreateClient(new ByteArrayContent(data));
-        var filePath = System.IO.Path.GetTempFileName();
+        using var tempFile = TempFile.Create();
 
-        try
-        {
-            // Act
-            await client.DownloadAsync("http://example.com/", filePath, null);
+        // Act
+        await client.DownloadAsync("http://example.com/", tempFile.Path, null);
 
-            // Assert
-            System.IO.File.ReadAllBytes(filePath).Should().Equal(data);
-        }
-        finally
-        {
-            System.IO.File.Delete(filePath);
-        }
+        // Assert
+        System.IO.File.ReadAllBytes(tempFile.Path).Should().Equal(data);
     }
 
     private class FakeHttpMessageHandler(HttpContent content) : HttpMessageHandler
