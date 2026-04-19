@@ -120,6 +120,46 @@ public class StreamSpecs
         progress.GetValues().Should().BeEmpty();
     }
 
+    [Fact]
+    public void I_can_copy_a_non_seekable_stream_to_another_stream_with_progress_using_an_explicit_stream_length()
+    {
+        // Arrange
+        // Use data larger than the buffer (81920 bytes) to get multiple progress reports
+        var data = CreateTestData(81920 * 2 + 1000);
+        var source = new NonSeekableStream(new MemoryStream(data));
+        var destination = new MemoryStream();
+        var progress = new ProgressCollector<Percentage>();
+
+        // Act
+        source.CopyTo(destination, data.Length, progress);
+
+        // Assert
+        destination.ToArray().Should().Equal(data);
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
+        progress.GetValues().Should().BeInAscendingOrder();
+    }
+
+    [Fact]
+    public async Task I_can_copy_a_non_seekable_stream_to_another_stream_asynchronously_with_progress_using_an_explicit_stream_length()
+    {
+        // Arrange
+        // Use data larger than the buffer (81920 bytes) to get multiple progress reports
+        var data = CreateTestData(81920 * 2 + 1000);
+        var source = new NonSeekableStream(new MemoryStream(data));
+        var destination = new MemoryStream();
+        var progress = new ProgressCollector<Percentage>();
+
+        // Act
+        await source.CopyToAsync(destination, data.Length, progress);
+
+        // Assert
+        destination.ToArray().Should().Equal(data);
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
+        progress.GetValues().Should().BeInAscendingOrder();
+    }
+
     private class NonSeekableStream(Stream inner) : Stream
     {
         public override bool CanRead => inner.CanRead;
