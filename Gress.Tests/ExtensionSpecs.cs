@@ -20,8 +20,8 @@ public class ExtensionSpecs
         // Arrange
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
         using var dataOwner = ArrayPool<byte>.Shared.RentOwner(81920 * 2 + 1000);
-        Random.Shared.NextBytes(dataOwner.Memory.Span);
-        var data = dataOwner.Memory.ToArray();
+        Random.Shared.NextBytes(dataOwner.Span);
+        var data = dataOwner.Span.ToArray();
         using var source = new MemoryStream(data);
         using var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
@@ -42,8 +42,8 @@ public class ExtensionSpecs
         // Arrange
         // Use data larger than the buffer (81920 bytes) to get multiple progress reports
         using var dataOwner = ArrayPool<byte>.Shared.RentOwner(81920 * 2 + 1000);
-        Random.Shared.NextBytes(dataOwner.Memory.Span);
-        var data = dataOwner.Memory.ToArray();
+        Random.Shared.NextBytes(dataOwner.Span);
+        var data = dataOwner.Span.ToArray();
         using var source = new MemoryStream(data);
         using var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
