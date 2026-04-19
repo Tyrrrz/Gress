@@ -145,5 +145,39 @@ public static class HttpClientExtensions
             response.EnsureSuccessStatusCode();
             await response.Content.CopyToAsync(destination, progress, cancellationToken);
         }
+
+        /// <summary>
+        /// Sends a GET request to the specified URI and saves the response body to a file,
+        /// reporting progress as a <see cref="Percentage" /> value.
+        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
+        /// as the total byte count must be known to compute a percentage.
+        /// </summary>
+        public async Task DownloadAsync(
+            string requestUri,
+            string filePath,
+            IProgress<Percentage>? progress,
+            CancellationToken cancellationToken = default
+        )
+        {
+            await using var fileStream = File.Create(filePath);
+            await client.DownloadAsync(requestUri, fileStream, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sends a GET request to the specified URI and saves the response body to a file,
+        /// reporting progress as a <see cref="Percentage" /> value.
+        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
+        /// as the total byte count must be known to compute a percentage.
+        /// </summary>
+        public async Task DownloadAsync(
+            Uri requestUri,
+            string filePath,
+            IProgress<Percentage>? progress,
+            CancellationToken cancellationToken = default
+        )
+        {
+            await using var fileStream = File.Create(filePath);
+            await client.DownloadAsync(requestUri, fileStream, progress, cancellationToken);
+        }
     }
 }

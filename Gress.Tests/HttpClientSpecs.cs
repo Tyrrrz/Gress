@@ -170,6 +170,78 @@ public class HttpClientSpecs
         destination.ToArray().Should().Equal(data);
     }
 
+    [Fact]
+    public async Task I_can_download_to_a_file_via_string_url_with_progress()
+    {
+        // Arrange
+        var data = CreateTestData(1000);
+        using var client = CreateClient(new ByteArrayContent(data));
+        var filePath = System.IO.Path.GetTempFileName();
+        var progress = new ProgressCollector<Percentage>();
+
+        try
+        {
+            // Act
+            await client.DownloadAsync("http://example.com/", filePath, progress);
+
+            // Assert
+            System.IO.File.ReadAllBytes(filePath).Should().Equal(data);
+            progress.GetValues().Should().NotBeEmpty();
+            progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
+        }
+        finally
+        {
+            System.IO.File.Delete(filePath);
+        }
+    }
+
+    [Fact]
+    public async Task I_can_download_to_a_file_via_uri_with_progress()
+    {
+        // Arrange
+        var data = CreateTestData(1000);
+        using var client = CreateClient(new ByteArrayContent(data));
+        var filePath = System.IO.Path.GetTempFileName();
+        var progress = new ProgressCollector<Percentage>();
+
+        try
+        {
+            // Act
+            await client.DownloadAsync(new Uri("http://example.com/"), filePath, progress);
+
+            // Assert
+            System.IO.File.ReadAllBytes(filePath).Should().Equal(data);
+            progress.GetValues().Should().NotBeEmpty();
+            progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
+        }
+        finally
+        {
+            System.IO.File.Delete(filePath);
+        }
+    }
+
+    [Fact]
+    public async Task I_can_download_to_a_file_without_reporting_progress_when_the_handler_is_null()
+    {
+        // Arrange
+        var data = CreateTestData(1000);
+        using var client = CreateClient(new ByteArrayContent(data));
+        var filePath = System.IO.Path.GetTempFileName();
+
+        try
+        {
+            // Act
+            await client.DownloadAsync("http://example.com/", filePath, null);
+
+            // Assert
+            System.IO.File.ReadAllBytes(filePath).Should().Equal(data);
+        }
+        finally
+        {
+            System.IO.File.Delete(filePath);
+        }
+    }
+
     private class FakeHttpMessageHandler(HttpContent content) : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(
