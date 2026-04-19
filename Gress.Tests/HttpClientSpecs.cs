@@ -11,18 +11,15 @@ namespace Gress.Tests;
 
 public class HttpClientSpecs
 {
-    private const string TestUrl = "http://example.com/";
-
-    private readonly HttpClient _http = new();
-
     [Fact]
     public async Task I_can_download_a_byte_array_with_progress()
     {
         // Arrange
+        using var http = new HttpClient();
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await _http.GetByteArrayAsync(TestUrl, progress);
+        var result = await http.GetByteArrayAsync("http://example.com/", progress);
 
         // Assert
         result.Should().NotBeEmpty();
@@ -34,10 +31,11 @@ public class HttpClientSpecs
     public async Task I_can_download_a_string_with_progress()
     {
         // Arrange
+        using var http = new HttpClient();
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await _http.GetStringAsync(TestUrl, progress);
+        var result = await http.GetStringAsync("http://example.com/", progress);
 
         // Assert
         result.Should().NotBeNullOrEmpty();
@@ -49,11 +47,12 @@ public class HttpClientSpecs
     public async Task I_can_download_to_a_stream_with_progress()
     {
         // Arrange
+        using var http = new HttpClient();
         var destination = new MemoryStream();
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await _http.DownloadAsync(TestUrl, destination, progress);
+        await http.DownloadAsync("http://example.com/", destination, progress);
 
         // Assert
         destination.ToArray().Should().NotBeEmpty();
@@ -65,11 +64,12 @@ public class HttpClientSpecs
     public async Task I_can_download_to_a_file_with_progress()
     {
         // Arrange
+        using var http = new HttpClient();
         using var tempFile = TempFile.Create();
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await _http.DownloadAsync(TestUrl, tempFile.Path, progress);
+        await http.DownloadAsync("http://example.com/", tempFile.Path, progress);
 
         // Assert
         File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
