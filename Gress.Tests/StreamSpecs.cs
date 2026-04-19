@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Gress.Http;
 using Xunit;
 
 namespace Gress.Tests;

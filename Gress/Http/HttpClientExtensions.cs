@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Gress;
+namespace Gress.Http;
 
 /// <summary>
 /// Extensions for <see cref="HttpClient" />.
