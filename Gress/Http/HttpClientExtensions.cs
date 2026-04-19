@@ -24,7 +24,11 @@ public static class HttpClientExtensions
             string requestUri,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        ) => client.GetByteArrayAsync(new Uri(requestUri), progress, cancellationToken);
+        ) => client.GetByteArrayAsync(
+            new Uri(requestUri, UriKind.RelativeOrAbsolute),
+            progress,
+            cancellationToken
+        );
 
         /// <summary>
         /// Sends a GET request to the specified URI and returns the response body as a byte array,
