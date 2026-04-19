@@ -42,9 +42,7 @@ public static class StreamExtensions
                 if (totalBytes > 0)
                 {
                     progress.Report(
-                        Percentage.FromFraction(
-                            Math.Min(1.0, (double)bytesRead / totalBytes)
-                        )
+                        Percentage.FromFraction(Math.Min(1.0, (double)bytesRead / totalBytes))
                     );
                 }
             }
@@ -83,9 +81,7 @@ public static class StreamExtensions
                 if (totalBytes > 0)
                 {
                     progress.Report(
-                        Percentage.FromFraction(
-                            Math.Min(1.0, (double)bytesRead / totalBytes)
-                        )
+                        Percentage.FromFraction(Math.Min(1.0, (double)bytesRead / totalBytes))
                     );
                 }
             }
