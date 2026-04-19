@@ -162,6 +162,7 @@ public static class HttpClientExtensions
                 4096,
                 FileOptions.Asynchronous
             );
+
             await client
                 .DownloadAsync(requestUri, fileStream, progress, cancellationToken)
                 .ConfigureAwait(false);
