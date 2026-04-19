@@ -31,7 +31,7 @@ public static class HttpContentExtensions
             var totalBytes = content.Headers.ContentLength ?? -1;
             var bytesRead = 0L;
 
-            using var sourceStream = await content.ReadAsStreamAsync();
+            using var sourceStream = await content.ReadAsStreamAsync(cancellationToken);
 
             var buffer = new byte[DefaultBufferSize];
             int count;
