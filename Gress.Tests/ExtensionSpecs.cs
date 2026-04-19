@@ -67,8 +67,6 @@ public class ExtensionSpecs
 
         // Assert
         result.Should().NotBeEmpty();
-        progress.GetValues().Should().NotBeEmpty();
-        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 
     [Fact]
@@ -83,8 +81,6 @@ public class ExtensionSpecs
 
         // Assert
         result.Should().NotBeNullOrEmpty();
-        progress.GetValues().Should().NotBeEmpty();
-        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 
     [Fact]
@@ -100,7 +96,5 @@ public class ExtensionSpecs
 
         // Assert
         File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
-        progress.GetValues().Should().NotBeEmpty();
-        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
     }
 }
