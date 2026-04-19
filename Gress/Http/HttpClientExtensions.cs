@@ -20,20 +20,11 @@ public static class HttpClientExtensions
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
-        public async Task<byte[]> GetByteArrayAsync(
+        public Task<byte[]> GetByteArrayAsync(
             string requestUri,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        )
-        {
-            using var response = await client.GetAsync(
-                requestUri,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken
-            );
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsByteArrayAsync(progress, cancellationToken);
-        }
+        ) => client.GetByteArrayAsync(new Uri(requestUri), progress, cancellationToken);
 
         /// <summary>
         /// Sends a GET request to the specified URI and returns the response body as a byte array,
@@ -64,20 +55,11 @@ public static class HttpClientExtensions
         /// The character encoding is inferred from the <c>Content-Type</c> charset header,
         /// falling back to UTF-8 when absent or unrecognized.
         /// </summary>
-        public async Task<string> GetStringAsync(
+        public Task<string> GetStringAsync(
             string requestUri,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        )
-        {
-            using var response = await client.GetAsync(
-                requestUri,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken
-            );
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync(progress, cancellationToken);
-        }
+        ) => client.GetStringAsync(new Uri(requestUri), progress, cancellationToken);
 
         /// <summary>
         /// Sends a GET request to the specified URI and returns the response body as a string,
@@ -108,21 +90,12 @@ public static class HttpClientExtensions
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
-        public async Task DownloadAsync(
+        public Task DownloadAsync(
             string requestUri,
             Stream destination,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        )
-        {
-            using var response = await client.GetAsync(
-                requestUri,
-                HttpCompletionOption.ResponseHeadersRead,
-                cancellationToken
-            );
-            response.EnsureSuccessStatusCode();
-            await response.Content.CopyToAsync(destination, progress, cancellationToken);
-        }
+        ) => client.DownloadAsync(new Uri(requestUri), destination, progress, cancellationToken);
 
         /// <summary>
         /// Sends a GET request to the specified URI and copies the response body to the
@@ -152,16 +125,12 @@ public static class HttpClientExtensions
         /// Progress is only reported when the response includes a <c>Content-Length</c> header,
         /// as the total byte count must be known to compute a percentage.
         /// </summary>
-        public async Task DownloadAsync(
+        public Task DownloadAsync(
             string requestUri,
             string filePath,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        )
-        {
-            await using var fileStream = File.Create(filePath);
-            await client.DownloadAsync(requestUri, fileStream, progress, cancellationToken);
-        }
+        ) => client.DownloadAsync(new Uri(requestUri), filePath, progress, cancellationToken);
 
         /// <summary>
         /// Sends a GET request to the specified URI and saves the response body to a file,
@@ -176,7 +145,7 @@ public static class HttpClientExtensions
             CancellationToken cancellationToken = default
         )
         {
-            await using var fileStream = File.Create(filePath);
+            using var fileStream = File.Create(filePath);
             await client.DownloadAsync(requestUri, fileStream, progress, cancellationToken);
         }
     }
