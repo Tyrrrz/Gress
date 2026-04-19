@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -99,6 +100,50 @@ public static class HttpClientExtensions
             );
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadAsStringAsync(progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sends a GET request to the specified URI and copies the response body to the
+        /// provided stream, reporting progress as a <see cref="Percentage" /> value.
+        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
+        /// as the total byte count must be known to compute a percentage.
+        /// </summary>
+        public async Task DownloadAsync(
+            string requestUri,
+            Stream destination,
+            IProgress<Percentage>? progress,
+            CancellationToken cancellationToken = default
+        )
+        {
+            using var response = await client.GetAsync(
+                requestUri,
+                HttpCompletionOption.ResponseHeadersRead,
+                cancellationToken
+            );
+            response.EnsureSuccessStatusCode();
+            await response.Content.CopyToAsync(destination, progress, cancellationToken);
+        }
+
+        /// <summary>
+        /// Sends a GET request to the specified URI and copies the response body to the
+        /// provided stream, reporting progress as a <see cref="Percentage" /> value.
+        /// Progress is only reported when the response includes a <c>Content-Length</c> header,
+        /// as the total byte count must be known to compute a percentage.
+        /// </summary>
+        public async Task DownloadAsync(
+            Uri requestUri,
+            Stream destination,
+            IProgress<Percentage>? progress,
+            CancellationToken cancellationToken = default
+        )
+        {
+            using var response = await client.GetAsync(
+                requestUri,
+                HttpCompletionOption.ResponseHeadersRead,
+                cancellationToken
+            );
+            response.EnsureSuccessStatusCode();
+            await response.Content.CopyToAsync(destination, progress, cancellationToken);
         }
     }
 }

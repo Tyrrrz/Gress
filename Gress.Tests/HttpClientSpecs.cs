@@ -117,6 +117,58 @@ public class HttpClientSpecs
         result.Should().Be("hello world");
     }
 
+    [Fact]
+    public async Task I_can_download_to_a_stream_via_string_url_with_progress()
+    {
+        // Arrange
+        // ByteArrayContent sets Content-Length automatically
+        var data = CreateTestData(1000);
+        using var client = CreateClient(new ByteArrayContent(data));
+        var destination = new System.IO.MemoryStream();
+        var progress = new ProgressCollector<Percentage>();
+
+        // Act
+        await client.DownloadAsync("http://example.com/", destination, progress);
+
+        // Assert
+        destination.ToArray().Should().Equal(data);
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
+    }
+
+    [Fact]
+    public async Task I_can_download_to_a_stream_via_uri_with_progress()
+    {
+        // Arrange
+        var data = CreateTestData(1000);
+        using var client = CreateClient(new ByteArrayContent(data));
+        var destination = new System.IO.MemoryStream();
+        var progress = new ProgressCollector<Percentage>();
+
+        // Act
+        await client.DownloadAsync(new Uri("http://example.com/"), destination, progress);
+
+        // Assert
+        destination.ToArray().Should().Equal(data);
+        progress.GetValues().Should().NotBeEmpty();
+        progress.GetValues().Last().Should().Be(Percentage.FromFraction(1.0));
+    }
+
+    [Fact]
+    public async Task I_can_download_to_a_stream_without_reporting_progress_when_the_handler_is_null()
+    {
+        // Arrange
+        var data = CreateTestData(1000);
+        using var client = CreateClient(new ByteArrayContent(data));
+        var destination = new System.IO.MemoryStream();
+
+        // Act
+        await client.DownloadAsync("http://example.com/", destination, null);
+
+        // Assert
+        destination.ToArray().Should().Equal(data);
+    }
+
     private class FakeHttpMessageHandler(HttpContent content) : HttpMessageHandler
     {
         protected override Task<HttpResponseMessage> SendAsync(
