@@ -546,7 +546,7 @@ For example, you can use the below `Stream.CopyToAsync(...)` overload to copy da
 
 ```csharp
 using Gress;
-using Gress.Integration;
+using Gress.Integrations;
 
 await using var source = File.OpenRead("input.bin");
 await using var destination = File.Create("output.bin");

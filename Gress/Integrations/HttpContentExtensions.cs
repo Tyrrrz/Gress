@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PowerKit.Extensions;
 
-namespace Gress.Integration;
+namespace Gress.Integrations;
 
 /// <summary>
 /// Provides progress-aware extensions for <see cref="HttpContent" />.
