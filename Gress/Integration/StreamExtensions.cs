@@ -39,7 +39,12 @@ public static class StreamExtensions
             CancellationToken cancellationToken = default
         ) =>
             await source
-                .CopyToAsync(destination, progress?.ToDoubleBased(), cancellationToken)
+                .CopyToAsync(
+                    destination,
+                    source.CanSeek ? source.Length : -1,
+                    progress,
+                    cancellationToken
+                )
                 .ConfigureAwait(false);
     }
 }

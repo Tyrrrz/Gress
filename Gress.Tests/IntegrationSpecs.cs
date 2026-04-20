@@ -58,6 +58,25 @@ public class IntegrationSpecs
     }
 
     [Fact]
+    public async Task I_can_download_a_web_resource_as_a_string_with_progress()
+    {
+        // Arrange
+        using var http = new HttpClient();
+        var progress = new ProgressCollector<Percentage>();
+
+        // Act
+        var result = await http.GetStringAsync(
+            // Need something that reports content length
+            "https://github.com/Tyrrrz/CliWrap/releases/download/3.10.1/CliWrap.3.10.1.nupkg",
+            progress
+        );
+
+        // Assert
+        result.Should().NotBeNullOrEmpty();
+        progress.GetValues().Should().NotBeEmpty();
+    }
+
+    [Fact]
     public async Task I_can_download_a_web_resource_to_a_file_with_progress()
     {
         // Arrange
