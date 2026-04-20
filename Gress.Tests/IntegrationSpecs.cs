@@ -16,7 +16,12 @@ public class IntegrationSpecs
     public async Task I_can_copy_a_stream_to_another_stream_with_progress()
     {
         // Arrange
-        using var buffer = SpanPool<byte>.Shared.Rent(81920 * 2 + 1000);
+        using var buffer = SpanPool<byte>.Shared.Rent(
+            // Longer buffer to ensure multiple progress reports
+            81920 * 2
+                + 1000
+        );
+
         Random.Shared.NextBytes(buffer.Span);
         var data = buffer.Span.ToArray();
 
@@ -34,14 +39,18 @@ public class IntegrationSpecs
     }
 
     [Fact]
-    public async Task I_can_download_a_web_resource_as_a_string_with_progress()
+    public async Task I_can_download_a_web_resource_as_a_byte_array_with_progress()
     {
         // Arrange
         using var http = new HttpClient();
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        var result = await http.GetStringAsync("https://github.com/Tyrrrz/Gress", progress);
+        var result = await http.GetByteArrayAsync(
+            // Need something that reports content length
+            "https://github.com/Tyrrrz/CliWrap/releases/download/3.10.1/CliWrap.3.10.1.nupkg",
+            progress
+        );
 
         // Assert
         result.Should().NotBeNullOrEmpty();
@@ -57,10 +66,18 @@ public class IntegrationSpecs
         var progress = new ProgressCollector<Percentage>();
 
         // Act
-        await http.DownloadAsync("https://github.com/Tyrrrz/Gress", tempFile.Path, progress);
+        await http.DownloadAsync(
+            // Need something that reports content length
+            "https://github.com/Tyrrrz/CliWrap/releases/download/3.10.1/CliWrap.3.10.1.nupkg",
+            tempFile.Path,
+            progress
+        );
 
         // Assert
-        File.ReadAllBytes(tempFile.Path).Should().NotBeEmpty();
+        new FileInfo(tempFile.Path)
+            .Length.Should()
+            .BeGreaterThan(0);
+
         progress.GetValues().Should().NotBeEmpty();
     }
 }
