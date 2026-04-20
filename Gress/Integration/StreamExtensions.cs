@@ -1,5 +1,4 @@
 using System;
-using System.Buffers;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,10 +33,13 @@ public static class StreamExtensions
         /// <summary>
         /// Asynchronously copies bytes from the source stream to the destination stream.
         /// </summary>
-        public Task CopyToAsync(
+        public async Task CopyToAsync(
             Stream destination,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        ) => source.CopyToAsync(destination, -1, progress, cancellationToken);
+        ) =>
+            await source
+                .CopyToAsync(destination, progress?.ToDoubleBased(), cancellationToken)
+                .ConfigureAwait(false);
     }
 }

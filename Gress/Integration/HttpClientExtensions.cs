@@ -1,8 +1,8 @@
 using System;
-using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using PowerKit.Extensions;
 
 namespace Gress.Integration;
 
@@ -87,45 +87,6 @@ public static class HttpClientExtensions
                 .ConfigureAwait(false);
 
         /// <summary>
-        /// Sends a GET request and copies the response body to the provided stream.
-        /// </summary>
-        public async Task DownloadAsync(
-            Uri requestUri,
-            Stream destination,
-            IProgress<Percentage>? progress,
-            CancellationToken cancellationToken = default
-        )
-        {
-            using var response = await client
-                .GetAsync(requestUri, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-                .ConfigureAwait(false);
-
-            response.EnsureSuccessStatusCode();
-
-            await response
-                .Content.CopyToAsync(destination, progress, cancellationToken)
-                .ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Sends a GET request and copies the response body to the provided stream.
-        /// </summary>
-        public async Task DownloadAsync(
-            string requestUri,
-            Stream destination,
-            IProgress<Percentage>? progress,
-            CancellationToken cancellationToken = default
-        ) =>
-            await client
-                .DownloadAsync(
-                    new Uri(requestUri, UriKind.RelativeOrAbsolute),
-                    destination,
-                    progress,
-                    cancellationToken
-                )
-                .ConfigureAwait(false);
-
-        /// <summary>
         /// Sends a GET request and saves the response body to a file.
         /// </summary>
         public async Task DownloadAsync(
@@ -133,21 +94,10 @@ public static class HttpClientExtensions
             string filePath,
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
-        )
-        {
-            using var fileStream = new FileStream(
-                filePath,
-                FileMode.Create,
-                FileAccess.Write,
-                FileShare.None,
-                4096,
-                FileOptions.Asynchronous
-            );
-
+        ) =>
             await client
-                .DownloadAsync(requestUri, fileStream, progress, cancellationToken)
+                .DownloadAsync(requestUri, filePath, progress?.ToDoubleBased(), cancellationToken)
                 .ConfigureAwait(false);
-        }
 
         /// <summary>
         /// Sends a GET request and saves the response body to a file.
