@@ -29,6 +29,22 @@ public static class HttpContentExtensions
                 .CopyToStreamAsync(destination, progress?.ToDoubleBased(), cancellationToken)
                 .ConfigureAwait(false);
 
+        private async Task<MemoryStream> ReadAsMemoryStreamAsync(
+            IProgress<Percentage>? progress,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var destination = new MemoryStream();
+
+            await content
+                .CopyToAsync(destination, progress, cancellationToken)
+                .ConfigureAwait(false);
+
+            destination.Position = 0;
+
+            return destination;
+        }
+
         /// <summary>
         /// Reads the HTTP content and returns it as a byte array.
         /// </summary>
@@ -37,13 +53,11 @@ public static class HttpContentExtensions
             CancellationToken cancellationToken = default
         )
         {
-            using var destination = new MemoryStream();
-
-            await content
-                .CopyToAsync(destination, progress, cancellationToken)
+            using var buffer = await content
+                .ReadAsMemoryStreamAsync(progress, cancellationToken)
                 .ConfigureAwait(false);
 
-            return destination.ToArray();
+            return buffer.ToArray();
         }
 
         /// <summary>
@@ -54,15 +68,9 @@ public static class HttpContentExtensions
             CancellationToken cancellationToken = default
         )
         {
-            var bytes = await content
-                .ReadAsByteArrayAsync(progress, cancellationToken)
-                .ConfigureAwait(false);
-
-            var charset = content.Headers.ContentType?.CharSet;
-
             var encoding =
-                charset
-                    ?.Pipe(c =>
+                content
+                    .Headers.ContentType?.CharSet?.Pipe(c =>
                         Encoding
                             .GetEncodings()
                             .FirstOrDefault(e =>
@@ -72,7 +80,13 @@ public static class HttpContentExtensions
                     ?.GetEncoding()
                 ?? Encoding.UTF8;
 
-            return encoding.GetString(bytes);
+            using var buffer = await content
+                .ReadAsMemoryStreamAsync(progress, cancellationToken)
+                .ConfigureAwait(false);
+
+            using var reader = new StreamReader(buffer, encoding, true);
+
+            return await reader.ReadToEndAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }
