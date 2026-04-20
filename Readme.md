@@ -538,3 +538,27 @@ subProgress3.Report(Percentage.FromFraction(0.5));
 > [!NOTE]
 > You can wrap an instance of `ICompletableProgress<T>` in a disposable container by calling `ToDisposable()`.
 > This allows you to place the handler in a `using (...)` block, which ensures that the completion is always reported at the end.
+
+### Integration extensions
+
+**Gress** also provides extensions for several built-in .NET types that integrate `IProgress<Percentage>` into their existing APIs.
+For example, you can use the below `Stream.CopyToAsync(...)` overload to copy data between two streams while tracking the operation's progress:
+
+```csharp
+using Gress;
+using Gress.Integration;
+
+await using var source = File.OpenRead("input.bin");
+await using var destination = File.Create("output.bin");
+
+await source.CopyToAsync(
+    destination,
+    new Progress<Percentage>(p => Console.WriteLine($"Copied: {p}"))
+);
+
+// Console output:
+// Copied: 37,5%
+// Copied: 62,5%
+// Copied: 87,5%
+// Copied: 100,0%
+```
