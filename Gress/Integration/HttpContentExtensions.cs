@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -45,22 +46,6 @@ public static class HttpContentExtensions
             return destination.ToArray();
         }
 
-        private Encoding? TryGetEncoding()
-        {
-            var charset = content.Headers.ContentType?.CharSet;
-            if (charset is null)
-                return null;
-
-            try
-            {
-                return Encoding.GetEncoding(charset);
-            }
-            catch (ArgumentException)
-            {
-                return null;
-            }
-        }
-
         /// <summary>
         /// Reads the HTTP content and returns it as a string.
         /// </summary>
@@ -73,7 +58,21 @@ public static class HttpContentExtensions
                 .ReadAsByteArrayAsync(progress, cancellationToken)
                 .ConfigureAwait(false);
 
-            return (content.TryGetEncoding() ?? Encoding.UTF8).GetString(bytes);
+            var charset = content.Headers.ContentType?.CharSet;
+
+            var encoding =
+                charset
+                    ?.Pipe(c =>
+                        Encoding
+                            .GetEncodings()
+                            .FirstOrDefault(e =>
+                                string.Equals(e.Name, c, StringComparison.OrdinalIgnoreCase)
+                            )
+                    )
+                    ?.GetEncoding()
+                ?? Encoding.UTF8;
+
+            return encoding.GetString(bytes);
         }
     }
 }

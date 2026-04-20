@@ -23,12 +23,14 @@ public static class StreamExtensions
             IProgress<Percentage>? progress,
             CancellationToken cancellationToken = default
         ) =>
-            await source.CopyToAsync(
-                destination,
-                sourceLength,
-                progress?.ToDoubleBased(),
-                cancellationToken
-            );
+            await source
+                .CopyToAsync(
+                    destination,
+                    sourceLength,
+                    progress?.ToDoubleBased(),
+                    cancellationToken
+                )
+                .ConfigureAwait(false);
 
         /// <summary>
         /// Asynchronously copies bytes from the source stream to the destination stream.
