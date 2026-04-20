@@ -48,7 +48,7 @@ public class IntegrationSpecs
         // Act
         var result = await http.GetByteArrayAsync(
             // Need something that reports content length
-            "https://github.com/Tyrrrz/CliWrap/releases/download/3.10.1/CliWrap.3.10.1.nupkg",
+            "https://github.com/Tyrrrz/Gress/releases/download/2.2/Gress.2.2.0.nupkg",
             progress
         );
 
@@ -67,7 +67,7 @@ public class IntegrationSpecs
         // Act
         var result = await http.GetStringAsync(
             // Need something that reports content length
-            "https://github.com/Tyrrrz/CliWrap/releases/download/3.10.1/CliWrap.3.10.1.nupkg",
+            "https://github.com/Tyrrrz/Gress/releases/download/2.2/Gress.2.2.0.nupkg",
             progress
         );
 
@@ -87,7 +87,7 @@ public class IntegrationSpecs
         // Act
         await http.DownloadAsync(
             // Need something that reports content length
-            "https://github.com/Tyrrrz/CliWrap/releases/download/3.10.1/CliWrap.3.10.1.nupkg",
+            "https://github.com/Tyrrrz/Gress/releases/download/2.2/Gress.2.2.0.nupkg",
             tempFile.Path,
             progress
         );
