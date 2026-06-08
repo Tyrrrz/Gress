@@ -36,6 +36,9 @@ To learn more about the war and how you can help, [click here](https://tyrrrz.me
 
 - 📦 [NuGet](https://nuget.org/packages/Gress): `dotnet add package Gress`
 
+> [!TIP]
+> You can use [**Binternal**](https://github.com/Tyrrrz/Binternal) to internalize this library if you prefer to avoid taking an external dependency.
+
 ## Screenshots
 
 ![demo](.assets/demo.png)
