@@ -16,6 +16,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
     <PackageVersion Include="PolyShim" Version="2.11.0" />
     <PackageVersion Include="PowerKit" Version="2.0.1" />
+    <PackageVersion Include="Snek" Version="1.0.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
