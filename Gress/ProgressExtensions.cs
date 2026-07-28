@@ -19,9 +19,7 @@ public static class ProgressExtensions
         public IProgress<TTransformed> WithTransform<TTransformed>(Func<TTransformed, T> map) =>
             new DelegateProgress<TTransformed>(p => progress.Report(map(p)));
 
-        /// <summary>
-        /// Projects progress updates into a different shape.
-        /// </summary>
+        /// <inheritdoc cref="ProgressExtensions.WithTransform{T, TTransformed}(IProgress{T}, Func{TTransformed, T})" />
         public IProgress<T> WithTransform(Func<T, T> map) => progress.WithTransform<T, T>(map);
 
         /// <summary>

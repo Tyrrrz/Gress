@@ -33,9 +33,7 @@ public static class StreamExtensions
                 )
                 .ConfigureAwait(false);
 
-        /// <summary>
-        /// Asynchronously copies bytes from the source stream to the destination stream.
-        /// </summary>
+        /// <inheritdoc cref="StreamExtensions.CopyToAsync(Stream, Stream, long, IProgress{Percentage}?, CancellationToken)" />
         public async Task CopyToAsync(
             Stream destination,
             IProgress<Percentage>? progress,

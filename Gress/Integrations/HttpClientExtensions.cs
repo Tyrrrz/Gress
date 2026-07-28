@@ -35,9 +35,7 @@ public static class HttpClientExtensions
                 .ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Sends a GET request and returns the response body as a byte array.
-        /// </summary>
+        /// <inheritdoc cref="HttpClientExtensions.GetByteArrayAsync(HttpClient, Uri, IProgress{Percentage}?, CancellationToken)" />
         public async Task<byte[]> GetByteArrayAsync(
             string requestUri,
             IProgress<Percentage>? progress,
@@ -71,9 +69,7 @@ public static class HttpClientExtensions
                 .ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Sends a GET request and returns the response body as text.
-        /// </summary>
+        /// <inheritdoc cref="HttpClientExtensions.GetStringAsync(HttpClient, Uri, IProgress{Percentage}?, CancellationToken)" />
         public async Task<string> GetStringAsync(
             string requestUri,
             IProgress<Percentage>? progress,
@@ -100,9 +96,7 @@ public static class HttpClientExtensions
                 .DownloadAsync(requestUri, filePath, progress?.ToDoubleBased(), cancellationToken)
                 .ConfigureAwait(false);
 
-        /// <summary>
-        /// Sends a GET request and saves the response body to a file.
-        /// </summary>
+        /// <inheritdoc cref="HttpClientExtensions.DownloadAsync(HttpClient, Uri, string, IProgress{Percentage}?, CancellationToken)" />
         public async Task DownloadAsync(
             string requestUri,
             string filePath,
