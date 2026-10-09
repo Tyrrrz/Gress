@@ -13,7 +13,7 @@ public readonly partial struct Percentage(double value)
     public double Value { get; } = value;
 
     /// <summary>
-    /// Percentage value in decimal form (e.g. 0.75 for 75%).
+    /// Percentage value in decimal form (e.g., 0.75 for 75%).
     /// </summary>
     public double Fraction => Value / 100.0;
 
@@ -35,7 +35,7 @@ public partial struct Percentage
     public static Percentage FromValue(double value) => new(value);
 
     /// <summary>
-    /// Creates a percentage from its value in decimal form (e.g. from 0.75 to 75%).
+    /// Creates a percentage from its value in decimal form (e.g., from 0.75 to 75%).
     /// </summary>
     public static Percentage FromFraction(double fraction) => FromValue(fraction * 100.0);
 }
