@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using Gress.Completable;
 using Xunit;
 

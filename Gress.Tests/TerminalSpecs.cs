@@ -1,6 +1,6 @@
 using System.ComponentModel;
 using System.Threading;
-using FluentAssertions;
+using AwesomeAssertions;
 using Xunit;
 
 namespace Gress.Tests;
